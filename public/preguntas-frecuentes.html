@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Preguntas Frecuentes | Pinturas Osel Lázaro</title>
+    <meta name="description"
+        content="Encuentra respuestas a las dudas más comunes sobre productos Osel, envíos, métodos de pago y aplicaciones de pintura.">
+
+    <!-- Design System (Same as Index) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script src="js/security.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, 0.85);
+            }
+            .faq-item[open] summary ~ * {
+                animation: slideDown 0.3s ease-in-out;
+            }
+            .faq-item[open] summary .icon {
+                transform: rotate(180deg);
+            }
+            @keyframes slideDown {
+                0% { opacity: 0; transform: translateY(-10px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans text-slate-800 dark:text-slate-200 antialiased">
+
+    <!-- Header (Consistent) -->
+    <nav class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-10 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6 max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">Soporte Osel</span>
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-slate-900 dark:text-white">Preguntas Frecuentes</h1>
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto">Todo lo que necesitas saber sobre nuestros productos,
+                servicios de color y entregas.</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ 1 -->
+            <details
+                class="faq-item group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <summary
+                    class="flex justify-between items-center list-none font-bold text-lg text-slate-900 dark:text-white">
+                    <span>¿Realizan igualación de colores?</span>
+                    <span
+                        class="material-symbols-outlined icon transition-transform duration-300 text-slate-400 group-hover:text-primary">expand_more</span>
+                </summary>
+                <div class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p>Sí, contamos con tecnología computarizada de última generación para igualar cualquier tono que
+                        necesites. Solo trae una muestra física (tela, papel, pintura seca) del tamaño de una moneda y
+                        nuestro espectrofotómetro replicará el color exacto en el producto Osel de tu elección.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details
+                class="faq-item group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <summary
+                    class="flex justify-between items-center list-none font-bold text-lg text-slate-900 dark:text-white">
+                    <span>¿Cuál es el tiempo de entrega a domicilio?</span>
+                    <span
+                        class="material-symbols-outlined icon transition-transform duration-300 text-slate-400 group-hover:text-primary">expand_more</span>
+                </summary>
+                <div class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p>Para pedidos dentro de Lázaro Cárdenas centro, la entrega es el mismo día si se realiza antes de
+                        las 14:00 hrs. Para pedidos posteriores o zonas periféricas, garantizamos la entrega en menos de
+                        24 horas hábiles. El envío es gratuito en compras mayores a $1,500 MXN.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details
+                class="faq-item group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <summary
+                    class="flex justify-between items-center list-none font-bold text-lg text-slate-900 dark:text-white">
+                    <span>¿Qué tipo de pintura debo usar para exteriores?</span>
+                    <span
+                        class="material-symbols-outlined icon transition-transform duration-300 text-slate-400 group-hover:text-primary">expand_more</span>
+                </summary>
+                <div class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p>Recomendamos nuestra línea <b>Osel Oro</b> u <b>Osel Plata</b> para exteriores. Ambas son 100%
+                        acrílicas, resistentes a los rayos UV, lluvia y formación de hongos. Osel Oro ofrece una
+                        garantía de hasta 15 años, ideal para fachadas que requieren máxima durabilidad.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details
+                class="faq-item group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <summary
+                    class="flex justify-between items-center list-none font-bold text-lg text-slate-900 dark:text-white">
+                    <span>¿Aceptan pagos con tarjeta y facturación?</span>
+                    <span
+                        class="material-symbols-outlined icon transition-transform duration-300 text-slate-400 group-hover:text-primary">expand_more</span>
+                </summary>
+                <div class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p>Aceptamos todas las tarjetas de crédito y débito (Visa, Mastercard, AMEX), transferencias SPEI y
+                        efectivo. Sí facturamos todas tus compras; puedes solicitar tu factura al momento de pagar o a
+                        través de nuestro portal en línea con tu ticket de compra dentro del mes corriente.</p>
+                </div>
+            </details>
+
+            <!-- FAQ 5 -->
+            <details
+                class="faq-item group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 cursor-pointer hover:border-primary/50 transition-colors">
+                <summary
+                    class="flex justify-between items-center list-none font-bold text-lg text-slate-900 dark:text-white">
+                    <span>¿Tienen garantía los productos?</span>
+                    <span
+                        class="material-symbols-outlined icon transition-transform duration-300 text-slate-400 group-hover:text-primary">expand_more</span>
+                </summary>
+                <div class="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p>Absolutamente. Todos nuestros productos cuentan con garantía de fábrica contra defectos de
+                        calidad. La duración de la garantía depende de la línea de producto (desde 3 hasta 20 años). Si
+                        tienes algún problema con la aplicación o el acabado, nuestro equipo técnico te visitará para
+                        evaluar y resolver la situación.</p>
+                </div>
+            </details>
+        </div>
+
+        <div
+            class="mt-16 bg-blue-50 dark:bg-blue-900/20 rounded-3xl p-8 md:p-12 text-center border border-blue-100 dark:border-blue-800">
+            <span class="material-symbols-outlined text-4xl text-primary mb-4">support_agent</span>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">¿No encontraste tu respuesta?</h3>
+            <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-xl mx-auto">Nuestro equipo de expertos en color está
+                listo para ayudarte por WhatsApp o llamada telefónica.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://wa.me/527531245074" target="_blank"
+                    class="px-8 py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-green-500/25">
+                    <span class="material-symbols-outlined text-xl">chat</span>
+                    WhatsApp
+                </a>
+                <a href="tel:7531234567"
+                    class="px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold rounded-full transition-all hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-xl">call</span>
+                    Llamar a Tienda
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <p class="text-center text-xs text-slate-400">© 2026 Pinturas Osel Lázaro. Todos los derechos reservados. Creado
+            por GuzDevStudio.</p>
+    </footer>
+
+</body>
+
+</html>

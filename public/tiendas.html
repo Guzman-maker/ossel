@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL Premium | Nuestras Tiendas</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                        "terracotta": "#C17F5F",
+                        "sage": "#869484",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .store-card {
+                transition: all 0.3s ease;
+            }
+            .store-card:hover {
+                transform: translateY(-4px);
+            }
+            .footer-link-hover:hover {
+                color: #13c8ec;
+                transition: color 0.2s ease-in-out;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-gray-900 dark:text-white font-sans transition-colors duration-300">
+    <nav
+        class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav bg-white/70 dark:bg-black/70">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-12 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="rewards.html">Recompensas</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="login.html"
+                    class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all flex items-center gap-2 group"
+                    title="Ingresar / Admin">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+                <a href="tiendas.html"
+                    class="hidden md:block ml-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-lg shadow-gray-200 dark:shadow-none">
+                    Tiendas
+                </a>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 max-w-7xl mx-auto px-6">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Visítanos</span>
+            <h1 class="text-4xl md:text-6xl font-black font-serif text-gray-900 dark:text-white mb-6">Nuestras Tiendas
+            </h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">Encuentra la sucursal
+                más cercana y
+                descubre nuestros productos en persona.</p>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="max-w-2xl mx-auto mb-16">
+            <div class="relative group">
+                <span
+                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+                <input type="text" placeholder="Buscar por ciudad o código postal..."
+                    class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm" />
+            </div>
+        </div>
+
+        <!-- Stores Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+            <!-- Store 1: La Orilla -->
+            <div
+                class="store-card rounded-3xl p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl dark:shadow-none">
+                <div class="flex items-start justify-between mb-8">
+                    <div
+                        class="size-14 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-2xl">store</span>
+                    </div>
+                    <span
+                        class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full border border-green-200 dark:border-green-800">Abierto</span>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">OSEL La Orilla</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-8 font-medium">Sucursal Principal</p>
+
+                <div class="space-y-6 mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">location_on</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Av. Las Palmas Ext. 33 Int. 3</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Col. La Orilla, Lázaro Cárdenas,
+                                Michoacán</p>
+                            <p class="text-xs text-gray-400 dark:text-gray-500 font-bold mt-1">CP: 60998</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">schedule</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Lun - Vie: 8:00 AM - 7:00 PM</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Sáb: 9:00 AM - 6:00 PM | Dom:
+                                Cerrado</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">phone</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">(753) 532-3388</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">WhatsApp disponible</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Av.+Las+Palmas+33+La+Orilla+Lazaro+Cardenas+Michoacan+60998"
+                        target="_blank"
+                        class="flex-1 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-blue-600 transition-all text-center text-sm shadow-lg shadow-primary/20">
+                        Cómo Llegar
+                    </a>
+                    <a href="tel:+527535323388"
+                        class="px-5 py-3.5 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center">
+                        <span class="material-symbols-outlined">call</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Store 2: Pie de Casa -->
+            <div
+                class="store-card rounded-3xl p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl dark:shadow-none">
+                <div class="flex items-start justify-between mb-8">
+                    <div
+                        class="size-14 bg-sage/10 dark:bg-sage/20 rounded-2xl flex items-center justify-center text-sage">
+                        <span class="material-symbols-outlined text-2xl">store</span>
+                    </div>
+                    <span
+                        class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full border border-green-200 dark:border-green-800">Abierto</span>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">OSEL Pie de Casa</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-8 font-medium">Sucursal Melchor Ocampo</p>
+
+                <div class="space-y-6 mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">location_on</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Avenida Melchor Ocampo 1289</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Pie de Casa, Lázaro Cárdenas,
+                                Michoacán</p>
+                            <p class="text-xs text-gray-400 dark:text-gray-500 font-bold mt-1">CP: 60956</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">schedule</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Lun - Vie: 8:00 AM - 7:00 PM</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Sáb: 9:00 AM - 6:00 PM | Dom:
+                                Cerrado</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-terracotta">
+                            <span class="material-symbols-outlined text-xl">phone</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">(753) 532-7766</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">WhatsApp disponible</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Melchor+Ocampo+1289+Pie+de+Casa+Lazaro+Cardenas+Michoacan+60956"
+                        target="_blank"
+                        class="flex-1 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-blue-600 transition-all text-center text-sm shadow-lg shadow-primary/20">
+                        Cómo Llegar
+                    </a>
+                    <a href="tel:+527535327766"
+                        class="px-5 py-3.5 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center">
+                        <span class="material-symbols-outlined">call</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div
+            class="bg-gradient-to-r from-primary to-blue-600 rounded-[2rem] p-8 md:p-12 text-white text-center shadow-2xl relative overflow-hidden">
+            <!-- Decor -->
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2">
+            </div>
+
+            <div class="relative z-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 font-serif">¿No encuentras una tienda cerca?</h2>
+                <p class="text-lg mb-8 opacity-90 max-w-2xl mx-auto font-medium">Hacemos envíos a toda la región.
+                    Contacta a nuestro equipo de ventas para una cotización personalizada.</p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button
+                        class="px-8 py-4 bg-white text-primary font-bold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-lg">
+                        <span class="material-symbols-outlined">call</span>
+                        Llamar Ahora
+                    </button>
+                    <button
+                        class="px-8 py-4 bg-primary/30 border border-white/30 backdrop-blur-md text-white font-bold rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">mail</span>
+                        Enviar Mensaje
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-2">
+                        <img src="img/logo-osel-final.png" alt="Osel Lázaro" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-sm leading-relaxed text-[#618389] dark:text-slate-400">
+                        Especialistas en pinturas premium. Transformamos tus espacios con la mejor calidad en Lázaro
+                        Cárdenas, Michoacán. Contamos con dos sucursales para brindarte una atención personalizada.
+                    </p>
+                </div>
+                <!-- Column 2: Contact -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Sucursales
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Centro</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Lázaro Cárdenas, Centro, CP 60950
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#dbe4e6] dark:border-slate-800 pt-4">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Melchor
+                                    Ocampo</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Av. Melchor Ocampo No. 123</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <span class="material-symbols-outlined text-[#3b82f6]">call</span>
+                            <a class="text-sm text-[#111718] dark:text-slate-300 hover:text-[#3b82f6] transition-colors"
+                                href="tel:7531234567">753-123-4567</a>
+                        </div>
+                        <a class="flex items-center gap-3 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded-lg w-fit hover:bg-[#3b82f6]/20 transition-all border border-[#3b82f6]/20"
+                            href="#">
+                            <span class="material-symbols-outlined text-[#3b82f6]">chat</span>
+                            <span class="text-sm font-semibold text-[#111718] dark:text-white">WhatsApp Directo</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3: Links -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Navegación
+                    </h3>
+                    <nav class="flex flex-col gap-4">
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="tienda.html">Tienda Online</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="rewards.html">Puntos Osel</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Aviso de
+                            Privacidad</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Términos y
+                            Condiciones</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Preguntas
+                            Frecuentes</a>
+                    </nav>
+                </div>
+                <!-- Column 4: Social -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Síguenos
+                    </h3>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">social_leaderboard</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">video_library</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-[#dbe4e6] dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#618389] dark:text-slate-500">
+                    © 2024 Osel Lázaro. Todos los derechos reservados. Hecho con calidad premium.
+                </p>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">SSL
+                            Encrypted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

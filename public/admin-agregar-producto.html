@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL Admin | Agregar Producto</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#eab308",
+                        "primary-accent": "#facc15",
+                        "osel-red": "#dc2626",
+                        "background-light": "#f9fafb",
+                        "sidebar-bg": "#f3f4f6",
+                        "card-white": "#ffffff",
+                        "border-light": "#e5e7eb",
+                        "dark-bg": "#0a0a0b",
+                        "dark-sidebar": "#111113",
+                        "dark-card": "#18181b",
+                        "dark-border": "#27272a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'apple': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'apple-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-light text-slate-900;
+            }
+        }
+        .sidebar-item-active {
+            @apply bg-white shadow-sm border-r-4 border-primary text-slate-900 !important;
+        }
+        .glass-card {
+            @apply bg-white border border-border-light shadow-apple;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            @apply bg-transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            @apply bg-slate-300 rounded-full;
+        }
+    </style>
+</head>
+
+<body class="font-display min-h-screen flex overflow-hidden">
+    <aside class="w-72 h-screen flex flex-col bg-sidebar-bg border-r border-border-light shrink-0">
+        <div class="p-8 flex items-center gap-3">
+            <div
+                class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-black text-xl shadow-sm">
+                O</div>
+            <div>
+                <h1 class="text-lg font-bold leading-tight text-slate-800">OSEL Admin</h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Management</p>
+            </div>
+        </div>
+        <nav class="flex-1 mt-4 px-4 space-y-1">
+            <div class="px-4 mb-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Menú Principal</div>
+            <a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg transition-all"
+                href="admin.html">
+                <span class="material-symbols-outlined text-slate-500">dashboard</span>
+                <span class="text-sm font-semibold">Resumen</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg transition-all"
+                href="activity.html">
+                <span class="material-symbols-outlined text-slate-500">analytics</span>
+                <span class="text-sm font-semibold">Actividad</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg transition-all"
+                href="#">
+                <span class="material-symbols-outlined text-slate-500">group</span>
+                <span class="text-sm font-semibold">Usuarios</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg transition-all"
+                href="admin-productos.html">
+                <span class="material-symbols-outlined text-slate-500">inventory_2</span>
+                <span class="text-sm font-semibold">Catálogo</span>
+            </a>
+            <a class="flex items-center gap-4 px-4 py-3 sidebar-item-active rounded-lg"
+                href="admin-agregar-producto.html">
+                <span class="material-symbols-outlined fill-1">add_circle</span>
+                <span class="text-sm font-bold">Agregar Producto</span>
+            </a>
+            <div class="px-4 mt-10 mb-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Configuración
+            </div>
+            <a class="flex items-center gap-4 px-4 py-3 text-slate-600 hover:bg-slate-200/50 rounded-lg transition-all"
+                href="#">
+                <span class="material-symbols-outlined text-slate-500">settings</span>
+                <span class="text-sm font-semibold">Ajustes</span>
+            </a>
+        </nav>
+        <div class="p-6">
+            <button onclick="localStorage.removeItem('osel_admin'); window.location.href='index.html'"
+                class="w-full py-3 px-4 bg-white border border-border-light hover:bg-red-50 hover:text-red-600 text-slate-600 rounded-xl flex items-center justify-center gap-2 transition-all font-semibold text-sm shadow-sm">
+                <span class="material-symbols-outlined text-lg">logout</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+    <main class="flex-1 h-screen overflow-y-auto bg-background-light">
+        <header
+            class="h-20 flex items-center justify-between px-10 sticky top-0 bg-background-light/80 backdrop-blur-md z-10 border-b border-border-light">
+            <div class="flex flex-col">
+                <h2 class="text-2xl font-black tracking-tight text-slate-900">Agregar Producto</h2>
+                <p class="text-xs text-slate-500 font-medium">Crea un nuevo producto para el catálogo de OSEL.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <button class="relative p-2 text-slate-400 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <div class="flex items-center gap-3 pl-6 border-l border-border-light">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-900 leading-none">Admin OSEL</p>
+                        <p class="text-[10px] text-primary font-black uppercase tracking-widest mt-1">Super Admin</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-cover bg-center border-2 border-white shadow-sm"
+                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTBvRrg8MTCev7r5vOIErtcrwhxuoFsBPjoQJFTkGfAbVy7OXbmEkiHJJ_zlbZaFXa9HEE-V4s8UxTxXPGj6PKTBzdjDd5ustF4jS0VAk4o4AVOKyTTaieGo8vVSMy4yM8ePF1jTrAESmbsuRn94Lfx9Ge5z7P83dSR1oexOKNkt7NnZAUz1j46HOYE8w6qp3nCO2l23cJcWCKlWmwWFFW2rRNqNgMxi6u5rXXCk14Iaoljf4wzl3o4ktr_Dvzeedq5rWUy9MNcA')">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="p-10 max-w-5xl mx-auto space-y-8">
+            <form id="add-product-form" class="space-y-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Main Info -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="glass-card p-8 rounded-2xl space-y-6">
+                            <h3 class="text-lg font-bold text-slate-900">Información General</h3>
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Nombre del
+                                        Producto</label>
+                                    <input type="text" id="product-name"
+                                        class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                        placeholder="Ej. Pintura Vinílica Premium" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Tagline /
+                                        Subtítulo</label>
+                                    <input type="text" id="product-tagline"
+                                        class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                        placeholder="Ej. Línea Premium" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Descripción</label>
+                                    <textarea id="product-description" rows="4"
+                                        class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                        placeholder="Describe las características principales del producto..."></textarea>
+                                </div>
+                                <div class="grid grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Precio</label>
+                                        <div class="relative">
+                                            <span
+                                                class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                                            <input type="number" id="product-price"
+                                                class="w-full bg-slate-50 border border-border-light rounded-xl py-3 pl-8 pr-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                                placeholder="0.00" required />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">Stock</label>
+                                        <input type="number" id="product-stock"
+                                            class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                            placeholder="0" required />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-2">SKU</label>
+                                        <input type="text" id="product-sku"
+                                            class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 font-medium"
+                                            placeholder="Ej. OSEL-VIN-001" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-2xl space-y-6">
+                            <h3 class="text-lg font-bold text-slate-900">Detalles Técnicos y Archivos</h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-2">Ficha Técnica
+                                        (PDF)</label>
+                                    <div
+                                        class="border-2 border-dashed border-border-light rounded-2xl p-8 text-center hover:bg-slate-50 transition-all cursor-pointer group">
+                                        <div
+                                            class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/10 transition-colors">
+                                            <span
+                                                class="material-symbols-outlined text-slate-400 group-hover:text-primary">description</span>
+                                        </div>
+                                        <p class="text-sm font-bold text-slate-700">Haz clic para subir o arrastra el
+                                            archivo</p>
+                                        <p class="text-xs text-slate-400 mt-1">PDF hasta 10MB</p>
+                                        <input type="file" class="hidden" accept=".pdf" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Images & Organization -->
+                    <div class="space-y-6">
+                        <div class="glass-card p-6 rounded-2xl space-y-6">
+                            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-widest">Imagen Principal</h3>
+                            <div
+                                class="aspect-square bg-slate-100 rounded-xl border-2 border-dashed border-border-light flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-primary transition-all">
+                                <img id="new-product-preview"
+                                    class="absolute inset-0 w-full h-full object-contain hidden pointer-events-none">
+                                <div class="text-center p-6" id="upload-placeholder">
+                                    <span
+                                        class="material-symbols-outlined text-3xl text-slate-300 mb-2 group-hover:text-primary transition-colors">add_photo_alternate</span>
+                                    <p
+                                        class="text-xs text-slate-400 font-bold group-hover:text-primary transition-colors">
+                                        Subir Imagen</p>
+                                </div>
+                                <input type="file" id="product-image-input"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                                <input type="hidden" id="product-image-data" />
+                            </div>
+                            <p class="text-[10px] text-slate-400 text-center">Recomendado: 800x800px, PNG o JPG</p>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl space-y-6">
+                            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-widest">Organización</h3>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Categoría</label>
+                                <select id="product-category"
+                                    class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-medium text-slate-700">
+                                    <option value="">Cargando categorías...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Estado</label>
+                                <select
+                                    class="w-full bg-slate-50 border border-border-light rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-medium text-slate-700">
+                                    <option value="active">Activo</option>
+                                    <option value="draft">Borrador</option>
+                                    <option value="archived">Archivado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-4 pt-6 border-t border-border-light">
+                    <button type="button" onclick="history.back()"
+                        class="px-6 py-3 rounded-xl border border-border-light bg-white font-bold text-sm text-slate-600 hover:bg-slate-50 transition-all shadow-sm">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="px-8 py-3 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">save</span>
+                        Guardar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+        <footer class="p-12 text-center text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            © 2024 OSEL Digital Ecosystem Management • Sistema Propietario
+        </footer>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminSession = localStorage.getItem('osel_admin');
+            if (adminSession !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Init Categories Logic
+            const catSelect = document.getElementById('product-category');
+
+            // Wait for app.js state or use localStorage directly if script loading is async issue,
+            // but here it's sequential.
+
+            if (catSelect) {
+                const renderOptions = () => {
+                    // Use state.categories form app.js
+                    const categories = state.categories || [];
+                    const existing = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                    catSelect.innerHTML = `
+                        <option value="">Seleccionar...</option>
+                        ${existing}
+                        <option value="NEW_CATEGORY_ACTION" class="font-bold text-primary bg-slate-100">+ Añadir Nueva Categoría...</option>
+                    `;
+                };
+
+                renderOptions();
+
+                catSelect.addEventListener('change', (e) => {
+                    if (e.target.value === 'NEW_CATEGORY_ACTION') {
+                        const newName = prompt("Ingrese el nombre de la nueva categoría:");
+                        if (newName && newName.trim().length > 0) {
+                            const name = newName.trim();
+                            const id = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+                            // Check duplicate
+                            if (!state.categories.some(c => c.id === id)) {
+                                state.categories.push({ id: id, name: name });
+                                saveCategoriesState(); // app.js helper
+                                renderOptions();
+                                catSelect.value = id;
+                            } else {
+                                alert('Esa categoría ya existe.');
+                                catSelect.value = id;
+                            }
+                        } else {
+                            catSelect.value = "";
+                        }
+                    }
+                });
+            }
+
+            // Image Preview
+            const imgInput = document.getElementById('product-image-input');
+            const imgPreview = document.getElementById('new-product-preview');
+            const imgPlaceholder = document.getElementById('upload-placeholder');
+            const imgData = document.getElementById('product-image-data');
+
+            if (imgInput) {
+                imgInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (evt) => {
+                            imgPreview.src = evt.target.result;
+                            imgPreview.classList.remove('hidden');
+                            imgPlaceholder.classList.add('hidden');
+                            imgData.value = evt.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Form Submit
+            const form = document.getElementById('add-product-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const name = document.getElementById('product-name').value;
+                    const tagline = document.getElementById('product-tagline').value;
+                    const description = document.getElementById('product-description').value;
+                    const price = parseFloat(document.getElementById('product-price').value);
+                    const stock = parseInt(document.getElementById('product-stock').value) || 0;
+                    const sku = document.getElementById('product-sku').value;
+                    const categoryId = document.getElementById('product-category').value;
+                    const image = document.getElementById('product-image-data').value;
+
+                    if (!categoryId || categoryId === 'NEW_CATEGORY_ACTION') {
+                        alert('Por favor seleccione una categoría válida');
+                        return;
+                    }
+
+                    // Generate ID
+                    const maxId = state.products.reduce((max, p) => p.id > max ? p.id : max, 0);
+                    const newId = maxId + 1;
+
+                    // Match app structure
+                    const newProduct = {
+                        id: newId,
+                        name: name,
+                        tagline: tagline,
+                        category: categoryId,
+                        price: price,
+                        stock: stock, // New field support
+                        image: image || 'https://via.placeholder.com/800x800?text=No+Image',
+                        description: description,
+                        sku: sku,
+                        tags: [categoryId],
+                        bestSeller: false,
+                        points: Math.floor(price * 0.05),
+                        color: "primary", // Default
+                        usage: "interior", // Default
+                        finish: "mate" // Default
+                    };
+
+                    state.products.push(newProduct);
+
+                    if (typeof saveProductsState === 'function') {
+                        saveProductsState();
+                    } else {
+                        localStorage.setItem('osel_products', JSON.stringify(state.products));
+                    }
+
+                    if (confirm('¡Producto creado exitosamente!\n¿Ir al catálogo para verlo?')) {
+                        window.location.href = 'admin-productos.html';
+                    } else {
+                        form.reset();
+                        imgPreview.classList.add('hidden');
+                        imgPlaceholder.classList.remove('hidden');
+                        imgData.value = "";
+                        // Reset category select if needed
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

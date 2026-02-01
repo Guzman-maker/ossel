@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.tailwindcss.com https://lh3.googleusercontent.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://lh3.googleusercontent.com;">
+    <title>OSEL Premium | Pinturas de Alto Rendimiento</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <script src="js/config.js"></script>
+    <script src="js/security.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        // OSEL AUTH CHECK
+        // Obligatorio: Nombre y Teléfono para acceder
+        (function () {
+            const user = localStorage.getItem('osel_user');
+            const admin = localStorage.getItem('osel_admin'); // Admins also have access
+            if (!user && !admin) {
+                // Save intent to redirect back after login? Maybe.
+                // localStorage.setItem('osel_redirect_after_login', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                        "aqua-blue": "rgba(0, 255, 255, 0.2)",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2.5rem',
+                    },
+                    backgroundImage: {
+                        'osel-gradient': 'linear-gradient(to right, #FFD700, #FF4D00)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .glass-cta {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            .glass-aqua-cta {
+                background: rgba(0, 196, 204, 0.2);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(0, 196, 204, 0.4);
+            }
+            .hero-shadow {
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            }
+            .logo-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            }
+            .text-shadow-premium {
+                text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            }
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+            .footer-link-hover:hover {
+                color: #13c8ec;
+                transition: color 0.2s ease-in-out;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans transition-colors duration-300">
+    <nav
+        class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav bg-white/70 dark:bg-black/70">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-12 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-primary transition-colors" href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="rewards.html">Recompensas</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Shopping Cart Icon -->
+                <a href="carrito.html"
+                    class="relative p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all group"
+                    title="Ver Carrito">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full hidden">0</span>
+                </a>
+
+                <button onclick="logout()"
+                    class="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-red-50 hover:text-red-600 rounded-full transition-all border border-gray-200 hover:border-red-300 group"
+                    title="Cerrar Sesión">
+                    <span class="material-symbols-outlined text-lg">logout</span>
+                    <span class="text-sm font-medium hidden md:inline">Cerrar Sesión</span>
+                </button>
+                <a href="tiendas.html"
+                    class="hidden md:block ml-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-lg shadow-gray-200 dark:shadow-none">
+                    Tiendas
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()"
+                    class="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden fixed inset-0 bg-white dark:bg-black z-40 pt-24 px-6 pb-6 overflow-y-auto">
+            <div class="flex flex-col space-y-6 text-center">
+                <a class="text-xl font-medium text-primary" href="index.html">Inicio</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="tienda.html">Productos</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="colecciones.html">Colecciones</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100"
+                    href="visualizador.html">Visualizador</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="rewards.html">Recompensas</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="tiendas.html">Tiendas</a>
+                <button onclick="logout()" class="text-xl font-medium text-red-500 mt-8">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+    <main class="pt-32 pb-20">
+        <section class="max-w-7xl mx-auto px-6 mb-32">
+            <div class="relative">
+                <div
+                    class="w-full h-[500px] md:h-[650px] rounded-3xl bg-gray-200 hero-shadow relative overflow-hidden group">
+                    <img alt="Pintor profesional trabajando" class="absolute inset-0 w-full h-full object-cover"
+                        src="img/bg-hero-new.png" />
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/35 transition-colors duration-500">
+                    </div>
+                    <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-8">
+                        <h2
+                            class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight text-shadow-premium max-w-4xl mx-auto mb-10">
+                            El color que transforma <br class="hidden md:block" /> tu recámara
+                        </h2>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <a href="tienda.html"
+                                class="w-full sm:w-auto px-10 py-4 glass-aqua-cta text-white font-bold rounded-full shadow-2xl hover:scale-105 transition-all duration-300">
+                                Comprar en Línea
+                            </a>
+                            <a href="colecciones.html"
+                                class="w-full sm:w-auto px-10 py-4 glass-cta text-white font-bold rounded-full hover:bg-white/25 transition-all duration-300">
+                                Ver Catálogo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+                    <div
+                        class="w-36 h-36 md:w-48 md:h-48 bg-white dark:bg-gray-800 rounded-full border-[8px] border-white dark:border-background-dark logo-shadow flex items-center justify-center p-8 overflow-hidden">
+                        <img alt="Osel Lázaro Logo" class="w-full h-auto object-contain"
+                            src="img/logo-osel-final.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="mt-48 text-center max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tight mb-8">
+                    El Arte del Color de <span class="text-primary italic">Precisión</span>.
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto">
+                    Pinturas minerales y acabados arquitectónicos de alta gama diseñados para quienes valoran la
+                    profundidad duradera y un acabado inigualable en cada rincón de su hogar.
+                </p>
+            </div>
+        </section>
+        <section class="max-w-7xl mx-auto px-6 py-20 border-t border-gray-100 dark:border-gray-900">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="space-y-6 group">
+                    <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                        <img alt="Minimalist living room"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYsGmJgNaOtNZHV5fCDscT6EmhkiZ7YsOhWWzhxV9l-qxHQ4qpXmtJcZMXdPm51rqZjhC_jOzWD0AONH57NynyqVxg8jlw6-dt3LzQQdgQ1oO2bRPBfYVcGtcxh3io-bFop9Nzpw8_uOVOYIiGDpYedY5H0Cad667pzXvVVNyZ8QhLkm9cYZgxYrgwEfGRBLRgGTZOo_mrmwZpAVXS-qDpU2QWRbxg2lSTl8hl6zjrLw9H6OyzSKf1QWFLVBuexGpKXXk2aJs1uw" />
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Acabado Mate Terciopelo</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Nuestro acabado característico absorbe la luz de
+                            manera hermosa, creando una profundidad de color que cambia a lo largo del día.</p>
+                    </div>
+                </div>
+                <div class="space-y-6 group translate-y-12">
+                    <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                        <img alt="Elegant dining room"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL2StzPh1TsW4yx7O0KkAQgrEcFKgKuMiCFhy4g6Ua8IYhj_nJMwE4Kx-RVVPMusQ6t6GHkSX7EdOMXNpgVBAQfMsLqJ_uag0PuXPijMJ1RHBNYHuP9Uul3RvHpI3-MhCwnApW0_y8x5aX7fK9qprgYxaQoz6kdEBesFX6o1OuodN0vIO8cY9RQwrFVeS7SfcQF2xoqqCNKuMwksAZ3YbcSl0GQRXffQu6hTSPM3t31LdmtE9-I8ug5HXnz85gKbjukcYJ0sFvaw" />
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Base Eco-Mineral</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Formulaciones sin VOC y transpirables que respetan
+                            tanto su entorno interior como el planeta.</p>
+                    </div>
+                </div>
+                <div class="space-y-6 group">
+                    <div class="aspect-[4/5] rounded-2xl overflow-hidden">
+                        <img alt="Sophisticated kitchen"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI5hIu_pcByELUXGITlOQLoaxVeqAWjePsa6o91A7CvZrsnYxjJJDU6TcEbxAp4Ucv_L0-e0LQSKNPpWgsuBNFRSJb_HVCvO-q6Vzm7jf684PKXO_5hOsVgpsMbsCDopL9aNXFAEfxUlasugVPuC_asdH3bAorf7rNJR_14Y0oIwTtH6Tfckin5N1MDBwa3PzoaF5fcHVSnyrdktIq5fp8z0Cz_lk4o3s_MPFgrIqkq-lk5JFevrW07-_l4XWW-FfMVwIz0X4Ikg" />
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Pigmentos Infinitos</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Más de 300 tonos curados inspirados en paisajes
+                            naturales y estilos arquitectónicos patrimoniales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ranking de Calidad -->
+        <section class="max-w-7xl mx-auto px-6 py-24 border-t border-gray-100 dark:border-gray-900">
+            <div class="text-center mb-16">
+                <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Excelencia
+                    Comprobada</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Líder en Calidad y Durabilidad
+                </h2>
+            </div>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-[3rem] p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-700">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Imagen de Ranking (Izquierda) -->
+                    <div class="relative group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200">
+                        </div>
+                        <img src="img/osel-oro-ranking.jpg" alt="OSEL Oro Máxima - El Líder #1"
+                            class="relative rounded-2xl shadow-2xl w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-500">
+                        <div
+                            class="absolute top-4 right-4 bg-primary text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
+                            CALIDAD DE ORO</div>
+                    </div>
+
+                    <!-- Comparativa de Ranking (Derecha) -->
+                    <div class="space-y-10">
+                        <!-- Rank #1: OSEL -->
+                        <div class="relative">
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+                                <div
+                                    class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-lg shadow-primary/30">
+                                    1</div>
+                                <div class="flex-1 w-full">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Pinturas Osel</h3>
+                                        <span class="text-primary font-bold tracking-tight">ORO MÁXIMA</span>
+                                    </div>
+                                    <div class="h-4 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary w-full shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:ml-22 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                                Nuestra línea <span class="font-bold text-gray-900 dark:text-white">Oro Máxima</span> es
+                                calificada como la mejor opción por su extraordinario rendimiento y resistencia
+                                inigualable.
+                            </div>
+                        </div>
+
+                        <!-- Rank #2: Competencia A -->
+                        <div class="opacity-60 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+                                <div
+                                    class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-500 text-xl font-black">
+                                    2</div>
+                                <div class="flex-1 w-full">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <h4 class="text-lg font-bold text-gray-900 dark:text-white">Marca Comercial A
+                                        </h4>
+                                        <span class="text-gray-500 font-medium text-sm">82% Calidad</span>
+                                    </div>
+                                    <div class="h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gray-300 dark:bg-gray-600 w-[82%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rank #3: Competencia B -->
+                        <div class="opacity-40 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+                                <div
+                                    class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center text-gray-400 text-xl font-black">
+                                    3</div>
+                                <div class="flex-1 w-full">
+                                    <div class="flex justify-between items-end mb-2">
+                                        <h4 class="text-lg font-bold text-gray-900 dark:text-white">Marca Comercial B
+                                        </h4>
+                                        <span class="text-gray-400 font-medium text-sm">75% Calidad</span>
+                                    </div>
+                                    <div class="h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gray-200 dark:bg-gray-600 w-[75%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios -->
+        <section class="max-w-7xl mx-auto px-6 py-24">
+            <div class="text-center mb-16">
+                <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Testimonios</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Lo que dicen de Osel Lázaro
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonio 1 -->
+                <div
+                    class="bg-gray-50 dark:bg-gray-800/50 p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-6">
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic mb-8 leading-relaxed">
+                        "Como arquitecto, la calidad de la pintura es crucial para el resultado final de mis obras.
+                        Pinturas Osel ofrece una textura y un acabado que simplemente no he encontrado en ninguna otra
+                        marca comercial."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">
+                            RL</div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 dark:text-white">Arq. Ricardo Luna</h4>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">Arquitecto Independiente</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div
+                    class="bg-gray-50 dark:bg-gray-800/50 p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-6">
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic mb-8 leading-relaxed">
+                        "La atención en la sucursal de Lázaro Cárdenas es excelente. Me ayudaron a elegir el tono
+                        perfecto para mi sala y la durabilidad de la pintura es impresionante, soporta muy bien la
+                        humedad de la costa."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">
+                            MS</div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 dark:text-white">Ma. Elena Sánchez</h4>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">Decoradora de Interiores</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div
+                    class="bg-gray-50 dark:bg-gray-800/50 p-10 rounded-[2rem] border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    <div class="flex text-yellow-400 mb-6">
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                        <span class="material-symbols-outlined fill-1">star</span>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 italic mb-8 leading-relaxed">
+                        "He pintado toda mi casa con Osel Premium y el cambio es total. Los colores son vibrantes y
+                        profundos. Definitivamente vale la pena la inversión por la calidad del acabado."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">
+                            JP</div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 dark:text-white">Juan Pablo Morales</h4>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">Dueño de Propiedad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="max-w-7xl mx-auto px-6 py-32">
+            <div
+                class="bg-gray-100 dark:bg-gray-900 rounded-[3rem] p-12 md:p-24 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+                <div class="z-10 flex-1">
+                    <span class="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">Programa para
+                        Diseñadores</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">Diseñado para
+                        Profesionales.</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-md">
+                        Únase a la red de Profesionales Osel para acceder a precios exclusivos, envíos prioritarios y
+                        servicios personalizados de igualación de color.
+                    </p>
+                    <button
+                        class="px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-full hover:scale-105 transition-transform">
+                        Aplicar Ahora
+                    </button>
+                </div>
+                <div class="flex-1 relative w-full h-[400px]">
+                    <img alt="Professional paint samples"
+                        class="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-2xl"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI5hIu_pcByELUXGITlOQLoaxVeqAWjePsa6o91A7CvZrsnYxjJJDU6TcEbxAp4Ucv_L0-e0LQSKNPpWgsuBNFRSJb_HVCvO-q6Vzm7jf684PKXO_5hOsVgpsMbsCDopL9aNXFAEfxUlasugVPuC_asdH3bAorf7rNJR_14Y0oIwTtH6Tfckin5N1MDBwa3PzoaF5fcHVSnyrdktIq5fp8z0Cz_lk4o3s_MPFgrIqkq-lk5JFevrW07-_l4XWW-FfMVwIz0X4Ikg" />
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-2">
+                        <img src="img/logo-osel-final.png" alt="Osel Lázaro" class="h-10 w-auto">
+                    </div>
+                    <p class="text-sm leading-relaxed text-[#618389] dark:text-slate-400">
+                        Especialistas en pinturas premium. Transformamos tus espacios con la mejor calidad en Lázaro
+                        Cárdenas, Michoacán. Contamos con dos sucursales para brindarte una atención personalizada.
+                    </p>
+                </div>
+                <!-- Column 2: Contact -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Sucursales
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Centro</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Lázaro Cárdenas, Centro, CP 60950
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#dbe4e6] dark:border-slate-800 pt-4">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Melchor
+                                    Ocampo</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Av. Melchor Ocampo No. 123</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <span class="material-symbols-outlined text-[#3b82f6]">call</span>
+                            <a class="text-sm text-[#111718] dark:text-slate-300 hover:text-[#3b82f6] transition-colors"
+                                href="tel:7531234567">753-123-4567</a>
+                        </div>
+                        <a class="flex items-center gap-3 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded-lg w-fit hover:bg-[#3b82f6]/20 transition-all border border-[#3b82f6]/20"
+                            href="#">
+                            <span class="material-symbols-outlined text-[#3b82f6]">chat</span>
+                            <span class="text-sm font-semibold text-[#111718] dark:text-white">WhatsApp Directo</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3: Links -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Navegación
+                    </h3>
+                    <nav class="flex flex-col gap-4">
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="tienda.html">Tienda Online</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="rewards.html">Puntos Osel</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="aviso-privacidad.html">Aviso de
+                            Privacidad</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="terminos-y-condiciones.html">Términos y
+                            Condiciones</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="preguntas-frecuentes.html">Preguntas
+                            Frecuentes</a>
+                    </nav>
+                </div>
+                <!-- Column 4: Social -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Síguenos
+                    </h3>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">social_leaderboard</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">video_library</span>
+                        </a>
+                    </div>
+                    <div
+                        class="mt-4 p-4 border border-[#dbe4e6] dark:border-slate-800 rounded-xl bg-white/50 dark:bg-white/5 flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-sm">verified_user</span>
+                            <span class="text-xs font-bold text-[#111718] dark:text-white">Compra Segura</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">credit_card</span>
+                            </div>
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-[#dbe4e6] dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#618389] dark:text-slate-500">
+                    © 2026 Osel Lázaro. Todos los derechos reservados. Creado por GuzDevStudio.
+                </p>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">SSL
+                            Encrypted</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 grayscale opacity-60 hover:opacity-100 transition-opacity">
+                        <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                        <a href="admin.html"
+                            class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">Admin
+                            Access</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>

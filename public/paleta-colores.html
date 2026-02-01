@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paleta de Colores OSEL | Color Picker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+            border-color: #2C3E50;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-swatch.selected {
+            transform: scale(1.15);
+            border-color: #2C3E50;
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
+        }
+
+        .color-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Paleta de Colores OSEL</h1>
+            <p class="text-gray-600">Selecciona un color para tu proyecto de pintura</p>
+        </div>
+
+        <!-- Selected Color Display -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+            <div class="flex items-center gap-6">
+                <div id="selectedColorPreview" class="w-32 h-32 rounded-xl border-4 border-gray-200"
+                    style="background-color: rgb(234, 166, 171);"></div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Color Seleccionado</h3>
+                    <p class="text-3xl font-bold text-gray-900" id="selectedColorRGB">RGB(234, 166, 171)</p>
+                    <p class="text-lg text-gray-600 mt-1" id="selectedColorHex">#EAA6AB</p>
+                    <button onclick="copyColor()"
+                        class="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                        Copiar Código
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Palette Grid -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Paleta Completa</h3>
+            <div id="colorPalette" class="overflow-x-auto">
+                <!-- Colors will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Complete color palette data (extracted from your HTML)
+        const colorPalette = [
+            // Reds and Pinks
+            ["rgb(234, 166, 171)", "rgb(218, 134, 139)", "rgb(193, 97, 99)", "rgb(170, 78, 76)"],
+            ["rgb(246, 225, 223)", "rgb(237, 199, 199)", "rgb(230, 184, 185)", "rgb(217, 156, 160)", "rgb(203, 135, 136)", "rgb(175, 100, 101)", "rgb(146, 78, 76)"],
+            ["rgb(245, 226, 223)", "rgb(238, 205, 208)", "rgb(231, 192, 196)", "rgb(218, 160, 170)", "rgb(205, 141, 149)", "rgb(181, 113, 119)", "rgb(142, 77, 83)"],
+            ["rgb(245, 216, 222)", "rgb(244, 204, 214)", "rgb(240, 191, 205)", "rgb(230, 165, 184)", "rgb(204, 123, 145)", "rgb(187, 100, 120)", "rgb(140, 65, 74)"],
+
+            // Purples and Mauves
+            ["rgb(239, 211, 219)", "rgb(232, 198, 211)", "rgb(225, 183, 201)", "rgb(215, 156, 180)", "rgb(189, 120, 147)", "rgb(166, 96, 120)", "rgb(127, 68, 87)"],
+            ["rgb(245, 227, 227)", "rgb(230, 199, 213)", "rgb(223, 182, 203)", "rgb(209, 154, 183)", "rgb(186, 120, 153)", "rgb(160, 95, 125)", "rgb(126, 68, 90)"],
+            ["rgb(236, 224, 229)", "rgb(222, 202, 217)", "rgb(216, 188, 208)", "rgb(186, 143, 175)", "rgb(165, 121, 156)", "rgb(146, 99, 131)", "rgb(95, 67, 85)"],
+
+            // Blues and Grays
+            ["rgb(222, 222, 224)", "rgb(207, 208, 214)", "rgb(195, 196, 206)", "rgb(174, 173, 190)", "rgb(150, 150, 175)", "rgb(117, 118, 145)", "rgb(88, 89, 112)"],
+            ["rgb(225, 226, 228)", "rgb(212, 214, 225)", "rgb(199, 202, 217)", "rgb(173, 180, 204)", "rgb(150, 157, 191)", "rgb(115, 123, 160)", "rgb(78, 84, 118)"],
+            ["rgb(216, 225, 231)", "rgb(204, 215, 227)", "rgb(187, 203, 221)", "rgb(170, 187, 210)", "rgb(145, 165, 195)", "rgb(106, 131, 167)", "rgb(68, 84, 114)"],
+
+            // Cyans and Aquas
+            ["rgb(219, 228, 230)", "rgb(198, 212, 223)", "rgb(185, 204, 222)", "rgb(163, 188, 212)", "rgb(141, 171, 202)", "rgb(98, 132, 167)", "rgb(59, 84, 113)"],
+            ["rgb(215, 227, 231)", "rgb(203, 219, 228)", "rgb(183, 206, 221)", "rgb(159, 190, 212)", "rgb(130, 169, 200)", "rgb(91, 135, 171)", "rgb(55, 95, 128)"],
+            ["rgb(205, 224, 230)", "rgb(191, 216, 225)", "rgb(176, 205, 219)", "rgb(145, 185, 209)", "rgb(121, 166, 193)", "rgb(80, 132, 163)", "rgb(54, 92, 118)"],
+
+            // Teals
+            ["rgb(220, 230, 229)", "rgb(195, 222, 229)", "rgb(177, 212, 224)", "rgb(147, 193, 211)", "rgb(112, 170, 195)", "rgb(65, 131, 159)", "rgb(40, 94, 119)"],
+            ["rgb(210, 230, 228)", "rgb(193, 222, 225)", "rgb(171, 211, 220)", "rgb(143, 196, 211)", "rgb(117, 180, 199)", "rgb(60, 141, 164)", "rgb(37, 93, 113)"],
+            ["rgb(212, 233, 230)", "rgb(195, 224, 226)", "rgb(170, 212, 218)", "rgb(149, 191, 200)", "rgb(124, 176, 188)", "rgb(77, 138, 151)", "rgb(45, 93, 105)"],
+
+            // Greens
+            ["rgb(216, 234, 228)", "rgb(204, 229, 225)", "rgb(179, 214, 214)", "rgb(148, 195, 197)", "rgb(124, 177, 181)", "rgb(79, 137, 142)", "rgb(60, 95, 101)"],
+            ["rgb(212, 234, 229)", "rgb(203, 226, 222)", "rgb(181, 213, 212)", "rgb(151, 192, 192)", "rgb(129, 176, 176)", "rgb(85, 134, 135)", "rgb(64, 99, 100)"],
+            ["rgb(215, 235, 228)", "rgb(199, 226, 220)", "rgb(179, 216, 211)", "rgb(149, 199, 193)", "rgb(127, 183, 178)", "rgb(82, 141, 136)", "rgb(61, 111, 107)"],
+            ["rgb(224, 239, 228)", "rgb(206, 224, 216)", "rgb(189, 216, 208)", "rgb(162, 196, 186)", "rgb(141, 179, 169)", "rgb(102, 141, 129)", "rgb(83, 111, 102)"],
+
+            // Sage Greens
+            ["rgb(232, 239, 228)", "rgb(206, 222, 213)", "rgb(191, 212, 201)", "rgb(175, 199, 187)", "rgb(153, 179, 167)", "rgb(118, 144, 130)", "rgb(85, 108, 95)"],
+            ["rgb(223, 235, 224)", "rgb(209, 226, 216)", "rgb(193, 214, 203)", "rgb(174, 200, 188)", "rgb(151, 181, 168)", "rgb(116, 147, 132)", "rgb(77, 103, 90)"],
+            ["rgb(223, 234, 221)", "rgb(203, 226, 212)", "rgb(187, 215, 200)", "rgb(162, 197, 178)", "rgb(139, 179, 158)", "rgb(105, 146, 122)", "rgb(76, 103, 82)"],
+
+            // Yellows and Greens
+            ["rgb(227, 237, 220)", "rgb(205, 223, 204)", "rgb(200, 220, 197)", "rgb(172, 199, 171)", "rgb(152, 182, 150)", "rgb(119, 148, 113)", "rgb(82, 102, 74)"],
+            ["rgb(231, 232, 215)", "rgb(216, 221, 200)", "rgb(198, 207, 183)", "rgb(185, 197, 170)", "rgb(165, 176, 145)", "rgb(136, 147, 113)", "rgb(95, 103, 74)"],
+            ["rgb(235, 237, 218)", "rgb(218, 220, 196)", "rgb(206, 210, 182)", "rgb(198, 200, 166)", "rgb(182, 185, 147)", "rgb(149, 152, 109)", "rgb(103, 107, 69)"],
+
+            // Beiges and Tans
+            ["rgb(231, 229, 209)", "rgb(224, 222, 198)", "rgb(213, 211, 183)", "rgb(202, 198, 166)", "rgb(190, 185, 147)", "rgb(155, 147, 104)", "rgb(112, 105, 69)"],
+            ["rgb(228, 225, 206)", "rgb(220, 216, 193)", "rgb(213, 209, 182)", "rgb(201, 195, 164)", "rgb(181, 172, 140)", "rgb(154, 143, 107)", "rgb(109, 101, 75)"],
+            ["rgb(231, 228, 213)", "rgb(216, 209, 192)", "rgb(209, 201, 181)", "rgb(197, 187, 164)", "rgb(181, 170, 146)", "rgb(145, 134, 108)", "rgb(99, 91, 72)"],
+
+            // Browns and Tans
+            ["rgb(234, 227, 209)", "rgb(218, 208, 189)", "rgb(211, 200, 178)", "rgb(203, 190, 165)", "rgb(186, 172, 144)", "rgb(152, 135, 105)", "rgb(111, 96, 71)"],
+            ["rgb(239, 230, 212)", "rgb(226, 213, 189)", "rgb(217, 201, 172)", "rgb(212, 194, 161)", "rgb(198, 179, 144)", "rgb(164, 143, 105)", "rgb(126, 107, 73)"],
+            ["rgb(246, 238, 221)", "rgb(237, 221, 195)", "rgb(228, 209, 180)", "rgb(221, 199, 166)", "rgb(207, 180, 142)", "rgb(184, 155, 115)", "rgb(144, 113, 72)"],
+
+            // Light Browns
+            ["rgb(237, 227, 212)", "rgb(226, 212, 194)", "rgb(221, 207, 187)", "rgb(212, 190, 161)", "rgb(191, 166, 134)", "rgb(167, 137, 102)", "rgb(138, 109, 76)"],
+            ["rgb(247, 232, 216)", "rgb(228, 212, 192)", "rgb(219, 200, 177)", "rgb(206, 182, 156)", "rgb(196, 168, 139)", "rgb(165, 133, 103)", "rgb(134, 103, 75)"],
+            ["rgb(245, 230, 212)", "rgb(231, 208, 185)", "rgb(223, 193, 167)", "rgb(212, 177, 147)", "rgb(193, 151, 116)", "rgb(164, 119, 87)", "rgb(137, 95, 67)"],
+
+            // Warm Browns
+            ["rgb(242, 227, 213)", "rgb(230, 208, 191)", "rgb(221, 195, 175)", "rgb(210, 177, 154)", "rgb(194, 157, 131)", "rgb(167, 125, 99)", "rgb(134, 93, 70)"],
+            ["rgb(237, 218, 201)", "rgb(231, 208, 188)", "rgb(222, 195, 172)", "rgb(206, 168, 142)", "rgb(192, 148, 118)", "rgb(164, 117, 89)", "rgb(138, 93, 68)"],
+            ["rgb(236, 221, 209)", "rgb(231, 208, 194)", "rgb(222, 194, 177)", "rgb(210, 171, 151)", "rgb(192, 147, 125)", "rgb(166, 115, 93)", "rgb(149, 99, 78)"],
+
+            // Pinks and Roses
+            ["rgb(241, 228, 218)", "rgb(228, 209, 196)", "rgb(219, 196, 182)", "rgb(199, 168, 151)", "rgb(174, 136, 116)", "rgb(145, 105, 87)", "rgb(121, 84, 68)"],
+            ["rgb(239, 225, 216)", "rgb(233, 215, 205)", "rgb(213, 188, 176)", "rgb(200, 169, 155)", "rgb(179, 144, 129)", "rgb(150, 111, 96)", "rgb(113, 77, 63)"],
+            ["rgb(232, 220, 209)", "rgb(225, 211, 200)", "rgb(216, 198, 187)", "rgb(192, 170, 159)", "rgb(171, 145, 131)", "rgb(140, 113, 99)", "rgb(107, 84, 72)"],
+
+            // Muted Browns
+            ["rgb(226, 213, 204)", "rgb(217, 204, 195)", "rgb(207, 189, 180)", "rgb(185, 163, 153)", "rgb(167, 143, 132)", "rgb(129, 104, 94)", "rgb(101, 79, 71)"],
+            ["rgb(239, 226, 218)", "rgb(227, 207, 199)", "rgb(215, 191, 183)", "rgb(195, 164, 154)", "rgb(172, 137, 128)", "rgb(144, 107, 97)", "rgb(113, 79, 69)"],
+
+            // Neutrals and Grays
+            ["rgb(236, 222, 213)", "rgb(230, 207, 197)", "rgb(220, 193, 182)", "rgb(203, 168, 155)", "rgb(186, 148, 135)", "rgb(155, 111, 99)", "rgb(121, 79, 66)"],
+            ["rgb(241, 225, 217)", "rgb(229, 203, 193)", "rgb(217, 185, 175)", "rgb(198, 156, 142)", "rgb(182, 136, 123)", "rgb(149, 105, 93)", "rgb(120, 79, 67)"],
+            ["rgb(239, 217, 207)", "rgb(235, 207, 196)", "rgb(228, 192, 180)", "rgb(212, 167, 153)", "rgb(194, 143, 128)", "rgb(167, 111, 95)", "rgb(132, 81, 67)"],
+            ["rgb(233, 215, 207)", "rgb(227, 201, 193)", "rgb(215, 183, 175)", "rgb(197, 156, 147)", "rgb(181, 137, 127)", "rgb(149, 101, 90)", "rgb(120, 74, 63)"],
+        ];
+
+        let selectedColor = "rgb(234, 166, 171)";
+
+        // RGB to HEX conversion
+        function rgbToHex(rgb) {
+            const match = rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+            if (!match) return "#000000";
+            const r = parseInt(match[1]);
+            const g = parseInt(match[2]);
+            const b = parseInt(match[3]);
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+
+        // Select color function
+        function selectColor(rgb) {
+            selectedColor = rgb;
+            document.getElementById('selectedColorPreview').style.backgroundColor = rgb;
+            document.getElementById('selectedColorRGB').textContent = rgb.toUpperCase();
+            document.getElementById('selectedColorHex').textContent = rgbToHex(rgb);
+
+            // Update selected state
+            document.querySelectorAll('.color-swatch').forEach(swatch => {
+                swatch.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        // Copy color to clipboard
+        function copyColor() {
+            const hex = rgbToHex(selectedColor);
+            navigator.clipboard.writeText(hex).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '¡Copiado!';
+                btn.classList.add('bg-green-600');
+                btn.classList.remove('bg-blue-600');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-blue-600');
+                }, 2000);
+            });
+        }
+
+        // Render palette
+        function renderPalette() {
+            const container = document.getElementById('colorPalette');
+            colorPalette.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'color-row';
+                row.forEach((color, index) => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+                    if (index === 0 && row === colorPalette[0]) {
+                        swatch.classList.add('selected');
+                    }
+                    swatch.style.backgroundColor = color;
+                    swatch.onclick = () => selectColor(color);
+                    swatch.title = color;
+                    rowDiv.appendChild(swatch);
+                });
+                container.appendChild(rowDiv);
+            });
+        }
+
+        // Initialize on load
+        window.onload = renderPalette;
+    </script>
+</body>
+
+</html>

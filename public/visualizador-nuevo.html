@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL Premium | Visualizador de Colores</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2C3E50",
+                        "sage": "#869484",
+                        "terracotta": "#C17F5F",
+                        "background-light": "#F9F8F6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(249, 248, 246, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .wall-preview {
+            transition: background-color 0.5s ease;
+        }
+
+        .color-btn {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .color-btn.selected {
+            box-shadow: 0 0 0 3px white, 0 0 0 5px #2C3E50;
+            z-index: 5;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light font-display">
+    <!-- Navigation -->
+    <nav class="glass-nav sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-12">
+                    <img alt="OSEL Logo" class="h-12 w-auto" src="img/logo-osel-final.png" />
+                </div>
+                <div class="hidden md:flex items-center gap-10">
+                    <a class="text-xs font-bold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+                        href="index.html">Home</a>
+                    <a class="text-xs font-bold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-xs font-bold tracking-widest uppercase text-primary border-b-2 border-terracotta/40 pb-1"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-xs font-bold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+                        href="rewards.html">Recompensas</a>
+                    <a class="text-xs font-bold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+                        href="tiendas.html">Tiendas</a>
+                    <a class="text-xs font-bold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors"
+                        href="tienda.html">Tienda</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSearch()"
+                        class="flex items-center justify-center size-10 rounded-full border border-slate-200 hover:bg-slate-100 transition-colors">
+                        <span class="material-symbols-outlined text-slate-600 text-[20px]">search</span>
+                    </button>
+                    <button onclick="window.location.href='login.html'"
+                        class="flex items-center justify-center size-10 rounded-full border border-slate-200 hover:bg-slate-100 transition-colors">
+                        <span class="material-symbols-outlined text-slate-600 text-[20px]">person</span>
+                    </button>
+                    <button onclick="window.location.href='carrito.html'"
+                        class="relative flex items-center justify-center size-10 rounded-full border border-slate-200 hover:bg-slate-100 transition-colors">
+                        <span class="material-symbols-outlined text-slate-600 text-[20px]">shopping_cart</span>
+                        <span id="cart-badge"
+                            class="absolute -top-1 -right-1 size-5 bg-terracotta text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-slate-50 via-background-light to-slate-100 py-16 text-center">
+        <h1 class="text-6xl font-black font-serif text-primary mb-6">Visualizador de Colores</h1>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">Descubre cómo se verá tu espacio con
+            nuestros colores premium en tiempo real.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Side: Color Palette (4 columns) -->
+            <div class="lg:col-span-4">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg sticky top-24">
+                    <h3 class="text-lg font-black text-primary mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined">palette</span>
+                        Paleta de Colores OSEL
+                    </h3>
+
+                    <!-- Search Color -->
+                    <div class="mb-4">
+                        <input type="text" id="colorSearch" placeholder="Buscar color..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+
+                    <div class="space-y-5 max-h-[550px] overflow-y-auto pr-2" id="colorPaletteContainer">
+                        <!-- Colors will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Selected Color Info -->
+                    <div id="color-info" class="mt-6 p-4 bg-slate-50 rounded-xl">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Color Seleccionado</p>
+                        <div class="flex items-center gap-3">
+                            <div id="selected-color-preview" class="size-12 rounded-lg border-2 border-slate-300"
+                                style="background: #FFFFFF;"></div>
+                            <div>
+                                <p id="selected-color-name" class="font-bold text-primary text-sm">Blanco Puro</p>
+                                <p id="selected-color-code" class="text-xs text-slate-500">#FFFFFF</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="addColorToCart()"
+                        class="w-full mt-4 py-3 bg-primary text-white font-bold rounded-xl hover:bg-opacity-90 transition-all">
+                        Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Side: Preview & Room Selector (8 columns) -->
+            <div class="lg:col-span-8 space-y-6">
+                <!-- Room Selector Card -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-lg">
+                    <h3 class="text-lg font-black text-primary mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined">home</span>
+                        Selecciona el Espacio
+                    </h3>
+                    <select id="room-selector" onchange="changeRoom(this.value)"
+                        class="w-full px-4 py-3 border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-primary focus:border-primary">
+                        <option value="living">Sala de Estar</option>
+                        <option value="bedroom">Dormitorio</option>
+                        <option value="kitchen">Cocina</option>
+                        <option value="bathroom">Baño</option>
+                        <option value="office">Oficina</option>
+                    </select>
+                </div>
+
+                <!-- Preview Card -->
+                <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-black text-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined">visibility</span>
+                            Vista Previa - <span id="room-name" class="text-terracotta">Sala de Estar</span>
+                        </h3>
+                        <button onclick="resetColor()"
+                            class="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
+                            Resetear
+                        </button>
+                    </div>
+
+                    <!-- Room Preview (Large) -->
+                    <div class="relative w-full aspect-video bg-slate-100 rounded-2xl overflow-hidden shadow-inner">
+                        <div id="room-preview"
+                            class="w-full h-full wall-preview flex items-center justify-center text-slate-400"
+                            style="background-color: #FFFFFF;">
+                            <div class="text-center">
+                                <span class="material-symbols-outlined text-6xl mb-2">home</span>
+                                <p class="text-lg font-medium">Selecciona un color para visualizar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+    <script>
+        // Color Palette Data
+        const colorPalette = {
+            "Rosas & Rojos": {
+                colors: [
+                    { hex: "#EAA6AB", name: "Rosa Suave" },
+                    { hex: "#DA868B", name: "Rosa Medio" },
+                    { hex: "#C16163", name: "Rosa Intenso" },
+                    { hex: "#AA4E4C", name: "Rojo Teja" },
+                    { hex: "#F6E1DF", name: "Pétalo" },
+                    { hex: "#EDC7C7", name: "Rosa Pastel" },
+                    { hex: "#E6B8B9", name: "Rosa Claro" },
+                    { hex: "#D99CA0", name: "Coral Rosa" },
+                    { hex: "#CB8788", name: "Salmón Rosa" },
+                    { hex: "#AF6465", name: "Rosa Viejo" },
+                    { hex: "#924E4C", name: "Terracota Rosa" },
+                    { hex: "#DC143C", name: "Carmesí" },
+                ],
+                keywords: ["rosas", "rojos", "rosa", "rojo", "carmesi"]
+            },
+            "Púrpuras & Morados": {
+                colors: [
+                    { hex: "#E6E6FA", name: "Lavanda" },
+                    { hex: "#ECE0E5", name: "Lila Claro" },
+                    { hex: "#DDA0DD", name: "Ciruela" },
+                    { hex: "#BA55D3", name: "Orquídea" },
+                    { hex: "#9370DB", name: "Morado Medio" },
+                    { hex: "#8A2BE2", name: "Violeta Profundo" },
+                    { hex: "#800080", name: "Púrpura" },
+                    { hex: "#4B0082", name: "Índigo" },
+                ],
+                keywords: ["morados", "purpura", "violeta", "lavanda", "lila"]
+            },
+            "Azules": {
+                colors: [
+                    { hex: "#F0F8FF", name: "Azul Celeste" },
+                    { hex: "#E0FFFF", name: "Cian Claro" },
+                    { hex: "#ADD8E6", name: "Azul Claro" },
+                    { hex: "#87CEEB", name: "Azul Cielo" },
+                    { hex: "#4682B4", name: "Azul Acero" },
+                    { hex: "#5F9EA0", name: "Azul Cadete" },
+                    { hex: "#2C3E50", name: "Azul Navy" },
+                    { hex: "#000080", name: "Azul Marino" },
+                    { hex: "#191970", name: "Azul Medianoche" },
+                ],
+                keywords: ["azules", "azul", "cian", "marino", "navy"]
+            },
+            "Verdes": {
+                colors: [
+                    { hex: "#F0FFF0", name: "Verde Menta" },
+                    { hex: "#98FB98", name: "Verde Pálido" },
+                    { hex: "#90EE90", name: "Verde Claro" },
+                    { hex: "#8FBC8F", name: "Sage" },
+                    { hex: "#3CB371", name: "Verde Mar" },
+                    { hex: "#2E8B57", name: "Verde Bosque" },
+                    { hex: "#556B2F", name: "Verde Oliva" },
+                    { hex: "#006400", name: "Verde Oscuro" },
+                    { hex: "#20B2AA", name: "Aqua Profundo" },
+                    { hex: "#008080", name: "Teal" },
+                ],
+                keywords: ["verdes", "verde", "sage", "menta", "oliva", "teal"]
+            },
+            "Amarillos & Naranjas": {
+                colors: [
+                    { hex: "#FFFACD", name: "Amarillo Limón" },
+                    { hex: "#FFFFE0", name: "Amarillo Claro" },
+                    { hex: "#FAFAD2", name: "Amarillo Dorado" },
+                    { hex: "#FFD700", name: "Oro" },
+                    { hex: "#FFA500", name: "Naranja" },
+                    { hex: "#FF8C00", name: "Naranja Oscuro" },
+                    { hex: "#FF7F50", name: "Coral" },
+                    { hex: "#FF6347", name: "Tomate" },
+                    { hex: "#DAA520", name: "Dorado" },
+                ],
+                keywords: ["amarillos", "amarillo", "naranjas", "naranja", "oro", "dorado"]
+            },
+            "Marrones & Beiges": {
+                colors: [
+                    { hex: "#FAF0E6", name: "Lino" },
+                    { hex: "#F5DEB3", name: "Trigo" },
+                    { hex: "#DEB887", name: "Beige" },
+                    { hex: "#D2B48C", name: "Canela" },
+                    { hex: "#F4A460", name: "Arena" },
+                    { hex: "#CD853F", name: "Terracota" },
+                    { hex: "#D2691E", name: "Cobre" },
+                    { hex: "#A0522D", name: "Siena" },
+                    { hex: "#8B4513", name: "Chocolate" },
+                    { hex: "#C19A6B", name: "Camel" },
+                ],
+                keywords: ["marrones", "cafe", "beige", "canela", "chocolate", "camel"]
+            },
+            "Neutrales & Grises": {
+                colors: [
+                    { hex: "#FFFFFF", name: "Blanco Puro" },
+                    { hex: "#F5F5F5", name: "Blanco Humo" },
+                    { hex: "#F0F0F0", name: "Gris Perla" },
+                    { hex: "#DCDCDC", name: "Gris Plata" },
+                    { hex: "#D3D3D3", name: "Gris Claro" },
+                    { hex: "#A9A9A9", name: "Gris Medio" },
+                    { hex: "#808080", name: "Gris" },
+                    { hex: "#696969", name: "Gris Oscuro" },
+                    { hex: "#505050", name: "Gris Carbón" },
+                    { hex: "#000000", name: "Negro" },
+                ],
+                keywords: ["neutrales", "grises", "gris", "blancos", "blanco", "negro"]
+            }
+        };
+
+        let currentColor = { color: "#FFFFFF", name: "Blanco Puro" };
+
+        // Render color palette
+        function renderColorPalette() {
+            const container = document.getElementById('colorPaletteContainer');
+            container.innerHTML = '';
+
+            Object.keys(colorPalette).forEach(categoryName => {
+                const categoryData = colorPalette[categoryName];
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'color-category';
+                categoryDiv.dataset.keywords = categoryData.keywords.join(' ');
+
+                const title = document.createElement('p');
+                title.className = 'text-xs font-bold text-slate-500 uppercase tracking-wider mb-3';
+                title.textContent = categoryName;
+                categoryDiv.appendChild(title);
+
+                const colorsDiv = document.createElement('div');
+                colorsDiv.className = 'grid grid-cols-6 gap-2';
+
+                categoryData.colors.forEach(colorObj => {
+                    const btn = document.createElement('button');
+                    btn.className = 'color-btn size-9 rounded-lg border-2 border-slate-300 hover:scale-110 transition-transform';
+                    btn.style.backgroundColor = colorObj.hex;
+                    btn.title = colorObj.name;
+                    btn.dataset.name = colorObj.name.toLowerCase();
+                    btn.onclick = () => changeWallColor(colorObj.hex, colorObj.name);
+                    colorsDiv.appendChild(btn);
+                });
+
+                categoryDiv.appendChild(colorsDiv);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        // Search functionality
+        function searchColors(query) {
+            const searchTerm = query.toLowerCase().trim();
+            const categories = document.querySelectorAll('.color-category');
+
+            if (searchTerm === '') {
+                categories.forEach(cat => cat.style.display = 'block');
+                return;
+            }
+
+            categories.forEach(category => {
+                const keywords = category.dataset.keywords || '';
+                const categoryName = category.querySelector('p').textContent.toLowerCase();
+                const colorButtons = category.querySelectorAll('[data-name]');
+
+                let hasMatch = keywords.includes(searchTerm) || categoryName.includes(searchTerm);
+
+                if (!hasMatch) {
+                    colorButtons.forEach(btn => {
+                        if (btn.dataset.name.includes(searchTerm)) {
+                            hasMatch = true;
+                        }
+                    });
+                }
+
+                category.style.display = hasMatch ? 'block' : 'none';
+            });
+        }
+
+        // Change wall color
+        function changeWallColor(color, name) {
+            currentColor = { color, name };
+
+            // Update preview
+            const preview = document.getElementById('room-preview');
+            preview.style.backgroundColor = color;
+            preview.innerHTML = ''; // Clear placeholder text
+
+            // Update selected color info
+            document.getElementById('selected-color-preview').style.backgroundColor = color;
+            document.getElementById('selected-color-name').textContent = name;
+            document.getElementById('selected-color-code').textContent = color.toUpperCase();
+
+            // Update selected state on buttons
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        // Reset color
+        function resetColor() {
+            changeWallColor('#FFFFFF', 'Blanco Puro');
+        }
+
+        // Change room
+        function changeRoom(roomType) {
+            const roomNames = {
+                'living': 'Sala de Estar',
+                'bedroom': 'Dormitorio',
+                'kitchen': 'Cocina',
+                'bathroom': 'Baño',
+                'office': 'Oficina'
+            };
+            document.getElementById('room-name').textContent = roomNames[roomType] || 'Sala de Estar';
+        }
+
+        // Add color to cart
+        function addColorToCart() {
+            const customProduct = {
+                id: 'color-' + Date.now(),
+                name: `Pintura - ${currentColor.name}`,
+                price: 599,
+                category: 'pinturas',
+                color: currentColor.color
+            };
+
+            if (typeof addToCart === 'function') {
+                addToCart(customProduct.id, 1);
+            } else {
+                alert(`Color ${currentColor.name} agregado al carrito`);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderColorPalette();
+            // Attach search listener
+            const searchInput = document.getElementById('colorSearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => searchColors(e.target.value));
+            }
+        });
+    </script>
+</body>
+
+</html>

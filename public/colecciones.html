@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL Premium | Colecciones</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                        "aqua-blue": "rgba(0, 255, 255, 0.2)",
+                        "terracotta": "#C17F5F",
+                        "sage": "#869484",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                        serif: ["Playfair Display", "serif"]
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2.5rem',
+                    },
+                    backgroundImage: {
+                        'osel-gradient': 'linear-gradient(to right, #FFD700, #FF4D00)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .glass-cta {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            .logo-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            }
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+            .footer-link-hover:hover {
+                color: #13c8ec;
+                transition: color 0.2s ease-in-out;
+            }
+            .collection-card {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(20px);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .collection-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans transition-colors duration-300">
+    <nav
+        class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav bg-white/70 dark:bg-black/70">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-12 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="rewards.html">Recompensas</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Shopping Cart Icon -->
+                <a href="carrito.html"
+                    class="relative p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all group"
+                    title="Ver Carrito">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full hidden">0</span>
+                </a>
+
+                <a href="login.html"
+                    class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all flex items-center gap-2 group"
+                    title="Ingresar / Admin">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+                <a href="tiendas.html"
+                    class="hidden md:block ml-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-lg shadow-gray-200 dark:shadow-none">
+                    Tiendas
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()"
+                    class="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden fixed inset-0 bg-white dark:bg-black z-40 pt-24 px-6 pb-6 overflow-y-auto">
+            <div class="flex flex-col space-y-6 text-center">
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="index.html">Inicio</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="tienda.html">Productos</a>
+                <a class="text-xl font-medium text-primary" href="colecciones.html">Colecciones</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100"
+                    href="visualizador.html">Visualizador</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="rewards.html">Recompensas</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="tiendas.html">Tiendas</a>
+                <button onclick="logout()" class="text-xl font-medium text-red-500 mt-8">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20">
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-6 mb-20">
+            <div class="text-center mb-16">
+                <p class="text-primary font-bold uppercase tracking-[0.3em] mb-4 text-sm">Nuestras Líneas Premium</p>
+                <h1 class="text-5xl md:text-6xl font-black font-serif text-gray-900 dark:text-white mb-6">Colecciones
+                    OSEL</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">Cada colección ha
+                    sido diseñada para
+                    transformar espacios con elegancia, durabilidad y color excepcional.</p>
+            </div>
+
+            <!-- Collections Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Collection 1: Línea Suprema -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700">
+                    <div class="h-64 bg-slate-100 dark:bg-gray-700 flex items-center justify-center">
+                        <span class="text-5xl font-black text-slate-300 dark:text-gray-600">SUPREMA</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Línea Suprema</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Pintura acrílica de máximo cubrimiento
+                            y acabado lavable. Ideal para
+                            interiores y exteriores con alto tráfico.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full">Lavable</span>
+                            <span
+                                class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold rounded-full">Alto
+                                Rendimiento</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+                <!-- Collection 2: Línea Plata -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700">
+                    <div class="h-64 bg-slate-200 dark:bg-gray-600 flex items-center justify-center">
+                        <span class="text-5xl font-black text-slate-400 dark:text-gray-500">PLATA</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Línea Plata</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Acabado satinado elegante con bajo
+                            olor. Perfecta para dormitorios y
+                            salas de estar con estilo contemporáneo.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full">Satinado</span>
+                            <span
+                                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full">Bajo
+                                Olor</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+                <!-- Collection 3: Línea Oro -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700 ring-2 ring-primary/20">
+                    <div
+                        class="h-64 bg-yellow-50 dark:bg-yellow-900/10 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-yellow-400/10 to-transparent"></div>
+                        <span class="text-5xl font-black text-yellow-500">ORO</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">Línea
+                            Oro <span class="material-symbols-outlined text-yellow-500">verified</span></h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Máximo brillo y resistencia UV.
+                            Diseñada para fachadas y exteriores
+                            que requieren durabilidad excepcional.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs font-bold rounded-full">⭐
+                                Premium</span>
+                            <span
+                                class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold rounded-full">Exterior</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-primary/30">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+                <!-- Collection 4: Impermeabilizantes -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700">
+                    <div class="h-64 bg-blue-50 dark:bg-blue-900/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-8xl text-blue-500">water_drop</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Impermeabilizantes</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Protección total contra filtraciones.
+                            Sellado profesional para techos, azoteas y superficies expuestas.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold rounded-full">Impermeable</span>
+                            <span
+                                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full">Garantía
+                                5 años</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+                <!-- Collection 5: Esmaltes -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700">
+                    <div class="h-64 bg-red-50 dark:bg-red-900/10 flex items-center justify-center">
+                        <span class="text-5xl font-black text-red-500">ESMALTE</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Esmaltes</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Acabados brillantes para madera y
+                            metal. Alta adherencia y resistencia a la intemperie.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold rounded-full">Brillante</span>
+                            <span
+                                class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full">Metal/Madera</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+                <!-- Collection 6: Accesorios -->
+                <div
+                    class="collection-card dark:bg-gray-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-gray-700">
+                    <div class="h-64 bg-purple-50 dark:bg-purple-900/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-8xl text-purple-500">brush</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Accesorios</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6 text-sm">Herramientas profesionales: brochas,
+                            rodillos, cubetas y más. Todo lo que necesitas para un acabado perfecto.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span
+                                class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold rounded-full">Pro
+                                Tools</span>
+                        </div>
+                        <button onclick="window.location.href='tienda.html'"
+                            class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl hover:opacity-90 transition-all">Ver
+                            Productos</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section
+            class="bg-primary text-white py-24 mx-6 rounded-[3rem] text-center shadow-2xl relative overflow-hidden">
+            <!-- Background decorative elements -->
+            <div
+                class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+            </div>
+
+            <div class="relative z-10 max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl md:text-5xl font-black mb-8 leading-tight">¿No encuentras lo que buscas?</h2>
+                <p class="text-xl mb-10 opacity-90 font-light">Nuestros expertos pueden ayudarte a elegir la colección
+                    perfecta para tu
+                    proyecto o crear un color personalizado.</p>
+                <button
+                    class="px-10 py-5 bg-white text-primary font-bold rounded-full hover:scale-105 transition-transform shadow-lg">
+                    Contactar Asesor
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-2">
+                        <img src="img/logo-osel-final.png" alt="Osel Lázaro" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-sm leading-relaxed text-[#618389] dark:text-slate-400">
+                        Especialistas en pinturas premium. Transformamos tus espacios con la mejor calidad en Lázaro
+                        Cárdenas, Michoacán. Contamos con dos sucursales para brindarte una atención personalizada.
+                    </p>
+                </div>
+                <!-- Column 2: Contact -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Sucursales
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Centro</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Lázaro Cárdenas, Centro, CP 60950
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#dbe4e6] dark:border-slate-800 pt-4">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Melchor
+                                    Ocampo</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Av. Melchor Ocampo No. 123</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <span class="material-symbols-outlined text-[#3b82f6]">call</span>
+                            <a class="text-sm text-[#111718] dark:text-slate-300 hover:text-[#3b82f6] transition-colors"
+                                href="tel:7531234567">753-123-4567</a>
+                        </div>
+                        <a class="flex items-center gap-3 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded-lg w-fit hover:bg-[#3b82f6]/20 transition-all border border-[#3b82f6]/20"
+                            href="#">
+                            <span class="material-symbols-outlined text-[#3b82f6]">chat</span>
+                            <span class="text-sm font-semibold text-[#111718] dark:text-white">WhatsApp Directo</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3: Links -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Navegación
+                    </h3>
+                    <nav class="flex flex-col gap-4">
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="tienda.html">Tienda Online</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="rewards.html">Puntos Osel</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Aviso de
+                            Privacidad</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Términos y
+                            Condiciones</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover" href="#">Preguntas
+                            Frecuentes</a>
+                    </nav>
+                </div>
+                <!-- Column 4: Social -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Síguenos
+                    </h3>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">social_leaderboard</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">video_library</span>
+                        </a>
+                    </div>
+                    <div
+                        class="mt-4 p-4 border border-[#dbe4e6] dark:border-slate-800 rounded-xl bg-white/50 dark:bg-white/5 flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-sm">verified_user</span>
+                            <span class="text-xs font-bold text-[#111718] dark:text-white">Compra Segura</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">credit_card</span>
+                            </div>
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-[#dbe4e6] dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#618389] dark:text-slate-500">
+                    © 2024 Osel Lázaro. Todos los derechos reservados. Hecho con calidad premium.
+                </p>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">SSL
+                            Encrypted</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">package_2</span>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">Envíos
+                            Seguros</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

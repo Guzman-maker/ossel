@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL | Checkout Seguro</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2C3E50",
+                        "terracotta": "#C17F5F",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body class="bg-gray-50 text-slate-900 font-display min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 py-6">
+        <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <img src="img/logo-osel-final.png" alt="OSEL Logo" class="h-12 w-auto">
+                <span
+                    class="text-xs font-bold text-gray-400 uppercase tracking-widest pl-4 border-l border-gray-300">Checkout
+                    Seguro</span>
+            </div>
+            <a href="carrito.html"
+                class="text-sm font-semibold text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-lg">arrow_back</span> Volver al Carrito
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <!-- Left Column: Forms -->
+            <div class="lg:col-span-7 space-y-10">
+
+                <!-- 1. Contact -->
+                <section>
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span
+                            class="flex items-center justify-center size-8 bg-primary text-white rounded-full text-sm">1</span>
+                        Información de Contacto
+                    </h2>
+                    <div class="space-y-4">
+                        <input type="email" id="checkout-email"
+                            class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                            placeholder="Correo electrónico para confirmación">
+                        <div class="flex gap-4">
+                            <input type="text" id="checkout-name"
+                                class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                placeholder="Nombre">
+                            <input type="text" id="checkout-lastname"
+                                class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                placeholder="Apellidos">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Shipping -->
+                <section>
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span
+                            class="flex items-center justify-center size-8 bg-primary text-white rounded-full text-sm">2</span>
+                        Dirección de Envío
+                    </h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2 space-y-4">
+                            <input type="text" id="checkout-street" required
+                                class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                placeholder="Calle">
+                            <div class="flex gap-4">
+                                <input type="text" id="checkout-num-ext" required
+                                    class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                    placeholder="Número Exterior">
+                                <input type="text" id="checkout-num-int"
+                                    class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                    placeholder="Número Interior (Opcional)">
+                            </div>
+                        </div>
+                        <input type="text" id="checkout-colonia" required
+                            class="col-span-2 w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                            placeholder="Fraccionamiento / Colonia / Ubicación">
+                        <div class="flex gap-4">
+                            <input type="text" id="checkout-city" required
+                                class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                placeholder="Ciudad">
+                            <input type="text" id="checkout-zip" required
+                                class="w-1/2 rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                                placeholder="CP">
+                        </div>
+                        <textarea id="checkout-refs" rows="2"
+                            class="col-span-2 w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                            placeholder="Señas Particulares (Fachada, entre calles, etc.)"></textarea>
+                        <input type="text" id="checkout-phone" required
+                            class="col-span-2 w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary"
+                            placeholder="Número de Teléfono">
+                    </div>
+                </section>
+
+                <!-- 3. Payment -->
+                <section>
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span
+                            class="flex items-center justify-center size-8 bg-primary text-white rounded-full text-sm">3</span>
+                        Forma de Pago
+                    </h2>
+
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-6">
+                        <!-- Option: Credit Card -->
+                        <div class="border-b border-gray-200 p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                            onclick="selectPayment('card')">
+                            <input type="radio" name="payment_method" id="pay-card" checked
+                                class="text-primary focus:ring-primary">
+                            <div class="flex-1 flex justify-between items-center">
+                                <span class="font-bold text-sm">Tarjeta de Crédito / Débito</span>
+                                <div class="flex gap-2">
+                                    <span
+                                        class="text-xs font-bold bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-500">VISA</span>
+                                    <span
+                                        class="text-xs font-bold bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-500">MC</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Form (Collapsible) -->
+                        <div id="card-form" class="p-6 bg-blue-50/30 border border-blue-100 rounded-xl space-y-4">
+                            <div class="flex items-center gap-4">
+                                <span class="material-symbols-outlined text-blue-600 text-3xl">lock_clock</span>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-900">Pago Seguro con Tarjeta</p>
+                                    <p class="text-xs text-slate-500 leading-relaxed">
+                                        Introduce los datos de tu tarjeta a continuación. El pago se procesa de forma
+                                        cifrada mediante Stripe.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- CONTENEDOR DE TARJETA (ELEMENTS) -->
+                            <div id="payment-element-container"
+                                class="mt-4 p-4 bg-white border border-gray-200 rounded-xl shadow-inner min-h-[100px]">
+                                <div id="payment-element">
+                                    <!-- Stripe Elements se montará aquí -->
+                                    <div class="animate-pulse flex space-y-4 flex-col">
+                                        <div class="h-4 bg-gray-100 rounded w-3/4"></div>
+                                        <div class="h-10 bg-gray-100 rounded"></div>
+                                    </div>
+                                </div>
+                                <div id="payment-message" class="hidden mt-4 text-sm text-red-500 font-bold"></div>
+                            </div>
+
+                            <div class="flex gap-2 pt-2 opacity-60">
+                                <img src="https://img.icons8.com/color/48/visa.png" class="h-6" alt="Visa">
+                                <img src="https://img.icons8.com/color/48/mastercard.png" class="h-6" alt="Mastercard">
+                                <img src="https://img.icons8.com/color/48/amex.png" class="h-6" alt="Amex">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Option: PayPal -->
+                    <div class="border-b border-gray-200 p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                        onclick="selectPayment('paypal')">
+                        <input type="radio" name="payment_method" id="pay-paypal"
+                            class="text-primary focus:ring-primary">
+                        <div class="flex-1">
+                            <span class="font-bold text-sm">PayPal</span>
+                        </div>
+                    </div>
+
+                    <!-- Option: Transfer -->
+                    <div class="p-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                        onclick="selectPayment('transfer')">
+                        <input type="radio" name="payment_method" id="pay-transfer"
+                            class="text-primary focus:ring-primary">
+                        <div class="flex-1">
+                            <span class="font-bold text-sm">Transferencia SPEI</span>
+                        </div>
+                    </div>
+            </div>
+            </section>
+        </div>
+
+        <!-- Right Column: Summary -->
+        <div class="lg:col-span-5">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 sticky top-32">
+                <h3 class="text-lg font-black text-primary mb-6">Resumen del Pedido</h3>
+
+                <div id="checkout-items" class="space-y-4 mb-6 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Items injected via JS -->
+                    <div class="text-center py-4 text-gray-400 text-sm">Cargando carrito...</div>
+                </div>
+
+                <div class="border-t border-gray-100 pt-6 space-y-3">
+                    <div class="flex justify-between text-sm text-gray-500">
+                        <span>Subtotal</span>
+                        <span id="checkout-subtotal" class="font-bold">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-500">
+                        <span>Envío</span>
+                        <span id="checkout-shipping" class="font-bold text-green-600">Gratis</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-4">
+                        <span class="font-black text-lg text-primary">Total</span>
+                        <span id="checkout-total" class="font-black text-2xl text-primary">$0.00</span>
+                    </div>
+                </div>
+
+                <button onclick="processOrder()" id="pay-button"
+                    class="mt-8 w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg shadow-slate-200 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">credit_card</span>
+                    Pagar e Introducir Tarjeta
+                </button>
+
+                <p class="text-xs text-center text-gray-400 mt-4 flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-sm">lock</span>
+                    Transacción Segura 256-bit SSL
+                </p>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Success Modal (Hidden) -->
+    <div id="success-modal"
+        class="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-10 max-w-md w-full text-center shadow-2xl transform scale-95 opacity-0 transition-all duration-300"
+            id="success-content">
+            <div
+                class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600">
+                <span class="material-symbols-outlined text-5xl">check_circle</span>
+            </div>
+            <h2 class="text-2xl font-black text-primary mb-2">¡Pago Exitoso!</h2>
+            <p class="text-sm text-gray-500 mb-8">Tu orden <span
+                    class="font-mono font-bold text-gray-800">#OSEL-9928</span> ha sido confirmada. Enviaremos los
+                detalles a tu correo.</p>
+            <button onclick="window.location.href='index.html'"
+                class="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-opacity-90">
+                Volver al Inicio
+            </button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Simple inline script to handle checkout visuals logic (switching payments)
+        // Order processing logic will be in app.js
+        function selectPayment(method) {
+            document.getElementById('pay-card').checked = false;
+            document.getElementById('pay-paypal').checked = false;
+            document.getElementById('pay-transfer').checked = false;
+
+            document.getElementById('pay-' + method).checked = true;
+
+            const cardForm = document.getElementById('card-form');
+            if (method === 'card') {
+                cardForm.classList.remove('hidden');
+                cardForm.classList.add('block');
+            } else {
+                cardForm.classList.add('hidden');
+                cardForm.classList.remove('block');
+            }
+        }
+    </script>
+</body>
+
+</html>

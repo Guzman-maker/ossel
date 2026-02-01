@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test Shop Loading</title>
+</head>
+
+<body>
+    <h1>Testing Shop Functions</h1>
+    <div id="test-results"></div>
+
+    <script src="js/app.js"></script>
+    <script>
+        const results = document.getElementById('test-results');
+
+        // Test 1: Check if state exists
+        results.innerHTML += '<p>State exists: ' + (typeof state !== 'undefined') + '</p>';
+
+        // Test 2: Check if products array exists and has items
+        if (typeof state !== 'undefined') {
+            results.innerHTML += '<p>Products count: ' + state.products.length + '</p>';
+            results.innerHTML += '<p>First product: ' + state.products[0].name + '</p>';
+        }
+
+        // Test 3: Check if initShop exists
+        results.innerHTML += '<p>initShop function exists: ' + (typeof initShop !== 'undefined') + '</p>';
+
+        // Test 4: Check if renderShopProducts exists
+        results.innerHTML += '<p>renderShopProducts function exists: ' + (typeof renderShopProducts !== 'undefined') + '</p>';
+
+        // Test 5: Check shopFilters
+        if (typeof shopFilters !== 'undefined') {
+            results.innerHTML += '<p>shopFilters: ' + JSON.stringify(shopFilters) + '</p>';
+        }
+    </script>
+</body>
+
+</html>

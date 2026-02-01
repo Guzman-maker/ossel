@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.tailwindcss.com https://lh3.googleusercontent.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://lh3.googleusercontent.com;">
+    <title>OSEL | Iniciar Sesión</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <script src="js/security.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4d125",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a0a",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(24, 23, 17, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .osel-gradient {
+            background: linear-gradient(135deg, #f4d125 0%, #e65c00 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen">
+    <div class="flex h-full w-full">
+        <!-- Cinematic Image Section -->
+        <div class="hidden lg:flex lg:w-3/5 relative h-full">
+            <div class="absolute inset-0 bg-cover bg-center"
+                data-alt="Modern luxury living room with premium matte paint textures"
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMbQhfyX5NJxvPwhvPlIrG-JvIvLJZkDmGdgGP1e12RL6XvBw5HsvK5L43IDDhOkUzbyKNefhoKlYrTunG38VBDnfpxTm_pifAEdFe1PrmtYH4aPF6CCDLHNeu5FQv83VRdotW_onW4vRXXn9jbULSDmXd2FLSNc_DQnEuAHxtKE_B_8-oVEctcHbWT8ygkXAaob3HZQ4VjF1zyr6M13sf6zWfuSbchIWTFtYxCZJHgoirRLLyvDEsLAWvtje-J7ET9BKBVjoKhw');">
+            </div>
+            <!-- Gradient Overlay for Cinematic Depth -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+            <!-- Branding overlay -->
+            <div class="absolute top-10 left-10 flex items-center gap-4 text-white z-10">
+                <img src="img/logo-osel-final.png" alt="Osel Logo" class="h-10 w-auto object-contain">
+            </div>
+            <div class="absolute bottom-20 left-10 max-w-md z-10">
+                <h2 class="text-4xl font-bold leading-tight mb-4">El arte de pintar con excelencia.</h2>
+                <p class="text-lg text-white/80">Descubre nuestra nueva línea Premium diseñada para interiores
+                    minimalistas.</p>
+            </div>
+        </div>
+        <!-- Login Form Section -->
+        <div class="w-full lg:w-2/5 flex items-center justify-center p-6 relative bg-background-dark">
+            <!-- Mobile Background Image (Only visible on small screens) -->
+            <div class="absolute inset-0 lg:hidden bg-cover bg-center opacity-40"
+                data-alt="Cinematic interior design shot for mobile background"
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDK5C_irlEJsFoPJ9feNaMBc5zbdPis7Tzr-IIkQl7_UlO8D4MfcHf2pkdjglxB8Ws9atP7D1enng6T2vH-akc53aJ4v45JVmqbSI_ZEdB9_pQcZzgjXk6nZ2J-5oUHNzjP7_55qMJWGgndh0k-BB4dMSu_7YXkx2BEdfnvus55A5P4HkJ35bNuGk6-nOFivYGI7VI_s8XHp5dKaBfK6wes2n1oPfn16XzZNna_uxHLKM75rLOXV7Hqwm6p6EbOFRdED_t4S0YoLQ');">
+            </div>
+            <div class="glass-panel w-full max-w-md rounded-xl p-8 lg:p-10 shadow-2xl relative z-20">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="lg:hidden flex justify-center mb-6">
+                        <img src="img/logo-osel-final.png" alt="Osel Logo" class="h-14 w-auto object-contain">
+                    </div>
+                    <h2 class="text-3xl font-bold tracking-tight mb-2">Bienvenido</h2>
+                    <p class="text-white/60 text-sm">Ingresa a tu cuenta exclusiva de OSEL Premium</p>
+                </div>
+                <!-- Form -->
+                <form class="space-y-6" onsubmit="handleLogin(event)">
+                    <!-- Email Field -->
+                    <!-- Name Field -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium leading-normal">Nombre Completo</label>
+                        <input id="fullname"
+                            class="form-input flex w-full rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border border-white/10 bg-white/5 focus:border-primary h-14 placeholder:text-white/30 px-4 text-base font-normal capitalize"
+                            placeholder="Ej. Juan Pérez" type="text" autocomplete="name" />
+                    </div>
+                    <!-- Password Field -->
+                    <!-- Phone Field -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium leading-normal">Número de Teléfono</label>
+                        <input id="phone"
+                            class="form-input flex w-full rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border border-white/10 bg-white/5 focus:border-primary h-14 placeholder:text-white/30 px-4 text-base font-normal"
+                            placeholder="Ej. 753 123 4567" type="tel" autocomplete="tel" required />
+                    </div>
+                    <!-- Password Field -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium leading-normal">Contraseña</label>
+                        <input id="password"
+                            class="form-input flex w-full rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border border-white/10 bg-white/5 focus:border-primary h-14 placeholder:text-white/30 px-4 text-base font-normal"
+                            placeholder="Tu contraseña segura" type="password" required />
+                    </div>
+                    <!-- Submit Button -->
+                    <button
+                        class="osel-gradient w-full h-14 rounded-lg text-[#181711] text-base font-bold tracking-wide shadow-lg shadow-primary/20 hover:scale-[1.01] transition-transform active:scale-95"
+                        type="submit">
+                        Iniciar Sesión
+                    </button>
+                </form>
+
+                <!-- Footer -->
+                <div class="mt-10 text-center">
+                    <p class="text-sm text-white/50">
+                        Al ingresar, tu cuenta se registrará automáticamente.
+                    </p>
+                </div>
+            </div>
+            <!-- Bottom Floating Help (Optional) -->
+            <div class="absolute bottom-6 right-6 lg:right-10 flex gap-4 items-center">
+                <button class="flex items-center gap-2 text-white/40 hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-lg">language</span>
+                    <span class="text-xs font-medium">Español</span>
+                </button>
+                <button
+                    class="flex items-center gap-2 text-white/40 hover:text-white transition-colors border-l border-white/10 pl-4">
+                    <span class="material-symbols-outlined text-lg">support_agent</span>
+                    <span class="text-xs font-medium">Soporte</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

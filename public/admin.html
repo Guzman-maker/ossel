@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.tailwindcss.com https://lh3.googleusercontent.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: https://lh3.googleusercontent.com https://via.placeholder.com https://m.media-amazon.com; connect-src 'self' http://localhost:3000 http://127.0.0.1:3000;">
+    <title>OSEL | Administración</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <!-- Cropper.js CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/security.js"></script>
+    <script>
+        // OSEL ADMIN AUTH CHECK
+        (function () {
+            const isAdmin = localStorage.getItem('osel_admin');
+            if (isAdmin) return; // Pass
+
+            // Fallback: Check user role
+            try {
+                const user = JSON.parse(localStorage.getItem('osel_user'));
+                if (user && user.role === 'admin') {
+                    localStorage.setItem('osel_admin', 'true');
+                    return; // Pass
+                }
+            } catch (e) { }
+
+            // Failed all checks
+            console.warn('[OSEL Admin] Access Denied');
+            window.location.href = 'login.html';
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#eab308", "blue-osel": "#2563eb", "sage": "#869484" },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        .active-tab {
+            color: #2563eb !important;
+            position: relative;
+        }
+
+        .active-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .inventory-filter-btn {
+            border-color: #e2e8f0;
+            background: white;
+            color: #64748b;
+        }
+
+        .inventory-filter-btn:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .inventory-filter-btn.active {
+            border-color: #2563eb;
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+        }
+    </style>
+</head>
+
+<body class="bg-[#fcfcfd] font-display min-h-screen text-slate-900 antialiased">
+    <!-- Header Minimalista -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <button onclick="switchTab('inicio')" class="flex items-center gap-2 group outline-none">
+                    <img src="img/logo-osel-final.png"
+                        class="h-6 w-auto grayscale group-hover:grayscale-0 transition-all">
+                    <span
+                        class="text-xs font-black tracking-widest text-slate-400 uppercase group-hover:text-slate-900 transition-colors">Admin</span>
+                </button>
+                <nav class="hidden md:flex gap-6 h-16 items-center">
+                    <button onclick="switchTab('inicio')" id="btn-inicio"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all active-tab">Inicio</button>
+                    <button onclick="switchTab('pedidos')" id="btn-pedidos"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">🛒
+                        Pedidos</button>
+                    <button onclick="switchTab('inventario')" id="btn-inventario"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Inventario</button>
+                    <button onclick="switchTab('recompensas')" id="btn-recompensas"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">🎁
+                        Recompensas</button>
+                    <button onclick="switchTab('sucursales')" id="btn-sucursales"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Sucursales</button>
+                    <button onclick="switchTab('clientes')" id="btn-clientes"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Clientes</button>
+                    <button onclick="switchTab('ajustes')" id="btn-ajustes"
+                        class="nav-btn h-full px-1 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all">Ajustes</button>
+                </nav>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex flex-col items-end">
+                    <p class="text-[10px] font-black text-slate-900 uppercase">Panel OSEL v4.0</p>
+                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-tighter">Admin Conectado</p>
+                </div>
+                <button onclick="logout()"
+                    class="h-8 w-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-blue-osel transition-all border border-slate-100">
+                    <span class="material-symbols-outlined text-lg">logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <!-- INICIO (Dashboard + Actividad fusionados) -->
+        <div id="content-inicio" class="tab-content active animate-in fade-in duration-500">
+            <!-- FINANCIAL DASHBOARD ROW -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Ingresos -->
+                <div
+                    class="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm flex flex-col justify-between h-48 relative overflow-hidden group">
+                    <div
+                        class="absolute right-0 top-0 w-32 h-32 bg-emerald-50 rounded-bl-[4rem] -mr-8 -mt-8 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-4xl mt-4 ml-4">payments</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ingresos Totales
+                        </p>
+                        <h3 class="text-3xl font-black text-slate-900" id="stat-sales">$0.00</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 font-medium">Ventas brutas acumuladas</p>
+                </div>
+
+                <!-- Inversión -->
+                <div
+                    class="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm flex flex-col justify-between h-48 relative overflow-hidden group">
+                    <div
+                        class="absolute right-0 top-0 w-32 h-32 bg-blue-50 rounded-bl-[4rem] -mr-8 -mt-8 flex items-center justify-center text-blue-osel group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-4xl mt-4 ml-4">inventory_2</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Inversión Total
+                        </p>
+                        <h3 class="text-3xl font-black text-slate-900" id="stat-invested">$0.00</h3>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">En Almacén + Vendido
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ganancia Neta -->
+                <div
+                    class="p-8 bg-slate-900 border border-slate-800 rounded-[2rem] shadow-xl flex flex-col justify-between h-48 relative overflow-hidden">
+                    <div
+                        class="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-bl-[4rem] -mr-8 -mt-8 flex items-center justify-center text-white/20">
+                        <span class="material-symbols-outlined text-4xl mt-4 ml-4">trending_up</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-white/50 uppercase tracking-widest mb-2">Ganancia Neta
+                            Real</p>
+                        <h3 class="text-3xl font-black text-emerald-400" id="stat-net-profit">$0.00</h3>
+                    </div>
+                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div id="net-margin-bar"
+                            class="bg-gradient-to-r from-emerald-500 to-green-300 h-full rounded-full"
+                            style="width: 0%"></div>
+                    </div>
+                    <p class="text-[10px] text-white/40 font-mono mt-2" id="net-margin-text">Margen: 0%</p>
+                </div>
+            </div>
+
+            <!-- SECONDARY METRICS ROW -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                <!-- Top Products -->
+                <div class="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-lg font-black text-slate-900">Productos Más Vendidos</h4>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Top 5</span>
+                    </div>
+                    <div class="space-y-6" id="top-products-list">
+                        <!-- Injected JS -->
+                        <p class="text-sm text-slate-400 italic">No hay datos de ventas suficientes.</p>
+                    </div>
+                </div>
+
+                <!-- Clients Logic -->
+                <div
+                    class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8 flex flex-col justify-center">
+                    <div class="mb-6">
+                        <div
+                            class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-500 mb-4">
+                            <span class="material-symbols-outlined">group</span>
+                        </div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Base de Clientes
+                        </p>
+                        <h3 class="text-4xl font-black text-slate-900" id="stat-clients">0</h3>
+                    </div>
+                    <div class="pt-6 border-t border-slate-50">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-bold text-slate-600">Nuevos hoy</span>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-black"
+                                id="stat-new-clients">+0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Registro de Actividad (Ahora parte de Inicio) -->
+                <div
+                    class="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+                    <div class="px-10 py-8 border-b border-slate-50 flex justify-between items-center">
+                        <h4 class="text-lg font-black text-slate-900">Actividad del Sistema</h4>
+                        <span class="text-[10px] font-black text-slate-400 uppercase">Tiempo Real</span>
+                    </div>
+                    <div class="divide-y divide-slate-50" id="master-activity-list">
+                        <!-- Activity items -->
+                    </div>
+                </div>
+
+                <!-- Resumen Sucursales -->
+                <div class="space-y-6">
+                    <div
+                        class="p-8 bg-slate-900 rounded-[2.5rem] text-white flex flex-col justify-between h-full min-h-[400px]">
+                        <div>
+                            <h4 class="text-2xl font-black mb-1">Estado de Tiendas</h4>
+                            <p class="text-slate-400 text-sm font-medium">Lázaro Cárdenas, Mich.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div
+                                class="p-5 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm font-black">La Orilla</p>
+                                    <p class="text-[10px] text-slate-400 uppercase font-black">Matriz</p>
+                                </div>
+                                <span class="size-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></span>
+                            </div>
+                            <div
+                                class="p-5 bg-white/5 rounded-2xl border border-white/10 flex justify-between items-center">
+                                <div>
+                                    <p class="text-sm font-black">Pie de Casa</p>
+                                    <p class="text-[10px] text-slate-400 uppercase font-black">Sucursal</p>
+                                </div>
+                                <span class="size-2 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]"></span>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('sucursales')"
+                            class="w-full py-4 bg-white text-slate-900 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-100 transition-all">Ver
+                            Direcciones</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVENTARIO -->
+        <div id="content-inventario" class="tab-content animate-in slide-in-from-bottom-5">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-black text-slate-900 mb-2 tracking-tighter">Control de Inventario</h2>
+                    <p class="text-slate-500 font-medium">Gestiona todos los productos de la tienda online.</p>
+                </div>
+                <button onclick="openProductModal()"
+                    class="px-8 py-4 bg-blue-osel text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-105 transition-all">Nuevo
+                    Producto</button>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-8 bg-slate-50/50 border-b border-slate-100">
+                    <input type="text" id="inv-search" onkeyup="renderInventory()"
+                        placeholder="Buscar por Nombre, SKU o Código..."
+                        class="w-full max-w-md px-6 py-4 bg-white rounded-2xl border-slate-200 focus:ring-2 focus:ring-blue-osel outline-none shadow-sm text-sm">
+                </div>
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50/50">
+                        <tr>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                Detalle</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                Costo / Precio</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                Stock Web</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-list" class="divide-y divide-slate-50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RECOMPENSAS -->
+        <div id="content-recompensas" class="tab-content animate-in slide-in-from-bottom-5">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-black text-slate-900 mb-2 tracking-tighter">🎁 Recompensas</h2>
+                    <p class="text-slate-500 font-medium">Gestiona los productos canjeables con puntos.</p>
+                </div>
+                <button onclick="openRewardModal()"
+                    class="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl shadow-orange-500/20 hover:scale-105 transition-all">Nueva
+                    Recompensa</button>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-8 bg-gradient-to-br from-yellow-50 to-orange-50 border-b border-yellow-100">
+                    <input type="text" id="reward-search" onkeyup="renderRewards()"
+                        placeholder="Buscar recompensa por Nombre..."
+                        class="w-full max-w-md px-6 py-4 bg-white rounded-2xl border-yellow-200 focus:ring-2 focus:ring-yellow-500 outline-none shadow-sm text-sm">
+                </div>
+                <table class="w-full text-left">
+                    <thead class="bg-yellow-50/50">
+                        <tr>
+                            <th class="px-10 py-6 text-[10px] font-black text-yellow-700 uppercase tracking-widest">
+                                Detalle del Producto</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-yellow-700 uppercase tracking-widest text-right">
+                                Puntos Requeridos</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-yellow-700 uppercase tracking-widest text-right">
+                                Stock Disponible</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-yellow-700 uppercase tracking-widest text-right">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rewards-list" class="divide-y divide-slate-50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SUCURSALES -->
+        <div id="content-sucursales" class="tab-content animate-in fade-in">
+            <h2 class="text-4xl font-black text-slate-900 mb-10 tracking-tighter">Ubicaciones OSEL</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="p-10">
+                        <div class="flex justify-between items-start mb-10">
+                            <div
+                                class="size-16 bg-blue-osel/10 rounded-2xl flex items-center justify-center text-blue-osel">
+                                <span class="material-symbols-outlined text-3xl">store</span>
+                            </div>
+                            <span
+                                class="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-full border border-emerald-100">Activa</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-slate-900 mb-2">OSEL La Orilla</h3>
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-8">Sucursal Matriz</p>
+                        <div class="space-y-6 mb-10">
+                            <div class="flex gap-4"><span
+                                    class="material-symbols-outlined text-slate-300">location_on</span>
+                                <p class="text-sm font-bold text-slate-600">Av. Las Palmas Ext. 33 Int. 3. Col. La
+                                    Orilla (60998)</p>
+                            </div>
+                            <div class="flex gap-4"><span class="material-symbols-outlined text-slate-300">call</span>
+                                <p class="text-sm font-bold text-slate-600">(753) 532-3388</p>
+                            </div>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Av.+Las+Palmas+33+La+Orilla+Lazaro+Cardenas"
+                            target="_blank"
+                            class="w-full py-5 bg-slate-900 text-white font-black rounded-[1.5rem] flex items-center justify-center gap-3 transition-all hover:bg-black uppercase text-[11px] tracking-widest">Abrir
+                            en Google Maps</a>
+                    </div>
+                </div>
+                <!-- Store 2 -->
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="p-10">
+                        <div class="flex justify-between items-start mb-10">
+                            <div class="size-16 bg-sage/10 rounded-2xl flex items-center justify-center text-sage"><span
+                                    class="material-symbols-outlined text-3xl">storefront</span></div>
+                            <span
+                                class="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-full border border-emerald-100">Activa</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-slate-900 mb-2">OSEL Pie de Casa</h3>
+                        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-8">Sucursal Melchor
+                            Ocampo</p>
+                        <div class="space-y-6 mb-10">
+                            <div class="flex gap-4"><span
+                                    class="material-symbols-outlined text-slate-300">location_on</span>
+                                <p class="text-sm font-bold text-slate-600">Avenida Melchor Ocampo 1289. Pie de Casa
+                                    (60956)</p>
+                            </div>
+                            <div class="flex gap-4"><span class="material-symbols-outlined text-slate-300">call</span>
+                                <p class="text-sm font-bold text-slate-600">(753) 532-7766</p>
+                            </div>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Avenida+Melchor+Ocampo+1289+Pie+de+Casa"
+                            target="_blank"
+                            class="w-full py-5 bg-sage text-white font-black rounded-[1.5rem] flex items-center justify-center gap-3 transition-all hover:scale-[1.01] shadow-xl shadow-sage/20 uppercase text-[11px] tracking-widest">Abrir
+                            en Google Maps</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLIENTES -->
+        <div id="content-clientes" class="tab-content animate-in slide-in-from-right-5">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-black text-slate-900 mb-2 tracking-tighter">Gestión de Clientes</h2>
+                    <p class="text-slate-500 font-medium">Monitor de lealtad y puntos acumulados.</p>
+                </div>
+                <button onclick="openClientModal()"
+                    class="px-8 py-4 bg-slate-900 text-white font-black text-xs uppercase tracking-widest rounded-2xl group flex items-center gap-2 hover:bg-black transition-all">
+                    <span class="material-symbols-outlined text-sm">person_add</span>
+                    Nuevo Registro
+                </button>
+            </div>
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50/50">
+                        <tr>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                Nombre del Cliente</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                Teléfono / Usuario</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                Contraseña</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                Puntos</th>
+                            <th
+                                class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clients-table-body" class="divide-y divide-slate-50"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PEDIDOS -->
+        <div id="content-pedidos" class="tab-content animate-in fade-in">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-black text-slate-900 mb-2 tracking-tighter">Pedidos Recientes</h2>
+                    <p class="text-slate-500 font-medium">Historial de ventas y detalles de entrega.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <tr>
+                            <th class="px-8 py-6">ID / Fecha</th>
+                            <th class="px-8 py-6">Cliente / Envío</th>
+                            <th class="px-8 py-6">Detalle</th>
+                            <th class="px-8 py-6 text-right">Total</th>
+                            <th class="px-8 py-6 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body" class="divide-y divide-slate-50">
+                        <!-- Pedidos Inyectados -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- AJUSTES (Backup & About) -->
+        <div id="content-ajustes" class="tab-content animate-in fade-in">
+            <h2 class="text-4xl font-black text-slate-900 mb-10 tracking-tighter">Ajustes del Sistema</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Password Change Card -->
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-10">
+                    <div
+                        class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6">
+                        <span class="material-symbols-outlined text-3xl">lock_reset</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 mb-2">Seguridad</h3>
+                    <p class="text-slate-500 text-sm mb-8 font-medium">Actualiza tu contraseña de administrador
+                        frecuentemente para proteger la integridad de tus datos.</p>
+
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Nueva
+                                Contraseña</label>
+                            <input type="password" id="new-password" placeholder="••••••••"
+                                class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none text-sm font-bold">
+                        </div>
+                        <button onclick="changeAdminPassword()"
+                            class="w-full py-4 bg-orange-500 text-white font-black rounded-2xl flex items-center justify-center gap-3 hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20">
+                            Actualizar Contraseña
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup Card -->
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-10">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-osel mb-6">
+                        <span class="material-symbols-outlined text-3xl">database</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 mb-2">Respaldo Local</h3>
+                    <p class="text-slate-500 text-sm mb-8 font-medium">Crea copias de seguridad de la configuración
+                        local en formato JSON.</p>
+
+                    <div class="space-y-4">
+                        <button onclick="downloadBackup()"
+                            class="w-full py-4 bg-slate-900 text-white font-black rounded-2xl flex items-center justify-center gap-3 hover:bg-black transition-all">
+                            <span class="material-symbols-outlined">download</span>
+                            Descargar Backup
+                        </button>
+
+                        <div class="relative">
+                            <input type="file" id="backup-file" accept=".json" class="hidden"
+                                onchange="restoreBackup(this)">
+                            <button onclick="document.getElementById('backup-file').click()"
+                                class="w-full py-4 bg-white border-2 border-slate-100 text-slate-900 font-black rounded-2xl flex items-center justify-center gap-3 hover:border-slate-300 transition-all">
+                                <span class="material-symbols-outlined">upload</span>
+                                Subir Respaldo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Card -->
+                <div class="bg-slate-900 rounded-[2.5rem] shadow-xl p-10 text-white flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 backdrop-blur-sm">
+                            <span class="material-symbols-outlined text-3xl">code</span>
+                        </div>
+                        <h3 class="text-2xl font-black mb-2">Acerca del Sistema</h3>
+                        <p class="text-white/60 text-sm font-medium leading-relaxed mb-6">
+                            Plataforma integral de administración para OSEL, diseñada para alto rendimiento y facilidad
+                            de uso.
+                        </p>
+                    </div>
+
+                    <div class="border-t border-white/10 pt-6 mt-6">
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Desarrollado por
+                        </p>
+                        <h4
+                            class="text-3xl font-black tracking-tighter bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                            GUZDEVSTUDIO</h4>
+                        <p class="text-xs text-white/50 mt-2 font-mono">v4.2.0-stable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Nuevo Cliente -->
+    <div id="client-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onclick="this.parentElement.classList.add('hidden')"></div>
+        <div
+            class="relative bg-white rounded-[2.5rem] p-12 max-w-lg w-full shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200">
+            <h3 class="text-3xl font-black text-slate-900 mb-8 tracking-tighter">Registrar Cliente</h3>
+            <form onsubmit="saveNewClient(event)" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre
+                        Completo</label>
+                    <input type="text" id="c-name" required
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Teléfono
+                        (Usuario)</label>
+                    <input type="tel" id="c-phone" required
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                </div>
+                <div class="space-y-2">
+                    <label
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Contraseña</label>
+                    <input type="text" id="c-password" required
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                </div>
+                <button type="submit"
+                    class="w-full py-5 bg-blue-osel text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 uppercase tracking-widest text-xs mt-4">Guardar
+                    Registro</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Producto -->
+    <div id="product-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onclick="this.parentElement.classList.add('hidden')"></div>
+        <div
+            class="relative bg-white rounded-[2.5rem] p-12 max-w-2xl w-full shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+            <h3 class="text-3xl font-black text-slate-900 mb-8 tracking-tighter" id="modal-title">Nuevo Producto</h3>
+            <form onsubmit="saveProduct(event)" class="grid grid-cols-2 gap-6">
+                <input type="hidden" id="p-id"> <!-- Hidden ID field for edits -->
+                <div class="col-span-2 grid grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre del
+                            Producto</label>
+                        <input type="text" id="p-name" required
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">SKU /
+                            Código</label>
+                        <input type="text" id="p-sku" required placeholder="Ej: 750123..."
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold font-mono">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Categoría</label>
+                    <select id="p-category" onchange="toggleNewCategory(this.value)"
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                        <option value="Arquitectónica">Arquitectónica</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Madera">Madera</option>
+                        <option value="Accesorios">Accesorios</option>
+                        <option value="NEW">+ Nueva Categoría...</option>
+                    </select>
+                </div>
+                <div id="new-cat-container" class="space-y-2 hidden animate-in slide-in-from-top-2">
+                    <label class="text-[10px] font-black text-blue-osel uppercase tracking-widest ml-1">Nombre Nueva
+                        Categoría</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="p-new-category" placeholder="Ej: Impermeabilizantes"
+                            class="flex-1 px-6 py-4 bg-blue-50/50 border-2 border-blue-100 rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                        <button type="button" onclick="addCustomCategory()"
+                            class="px-6 bg-blue-osel text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:scale-105 transition-all">Aceptar</button>
+                    </div>
+                </div>
+
+                <!-- TIPO DE PRODUCTO -->
+                <div class="col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tipo de
+                        Producto</label>
+                    <select id="p-tipo" onchange="toggleProductType(this.value)"
+                        class="w-full px-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                        <option value="venta">💰 Producto en Venta (Paga $ y gana puntos)</option>
+                        <option value="recompensa">🎁 Producto de Recompensa (Canjea con puntos)</option>
+                    </select>
+                </div>
+
+                <!-- CAMPOS PARA PRODUCTO EN VENTA -->
+                <div id="venta-fields" class="col-span-2 grid grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Costo
+                            ($)</label>
+                        <input type="number" id="p-cost" step="0.01" placeholder="0.00" oninput="calculateModalProfit()"
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold border-l-4 border-l-slate-200">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Precio Venta
+                            ($)</label>
+                        <input type="number" id="p-price" step="0.01" placeholder="0.00"
+                            oninput="calculateModalProfit()"
+                            class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold border-l-4 border-l-emerald-500">
+                    </div>
+
+                    <!-- Automatic Profit Display -->
+                    <div
+                        class="col-span-2 bg-emerald-50 rounded-2xl p-4 flex justify-between items-center border border-emerald-100">
+                        <div>
+                            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Ganancia
+                                Unitaria</p>
+                            <p class="text-xl font-black text-emerald-700" id="p-calc-profit">$0.00</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest text-right">
+                                Margen</p>
+                            <p class="text-xl font-black text-emerald-700 text-right" id="p-calc-margin">0%</p>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 space-y-2">
+                        <label
+                            class="text-[10px] font-black text-blue-600 uppercase tracking-widest ml-1 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">stars</span>
+                            Puntos que Otorga al Comprar
+                        </label>
+                        <input type="number" id="p-puntos-otorga" min="0" step="1" placeholder="Ej: 25"
+                            class="w-full px-6 py-4 bg-blue-50 border-2 border-blue-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none text-lg font-bold text-blue-900">
+                        <p class="text-[10px] text-blue-600 font-medium ml-1">
+                            💡 Tip: Generalmente 1 punto por cada $10 MXN de compra
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CAMPOS PARA PRODUCTO DE RECOMPENSA -->
+                <div id="recompensa-fields" class="col-span-2 space-y-4 hidden">
+                    <div
+                        class="p-6 bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl space-y-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-yellow-600 text-2xl">redeem</span>
+                            <h4 class="text-sm font-black text-yellow-900 uppercase tracking-wider">Producto de
+                                Recompensa</h4>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label
+                                class="text-[10px] font-black text-yellow-700 uppercase tracking-widest ml-1 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">award_star</span>
+                                Puntos Requeridos para Canjear
+                            </label>
+                            <input type="number" id="p-puntos-canje" min="1" step="1" placeholder="Ej: 500"
+                                class="w-full px-6 py-4 bg-white border-2 border-yellow-300 rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none text-2xl font-black text-yellow-900 text-center">
+                            <p class="text-[10px] text-yellow-700 font-medium ml-1">
+                                ⭐ Este producto será GRATIS para clientes que tengan suficientes puntos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Stock
+                        Inicial</label>
+                    <input type="number" id="p-stock" required
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Imagen del
+                        Producto (Windows)</label>
+                    <div class="relative group">
+                        <input type="file" id="p-image-file" accept="image/*" class="hidden"
+                            onchange="updateFileName(this)">
+                        <label for="p-image-file"
+                            class="w-full px-6 py-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 cursor-pointer hover:border-blue-osel transition-all">
+                            <span class="material-symbols-outlined text-slate-400">upload_file</span>
+                            <span id="file-name" class="text-sm font-bold text-slate-500">Seleccionar archivo...</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-span-2 space-y-2">
+                    <label
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Descripción</label>
+                    <textarea id="p-desc"
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-osel outline-none text-sm font-bold h-24"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="col-span-2 py-5 bg-blue-osel text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 uppercase tracking-widest text-xs mt-2">Agregar
+                    al Catálogo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Recorte de Imagen -->
+    <div id="cropper-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-md"></div>
+        <div
+            class="relative bg-white rounded-[2.5rem] p-8 max-w-2xl w-full shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200">
+            <h3 class="text-2xl font-black text-slate-900 mb-6 tracking-tighter">Ajustar Imagen</h3>
+            <div class="max-h-[50vh] overflow-hidden rounded-2xl bg-slate-100 mb-6">
+                <img id="cropper-image" src="" class="max-w-full">
+            </div>
+            <div class="flex gap-4">
+                <button type="button" onclick="cancelCrop()"
+                    class="flex-1 py-4 bg-slate-100 text-slate-600 font-black rounded-2xl hover:bg-slate-200 transition-all uppercase text-xs tracking-widest">Cancelar</button>
+                <button type="button" onclick="confirmCrop()"
+                    class="flex-1 py-4 bg-blue-osel text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:scale-105 transition-all uppercase text-xs tracking-widest">Recortar
+                    y Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Historial de Compras -->
+    <div id="history-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onclick="this.parentElement.classList.add('hidden')"></div>
+        <div
+            class="relative bg-white rounded-[2.5rem] p-10 max-w-3xl w-full shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-3xl font-black text-slate-900 tracking-tighter" id="hist-client-name">Cliente</h3>
+                    <p class="text-sm text-slate-400 font-bold uppercase tracking-widest mt-1">Historial de Compras</p>
+                </div>
+                <!-- Total Spent Badge -->
+                <div class="px-6 py-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest text-center">Total
+                        Gastado</p>
+                    <p class="text-xl font-black text-emerald-600" id="hist-total-spent">$0.00</p>
+                </div>
+            </div>
+
+            <div class="divide-y divide-slate-100" id="history-list">
+                <!-- Orders will be injected here -->
+            </div>
+
+            <button onclick="document.getElementById('history-modal').classList.add('hidden')"
+                class="w-full py-4 mt-8 bg-slate-100 text-slate-900 font-black rounded-2xl hover:bg-slate-200 transition-all uppercase text-xs tracking-widest">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Recompensa -->
+    <div id="reward-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onclick="this.parentElement.classList.add('hidden'); this.parentElement.classList.remove('flex');"></div>
+        <div
+            class="relative bg-white rounded-[2.5rem] p-10 max-w-2xl w-full shadow-2xl border border-yellow-100 animate-in zoom-in-95 duration-200 overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-3xl font-black text-slate-900 tracking-tighter">🎁 Nueva Recompensa</h3>
+                    <p class="text-sm text-yellow-600 font-bold uppercase tracking-widest mt-1">Producto Canjeable con
+                        Puntos</p>
+                </div>
+                <button
+                    onclick="document.getElementById('reward-modal').classList.add('hidden'); document.getElementById('reward-modal').classList.remove('flex');"
+                    class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <form onsubmit="saveReward(event)" class="grid grid-cols-2 gap-6">
+                <input type="hidden" id="r-id">
+
+                <div class="col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre de la
+                        Recompensa</label>
+                    <input type="text" id="r-name" required
+                        class="w-full px-6 py-4 bg-yellow-50 border-2 border-yellow-200 rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-bold">
+                </div>
+
+                <div
+                    class="col-span-2 p-6 bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-yellow-600 text-2xl">award_star</span>
+                        <h4 class="text-sm font-black text-yellow-900 uppercase tracking-wider">Canje con Puntos</h4>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-yellow-700 uppercase tracking-widest ml-1">Costo
+                                ($)</label>
+                            <input type="number" id="r-cost" step="0.01" placeholder="0.00"
+                                class="w-full px-4 py-3 bg-white border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-bold">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-yellow-700 uppercase tracking-widest ml-1">Precio
+                                Ref ($)</label>
+                            <input type="number" id="r-price" step="0.01" placeholder="0.00"
+                                class="w-full px-4 py-3 bg-white border-2 border-yellow-200 rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-bold">
+                        </div>
+                    </div>
+
+                    <label class="text-[10px] font-black text-yellow-700 uppercase tracking-widest ml-1 block mb-2">
+                        Puntos Requeridos para Canjear
+                    </label>
+                    <input type="number" id="r-points" min="1" step="1" required placeholder="Ej: 500"
+                        class="w-full px-6 py-4 bg-white border-2 border-yellow-300 rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none text-2xl font-black text-yellow-900 text-center">
+                    <p class="text-[10px] text-yellow-700 font-medium ml-1 mt-2">
+                        ⭐ Este producto será GRATIS para clientes que tengan suficientes puntos
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Stock
+                        Disponible</label>
+                    <input type="number" id="r-stock" required min="1"
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-bold">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Imagen</label>
+                    <input type="file" id="r-image" accept="image/*"
+                        class="w-full px-4 py-3 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-xs">
+                </div>
+
+                <div class="col-span-2 space-y-2">
+                    <label
+                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Descripción</label>
+                    <textarea id="r-desc"
+                        class="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-bold h-24"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="col-span-2 py-5 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black rounded-2xl shadow-xl shadow-orange-500/20 uppercase tracking-widest text-xs mt-2">Agregar
+                    Recompensa</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        const activityData = [];
+
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById('content-' + id).classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active-tab');
+            if (id === 'inventario') renderInventory();
+            if (id === 'recompensas') renderRewards();
+            if (id === 'clientes') renderClients();
+            if (id === 'inicio') renderActivity();
+            if (id === 'pedidos') renderOrders();
+        }
+
+        async function renderOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            if (!tbody) return;
+
+            let serverOrders = [];
+            let localOrders = JSON.parse(localStorage.getItem('osel_orders')) || [];
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                const response = await fetch('/api/orders/all', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                if (response.ok) {
+                    serverOrders = await response.json();
+                }
+            } catch (err) {
+                console.warn('[OSEL] Servidor no disponible, usando solo local');
+            }
+
+            // Consolidar por ID
+            const ordersMap = new Map();
+            localOrders.forEach(o => {
+                const key = o.id_custom || o.id || o._id;
+                if (key) ordersMap.set(key, o);
+            });
+            serverOrders.forEach(o => {
+                const key = o.id_custom || o._id || o.id;
+                if (key) ordersMap.set(key, o);
+            });
+
+            const orders = Array.from(ordersMap.values()).sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.date);
+                const dateB = new Date(b.createdAt || b.date);
+                return dateB - dateA;
+            });
+
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-10 py-20 text-center text-slate-400 font-medium italic">No hay pedidos registrados aún.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = orders.map(o => {
+                const displayId = o.id_custom || (o._id ? o._id.slice(-6).toUpperCase() : (o.id || 'N/A'));
+                const orderId = o._id || o.id_custom || o.id;
+                const displayDate = o.date || (o.createdAt ? new Date(o.createdAt).toLocaleDateString('es-MX', { day: '2-digit', month: 'long', hour: '2-digit', minute: '2-digit' }) : 'N/A');
+                const total = o.totalAmount || o.total || 0;
+                const currentStatus = o.status || 'Pagado';
+
+                return `
+                <tr class="hover:bg-slate-50/50 transition-all align-top border-b border-slate-50">
+                    <td class="px-8 py-6">
+                        <p class="text-xs font-black text-slate-900">${displayId}</p>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">${displayDate}</p>
+                    </td>
+                    <td class="px-8 py-6">
+                        <p class="text-xs font-black text-slate-900 mb-1">${o.client?.name || o.client || 'Cliente'}</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-500 leading-tight">
+                                <span class="material-symbols-outlined text-[10px] align-middle mr-1">location_on</span>
+                                ${o.shipping?.address || 'N/A'}, ${o.shipping?.colonia || ''}
+                            </p>
+                            <p class="text-[10px] text-slate-500">
+                                <span class="material-symbols-outlined text-[10px] align-middle mr-1">call</span>
+                                ${o.client?.phone || o.phone || 'N/A'}
+                            </p>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <div class="space-y-1">
+                            ${(o.items || []).map(i => `
+                                <p class="text-[10px] text-slate-600 font-medium whitespace-nowrap">
+                                    <span class="font-black text-slate-400">${i.qty || i.quantity}x</span> ${i.name || 'Producto'}
+                                </p>
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <p class="text-sm font-black text-slate-900">$${total.toLocaleString()}</p>
+                        <select onchange="updateOrderStatus('${orderId}', this.value)" 
+                            class="mt-1 text-[9px] font-black uppercase border-none bg-slate-100 rounded-md py-1 outline-none cursor-pointer ${currentStatus === 'Eliminado' ? 'text-red-500 bg-red-50' : 'text-emerald-500 bg-emerald-50'}">
+                            <option value="Pagado" ${currentStatus === 'Pagado' ? 'selected' : ''}>Pagado</option>
+                            <option value="Pendiente" ${currentStatus === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="Enviado" ${currentStatus === 'Enviado' ? 'selected' : ''}>Enviado</option>
+                            <option value="Eliminado" ${currentStatus === 'Eliminado' ? 'selected' : ''}>Eliminado</option>
+                        </select>
+                    </td>
+                    <td class="px-8 py-6 text-center">
+                        <button onclick="deleteOrder('${orderId}')" class="p-2 text-slate-300 hover:text-red-500 transition-colors" title="Eliminar Pedido">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        async function updateOrderStatus(id, newStatus) {
+            if (newStatus === 'Eliminado' && !confirm('¿Estás seguro de marcar como Eliminado? El stock de los productos será devuelto al inventario.')) {
+                renderOrders();
+                return;
+            }
+            try {
+                const response = await fetch(`/api/orders/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (response.ok) {
+                    showToast('Estado de pedido actualizado');
+                    renderOrders();
+                    if (newStatus === 'Eliminado') renderInventory();
+                } else {
+                    const err = await response.json().catch(() => ({ message: 'Error desconocido' }));
+                    alert("Error: " + (err.message || response.statusText));
+                    renderOrders();
+                }
+            } catch (err) {
+                alert("Error de Red: " + err.message);
+            }
+        }
+
+        async function deleteOrder(id) {
+            if (!confirm('¿Eliminar definitivamente este pedido?')) return;
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                await fetch(`/api/orders/${id}`, { method: 'DELETE', signal: controller.signal }).catch(() => { });
+                clearTimeout(timeoutId);
+            } catch (err) { }
+
+            const localOrders = JSON.parse(localStorage.getItem('osel_orders')) || [];
+            const filtered = localOrders.filter(o => {
+                const oid = String(o._id || o.id_custom || o.id);
+                return oid !== String(id);
+            });
+            localStorage.setItem('osel_orders', JSON.stringify(filtered));
+            renderOrders();
+            renderInventory();
+            updateStats();
+            showToast('Pedido borrado');
+        }
+
+        function renderActivity() {
+            const list = document.getElementById('master-activity-list');
+            if (activityData.length === 0) {
+                list.innerHTML = `
+                    <div class="px-10 py-20 text-center">
+                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 mx-auto mb-4">
+                            <span class="material-symbols-outlined text-3xl">history</span>
+                        </div>
+                        <p class="text-sm font-black text-slate-900 mb-1">Sin Actividad Reciente</p>
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Los movimientos del sistema aparecerán aquí</p>
+                    </div>
+                `;
+                return;
+            }
+            list.innerHTML = activityData.map(a => `
+                <div class="px-10 py-6 flex items-center justify-between hover:bg-slate-50 transition-all cursor-default group">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-50 text-slate-400 group-hover:bg-blue-osel group-hover:text-white transition-all">
+                            <span class="material-symbols-outlined text-xl">${a.type === 'venta' ? 'receipt_long' : 'person_add'}</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-black text-slate-900 group-hover:text-blue-osel transition-colors">${a.title}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${a.detail} • ${a.time}</p>
+                        </div>
+                    </div>
+                    ${a.price ? `<p class="text-sm font-black text-slate-900">${a.price}</p>` : `<button class="text-[10px] font-black text-blue-osel uppercase hover:underline">Detalles</button>`}
+                </div>
+            `).join('');
+        }
+
+
+
+
+
+        function calculateModalProfit() {
+            const cost = parseFloat(document.getElementById('p-cost').value) || 0;
+            const price = parseFloat(document.getElementById('p-price').value) || 0;
+
+            const profit = price - cost;
+            const margin = price > 0 ? (profit / price) * 100 : 0;
+
+            document.getElementById('p-calc-profit').textContent = `$${profit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('p-calc-profit').className = profit >= 0 ? "text-xl font-black text-emerald-700" : "text-xl font-black text-red-500";
+
+            document.getElementById('p-calc-margin').textContent = `${margin.toFixed(1)}%`;
+        }
+
+        async function renderClients() {
+            const tbody = document.getElementById('clients-table-body');
+            if (!tbody) return;
+
+            try {
+                const response = await fetch(AppConfig.apiUrl('/api/auth/clients'));
+
+                if (!response.ok) {
+                    throw new Error(`Server Error: ${response.status} ${response.statusText}`);
+                }
+
+                const clients = await response.json();
+
+                if (!Array.isArray(clients)) {
+                    throw new Error('Respuesta inválida del servidor (no es lista)');
+                }
+
+                if (clients.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="px-10 py-20 text-center text-slate-400 font-medium italic">No hay clientes registrados aún.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = clients.map(c => `
+                    <tr class="hover:bg-slate-50 transition-all border-b border-slate-50">
+                        <td class="px-10 py-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-osel/10 text-blue-osel flex items-center justify-center font-black text-xs">${(c.name || 'U').charAt(0)}</div>
+                                <div>
+                                    <p class="text-sm font-black text-slate-900">${c.name || 'Sin Nombre'}</p>
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">Miembro desde: ${new Date(c.createdAt || Date.now()).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-10 py-8">
+                            <p class="text-xs font-bold text-slate-700">${c.phone || 'N/A'}</p>
+                        </td>
+                        <td class="px-10 py-8">
+                            <p class="text-xs font-mono bg-slate-100 px-2 py-1 rounded inline-block text-slate-600">${c.password || '****'}</p>
+                        </td>
+                        <td class="px-10 py-8 text-right">
+                           <p class="font-black text-blue-osel text-lg">${c.points || 0}<span class="text-[10px] ml-1 uppercase">pts</span></p>
+                        </td>
+                        <td class="px-10 py-8">
+                            <div class="flex justify-center gap-3">
+                                <button onclick="openClientHistory('${c.phone}', '${(c.name || '').replace(/'/g, "\\'")}')" class="px-4 py-2 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all">Historial</button>
+                                <button onclick="deleteClient('${c._id}')" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
+                                    <span class="material-symbols-outlined text-lg">delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error('Error rendering clients:', err);
+                tbody.innerHTML = `<tr><td colspan="5" class="px-10 py-20 text-center text-red-500 font-bold italic">Error: ${err.message}</td></tr>`;
+            }
+        }
+
+        async function deleteClient(id) {
+            if (!confirm('¿Deseas eliminar permanentemente a este cliente? Esta acción no se puede deshacer.')) return;
+            try {
+                const response = await fetch(AppConfig.apiUrl(`/api/auth/clients/${id}`), { method: 'DELETE' });
+                if (response.ok) {
+                    showToast('Cliente eliminado');
+                    renderClients();
+                } else {
+                    alert('Error al eliminar cliente');
+                }
+            } catch (err) {
+                alert('Error de conexión');
+            }
+        }
+
+        function openClientHistory(phone, name) {
+            document.getElementById('hist-client-name').textContent = name;
+
+            // Fetch Orders
+            const allOrders = JSON.parse(localStorage.getItem('osel_orders')) || [];
+            // Filter by phone (primary) or name (fallback)
+            const clientOrders = allOrders.filter(o => o.phone === client.phone || o.client === client.name).reverse();
+
+            const list = document.getElementById('history-list');
+            let totalSpent = 0;
+
+            if (clientOrders.length === 0) {
+                list.innerHTML = `<div class="py-12 text-center text-slate-400 font-medium italic">Este cliente aún no ha realizado compras registradas.</div>`;
+            } else {
+                list.innerHTML = clientOrders.map(o => {
+                    totalSpent += parseFloat(o.total || 0);
+                    return `
+                    <div class="py-6 flex gap-6 items-start">
+                        <div class="w-12 h-12 bg-blue-50 rounded-2xl flex-shrink-0 flex items-center justify-center text-blue-osel">
+                            <span class="material-symbols-outlined">shopping_bag</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <p class="text-sm font-black text-slate-900">Orden #${o.id.toString().slice(-6)}</p>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${o.date}</p>
+                                </div>
+                                <p class="text-sm font-black text-slate-900">$${(o.total || 0).toLocaleString()}</p>
+                            </div>
+                            <!-- Items Mini List -->
+                            <div class="bg-slate-50 rounded-xl p-3 space-y-2">
+                                ${o.items.map(i => `
+                                    <div class="flex justify-between text-xs items-center">
+                                         <span class="font-medium text-slate-600 truncate max-w-[200px]">${i.name}</span>
+                                         <span class="text-slate-400 font-bold">x${i.qty}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `}).join('');
+            }
+
+            document.getElementById('hist-total-spent').textContent = `$${totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            document.getElementById('history-modal').classList.remove('hidden');
+            document.getElementById('history-modal').classList.add('flex');
+        }
+
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : "Seleccionar archivo...";
+            document.getElementById('file-name').textContent = fileName;
+        }
+
+        function toggleNewCategory(val) {
+            const container = document.getElementById('new-cat-container');
+            if (val === 'NEW') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function addCustomCategory() {
+            const newCatName = document.getElementById('p-new-category').value.trim();
+            if (!newCatName) { alert("Escribe el nombre de la categoría"); return; }
+
+            let cats = JSON.parse(localStorage.getItem('osel_categories')) || [
+                { id: 'vinilica', name: 'Vinílica' },
+                { id: 'acrilica', name: 'Acrílica' },
+                { id: 'esmalte', name: 'Esmalte' },
+                { id: 'impermeabilizante', name: 'Impermeabilizante' },
+                { id: 'sellador', name: 'Sellador' },
+                { id: 'automotriz', name: 'Automotriz' },
+                { id: 'herramientas', name: 'Herramientas' }
+            ];
+
+            const exists = cats.some(c => c.name.toLowerCase() === newCatName.toLowerCase());
+            if (!exists) {
+                const newCat = {
+                    id: newCatName.toLowerCase().replace(/\s+/g, '-'),
+                    name: newCatName
+                };
+                cats.push(newCat);
+                localStorage.setItem('osel_categories', JSON.stringify(cats));
+
+                // Refresh Select
+                populateCategorySelect(cats);
+
+                const select = document.getElementById('p-category');
+                select.value = newCat.id; // Seleccionar la nueva
+
+                document.getElementById('new-cat-container').classList.add('hidden');
+                document.getElementById('p-new-category').value = "";
+                alert("✅ Categoría agregada y guardada.");
+            } else {
+                alert("Esta categoría ya existe");
+            }
+        }
+
+        function populateCategorySelect(cats) {
+            const select = document.getElementById('p-category');
+            if (!select) return;
+
+            select.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('') +
+                `<option value="NEW">+ Nueva Categoría...</option>`;
+        }
+
+        async function saveNewClient(e) {
+            e.preventDefault();
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const password = document.getElementById('c-password').value;
+
+            try {
+                const response = await fetch(AppConfig.apiUrl('/api/auth/register'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, password })
+                });
+
+                if (response.ok) {
+                    showToast('Cliente registrado');
+                    e.target.reset();
+                    document.getElementById('client-modal').classList.add('hidden');
+                    renderClients();
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Error al registrar cliente');
+                }
+            } catch (err) {
+                alert('Error de conexión');
+            }
+        }
+
+        function updateStats() {
+            let products = JSON.parse(localStorage.getItem('osel_products')) || [];
+            const orders = JSON.parse(localStorage.getItem('osel_orders')) || [];
+            const clients = JSON.parse(localStorage.getItem('osel_clients')) || [];
+
+            // --- METRIC 1: TOTAL REVENUE ---
+            const totalRevenue = orders.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
+            if (document.getElementById('stat-sales')) {
+                document.getElementById('stat-sales').textContent = `$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            // --- METRIC 2: TOTAL INVESTED ---
+            const currentInventoryVal = products.reduce((sum, p) => {
+                const cost = (p.cost && p.cost > 0) ? p.cost : (p.price * 0.6);
+                return sum + (cost * (p.stock || 0));
+            }, 0);
+
+            let cogs = 0;
+            const productSalesCount = {};
+            orders.forEach(order => {
+                if (order.items) {
+                    order.items.forEach(item => {
+                        let itemCost = item.cost;
+                        if (!itemCost) {
+                            const original = products.find(p => p.id == item.id || p.name === item.name);
+                            if (original) {
+                                itemCost = (original.cost && original.cost > 0) ? original.cost : (original.price * 0.6);
+                            } else {
+                                itemCost = (item.price || 0) * 0.6;
+                            }
+                        }
+                        cogs += (itemCost * (item.qty || 1));
+                        const pName = item.name || "Producto";
+                        productSalesCount[pName] = (productSalesCount[pName] || 0) + (item.qty || 1);
+                    });
+                }
+            });
+
+            const totalInvested = currentInventoryVal + cogs;
+            if (document.getElementById('stat-invested')) {
+                document.getElementById('stat-invested').textContent = `$${totalInvested.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            // --- METRIC 3: NET PROFIT ---
+            const netProfit = totalRevenue - totalInvested;
+            if (document.getElementById('stat-net-profit')) {
+                const el = document.getElementById('stat-net-profit');
+                el.textContent = `$${netProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                if (netProfit < 0) el.className = "text-3xl font-black text-red-400";
+                else el.className = "text-3xl font-black text-emerald-400";
+            }
+
+            // Margin/Recovery bar
+            if (document.getElementById('net-margin-bar')) {
+                let percent = 0;
+                if (totalRevenue > 0) {
+                    const ratio = totalInvested > 0 ? (totalRevenue / totalInvested) * 100 : 0;
+                    percent = Math.min(ratio, 100);
+                }
+                document.getElementById('net-margin-bar').style.width = `${percent}%`;
+                if (document.getElementById('net-margin-text')) {
+                    document.getElementById('net-margin-text').textContent = `Recuperación Inversión: ${percent.toFixed(1)}%`;
+                }
+            }
+
+            // --- METRIC 4: CLIENTS ---
+            if (document.getElementById('stat-clients')) {
+                document.getElementById('stat-clients').textContent = clients.length;
+            }
+            const today = new Date().toLocaleDateString();
+            const newToday = clients.filter(c => c.joined === today).length;
+            if (document.getElementById('stat-new-clients')) {
+                document.getElementById('stat-new-clients').textContent = `+${newToday} hoy`;
+            }
+
+            // --- TOP PRODUCTS ---
+            if (document.getElementById('top-products-list')) {
+                const container = document.getElementById('top-products-list');
+                const sortedProducts = Object.entries(productSalesCount)
+                    .sort(([, a], [, b]) => b - a)
+                    .slice(0, 5);
+
+                if (sortedProducts.length === 0) {
+                    container.innerHTML = `<div class="px-6 py-4 bg-slate-50 rounded-xl text-center"><p class="text-sm font-bold text-slate-400">Sin datos de ventas aún.</p></div>`;
+                } else {
+                    const maxVal = sortedProducts[0][1];
+                    container.innerHTML = sortedProducts.map(([name, count]) => {
+                        const widthObj = (count / maxVal) * 100;
+                        return `
+                        <div>
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-black text-slate-700 uppercase tracking-tight">${name}</span>
+                                <span class="text-xs font-bold text-slate-500">${count} vendidos</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="bg-blue-osel h-2 rounded-full" style="width: ${widthObj}%"></div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }  // --- Backup Functions ---
+        function downloadBackup() {
+            const data = {
+                products: JSON.parse(localStorage.getItem('osel_products')) || [],
+                clients: JSON.parse(localStorage.getItem('osel_clients')) || [],
+                categories: JSON.parse(localStorage.getItem('osel_categories')) || [],
+                orders: JSON.parse(localStorage.getItem('osel_orders')) || [],
+                timestamp: new Date().toISOString()
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "osel_backup_" + new Date().toISOString().slice(0, 10) + ".json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function restoreBackup(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (confirm(`Se encontró una copia del ${new Date(data.timestamp).toLocaleString()}. \n¿Deseas reemplazar los datos actuales? Esta acción no se puede deshacer.`)) {
+                        if (data.products) localStorage.setItem('osel_products', JSON.stringify(data.products));
+                        if (data.clients) localStorage.setItem('osel_clients', JSON.stringify(data.clients));
+                        if (data.categories) localStorage.setItem('osel_categories', JSON.stringify(data.categories));
+                        if (data.orders) localStorage.setItem('osel_orders', JSON.stringify(data.orders));
+
+                        alert("Sistema restaurado con éxito. La página se recargará.");
+                        location.reload();
+                    }
+                } catch (err) {
+                    alert("Error al leer el archivo de respaldo. Asegúrate de que es un archivo .json válido.");
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Toggle Product Type Fields
+        function toggleProductType(tipo) {
+            const ventaFields = document.getElementById('venta-fields');
+            const recompensaFields = document.getElementById('recompensa-fields');
+
+            if (tipo === 'venta') {
+                // Mostrar campos de venta
+                ventaFields.classList.remove('hidden');
+                recompensaFields.classList.add('hidden');
+
+                // Hacer requeridos los campos de venta
+                document.getElementById('p-cost').required = true;
+                document.getElementById('p-price').required = true;
+                document.getElementById('p-puntos-canje').required = false;
+            } else {
+                // Mostrar campos de recompensa
+                ventaFields.classList.add('hidden');
+                recompensaFields.classList.remove('hidden');
+
+                // Hacer requerido el campo de puntos de canje
+                document.getElementById('p-cost').required = false;
+                document.getElementById('p-price').required = false;
+                document.getElementById('p-puntos-canje').required = true;
+            }
+        }
+
+        // Open Product Modal
+        function openProductModal() {
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('product-modal').classList.add('flex');
+            // Reset form
+            document.getElementById('p-id').value = '';
+            document.querySelector('#product-modal form').reset();
+            document.getElementById('new-cat-container').classList.add('hidden');
+            toggleProductType('venta'); // Set default to venta
+
+            // Load Categories
+            const defaults = [
+                { id: 'vinilica', name: 'Vinílica' },
+                { id: 'acrilica', name: 'Acrílica' },
+                { id: 'esmalte', name: 'Esmalte' },
+                { id: 'impermeabilizante', name: 'Impermeabilizante' },
+                { id: 'sellador', name: 'Sellador' },
+                { id: 'automotriz', name: 'Automotriz' },
+                { id: 'herramientas', name: 'Herramientas' }
+            ];
+            const cats = JSON.parse(localStorage.getItem('osel_categories')) || defaults;
+            populateCategorySelect(cats);
+        }
+
+        // Image Cropper Logic
+        let cropper = null;
+        let originalFile = null;
+        let croppedImageData = null;
+
+        function updateFileName(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            originalFile = file;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const modal = document.getElementById('cropper-modal');
+                const image = document.getElementById('cropper-image');
+                image.src = e.target.result;
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+
+                if (cropper) cropper.destroy();
+
+                cropper = new Cropper(image, {
+                    aspectRatio: 1, // Square for products
+                    viewMode: 2,
+                    dragMode: 'move',
+                    background: false,
+                    ready() {
+                        // Color adjustments or other logic
+                    }
+                });
+            };
+            reader.readAsDataURL(file);
+            document.getElementById('file-name').textContent = file.name;
+        }
+
+        function cancelCrop() {
+            const modal = document.getElementById('cropper-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (cropper) cropper.destroy();
+            document.getElementById('p-image-file').value = "";
+            document.getElementById('file-name').textContent = "Seleccionar archivo...";
+        }
+
+        function confirmCrop() {
+            if (!cropper) return;
+            croppedImageData = cropper.getCroppedCanvas({
+                width: 800,
+                height: 800
+            }).toDataURL('image/jpeg', 0.8);
+
+            const modal = document.getElementById('cropper-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            // Update preview or just save reference
+            document.getElementById('file-name').textContent = "✅ Imagen Recortada";
+            if (cropper) cropper.destroy();
+        }
+
+        // Modified saveProduct to use cropped data
+        function saveProduct(event) {
+            event.preventDefault();
+
+            const pId = document.getElementById('p-id').value;
+            const tipo = document.getElementById('p-tipo').value;
+
+            // Maintain numeric ID for local, use String ID for server
+            const numericId = String(pId).length < 15 ? parseInt(pId) : null;
+
+            const productData = {
+                id: pId || Date.now(),
+                name: document.getElementById('p-name').value,
+                sku: document.getElementById('p-sku').value,
+                category: document.getElementById('p-category').value,
+                stock: parseInt(document.getElementById('p-stock').value) || 0,
+                desc: document.getElementById('p-desc').value,
+                tipo: tipo
+            };
+
+            if (tipo === 'venta') {
+                productData.price = parseFloat(document.getElementById('p-price').value) || 0;
+                productData.cost = parseFloat(document.getElementById('p-cost').value) || 0;
+                productData.points = parseInt(document.getElementById('p-puntos-otorga').value) || 0;
+            } else {
+                productData.price = 0;
+                productData.cost = 0;
+                productData.puntosRequeridos = parseInt(document.getElementById('p-puntos-canje').value) || 0;
+            }
+
+            const existingProduct = state.products.find(p => String(p.id) === String(pId) || String(p._id) === String(pId));
+
+            if (croppedImageData) {
+                productData.image = croppedImageData;
+                croppedImageData = null;
+                finalizeSaveProduct(productData, pId);
+            } else {
+                productData.image = existingProduct ? existingProduct.image : 'https://via.placeholder.com/400';
+                finalizeSaveProduct(productData, pId);
+            }
+        }
+
+        async function finalizeSaveProduct(productData, pId) {
+            // Guardar localmente
+            if (pId) {
+                const index = state.products.findIndex(p => String(p.id) === String(pId) || String(p._id) === String(pId));
+                if (index !== -1) {
+                    state.products[index] = { ...state.products[index], ...productData };
+                } else {
+                    state.products.push(productData);
+                }
+            } else {
+                state.products.push(productData);
+            }
+            localStorage.setItem('osel_products', JSON.stringify(state.products));
+
+            // SINCRONIZAR CON SERVIDOR
+            try {
+                const userData = JSON.parse(localStorage.getItem('osel_user'));
+                const existingProduct = state.products.find(p => String(p.id) === String(pId) || String(p._id) === String(pId));
+                const serverId = existingProduct?.mongodb_id || (pId && String(pId).length === 24 ? pId : null);
+
+                const payload = {
+                    name: productData.name,
+                    description: productData.desc,
+                    price: productData.price,
+                    image: productData.image,
+                    category: productData.category,
+                    stock: productData.stock,
+                    sku: productData.sku,
+                    cost: productData.cost, // Enviar costo
+                    isRedeemable: productData.tipo === 'recompensa',
+                    pointsCost: productData.puntosRequeridos || 0
+                };
+
+                let response;
+                if (serverId) {
+                    // UPDATE
+                    response = await fetch(`/api/products/${serverId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${userData?.token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    // CREATE
+                    response = await fetch('/api/products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${userData?.token}`
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                }
+
+                if (response.ok) {
+                    const saved = await response.json();
+                    const index = state.products.findIndex(p => p.name === productData.name);
+                    if (index !== -1) {
+                        state.products[index].mongodb_id = saved._id;
+                        state.products[index]._id = saved._id;
+                        localStorage.setItem('osel_products', JSON.stringify(state.products));
+                    }
+                }
+            } catch (err) {
+                console.error('[OSEL] Error sincronizando:', err);
+            }
+
+            alert(`✅ Producto ${pId ? 'actualizado' : 'agregado'} exitosamente.`);
+            document.getElementById('product-modal').classList.add('hidden');
+            renderInventory();
+            updateStats();
+        }
+        function calculateModalProfit() {
+            const cost = parseFloat(document.getElementById('p-cost').value) || 0;
+            const price = parseFloat(document.getElementById('p-price').value) || 0;
+            const profit = price - cost;
+            const margin = price > 0 ? ((profit / price) * 100).toFixed(1) : 0;
+
+            document.getElementById('p-calc-profit').textContent = `$${profit.toFixed(2)}`;
+            document.getElementById('p-calc-margin').textContent = `${margin}%`;
+        }
+
+        // Render Inventory
+        function renderInventory() {
+            const list = document.getElementById('inventory-list');
+            const searchTerm = document.getElementById('inv-search')?.value.toLowerCase() || '';
+
+            if (!state.products || state.products.length === 0) {
+                list.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="px-10 py-20 text-center">
+                            <div class="flex flex-col items-center gap-4">
+                                <span class="material-symbols-outlined text-6xl text-slate-200">inventory</span>
+                                <p class="text-slate-400 font-bold">No hay productos en el inventario</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Filter ONLY products for sale (tipo='venta' or no tipo)
+            let filtered = state.products.filter(p => p.tipo === 'venta' || !p.tipo);
+
+            // Filter by search
+            if (searchTerm) {
+                filtered = filtered.filter(p =>
+                    p.name?.toLowerCase().includes(searchTerm) ||
+                    p.sku?.toLowerCase().includes(searchTerm) ||
+                    p.category?.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="px-10 py-20 text-center">
+                            <p class="text-slate-400 font-bold">No se encontraron productos</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            list.innerHTML = filtered.map(p => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-10 py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                                <img src="${p.image || 'https://via.placeholder.com/48'}" class="w-full h-full object-cover" alt="${p.name}">
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-900 text-sm">${p.name}</p>
+                                <p class="text-xs text-slate-400 font-mono">${p.sku || 'N/A'}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-10 py-6 text-right">
+                        <p class="text-sm font-bold text-slate-600">Costo: $${(p.cost || 0).toFixed(2)}</p>
+                        <p class="text-lg font-black text-emerald-600">$${(p.price || 0).toFixed(2)}</p>
+                        <p class="text-xs text-blue-600 font-bold">+${p.points || 0} pts al comprar</p>
+                    </td>
+                    <td class="px-10 py-6 text-right">
+                        <p class="text-2xl font-black text-slate-900">${p.stock || 0}</p>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Unidades</p>
+                    </td>
+                    <td class="px-10 py-6 text-right">
+                        <div class="flex justify-end gap-2">
+                            <button onclick="editProduct('${p.id}')" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                            </button>
+                            <button onclick="deleteProduct('${p.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ===== RECOMPENSAS =====
+
+        // Open Reward Modal
+        function openRewardModal() {
+            document.getElementById('reward-modal').classList.remove('hidden');
+            document.getElementById('reward-modal').classList.add('flex');
+            // Reset form
+            document.getElementById('r-id').value = '';
+            document.querySelector('#reward-modal h3').textContent = '🎁 Nueva Recompensa';
+            document.querySelector('#reward-modal form').reset();
+        }
+
+        // Save Reward
+        function saveReward(event) {
+            event.preventDefault();
+
+            const rId = document.getElementById('r-id').value;
+            const rewardData = {
+                id: rId || Date.now(),
+                name: document.getElementById('r-name').value,
+                desc: document.getElementById('r-desc').value || '',
+                stock: parseInt(document.getElementById('r-stock').value) || 0,
+                puntosRequeridos: parseInt(document.getElementById('r-points').value) || 0,
+                cost: parseFloat(document.getElementById('r-cost').value) || 0,
+                price: parseFloat(document.getElementById('r-price').value) || 0,
+                tipo: 'recompensa',
+                points: 0,
+                category: 'recompensa'
+            };
+
+            const existingReward = state.products.find(p => String(p.id) === String(rId) || String(p._id) === String(rId));
+            const fileInput = document.getElementById('r-image');
+
+            if (fileInput && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    rewardData.image = e.target.result;
+                    finalizeSaveReward(rewardData, rId);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                rewardData.image = existingReward ? existingReward.image : 'https://via.placeholder.com/400';
+                finalizeSaveReward(rewardData, rId);
+            }
+        }
+
+        async function finalizeSaveReward(rewardData, rId) {
+            if (rId) {
+                const index = state.products.findIndex(p => String(p.id) === String(rId) || String(p._id) === String(rId));
+                if (index !== -1) {
+                    state.products[index] = { ...state.products[index], ...rewardData };
+                } else {
+                    state.products.push(rewardData);
+                }
+            } else {
+                state.products.push(rewardData);
+            }
+
+            localStorage.setItem('osel_products', JSON.stringify(state.products));
+
+            // Sincronizar con servidor como producto recompensa
+            try {
+                const userData = JSON.parse(localStorage.getItem('osel_user'));
+                const existing = state.products.find(p => String(p.id) === String(rId) || String(p._id) === String(rId));
+                const serverId = existing?.mongodb_id || (rId && String(rId).length === 24 ? rId : null);
+
+                const payload = {
+                    name: rewardData.name,
+                    description: rewardData.desc,
+                    price: 0,
+                    image: rewardData.image,
+                    category: 'recompensa',
+                    stock: rewardData.stock,
+                    isRedeemable: true,
+                    pointsCost: rewardData.puntosRequeridos
+                };
+
+                if (serverId) {
+                    await fetch(`/api/products/${serverId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userData?.token}` },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    const resp = await fetch('/api/products', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userData?.token}` },
+                        body: JSON.stringify(payload)
+                    });
+                    if (resp.ok) {
+                        const saved = await resp.json();
+                        const idx = state.products.findIndex(p => p.name === rewardData.name);
+                        if (idx !== -1) {
+                            state.products[idx].mongodb_id = saved._id;
+                            state.products[idx]._id = saved._id;
+                            localStorage.setItem('osel_products', JSON.stringify(state.products));
+                        }
+                    }
+                }
+            } catch (e) { }
+
+            alert(`✅ Recompensa ${rId ? 'actualizada' : 'agregada'} exitosamente!`);
+            document.getElementById('reward-modal').classList.add('hidden');
+            renderRewards();
+            updateStats();
+        }
+        // Render Rewards
+        function renderRewards() {
+            const list = document.getElementById('rewards-list');
+            const searchTerm = document.getElementById('reward-search')?.value.toLowerCase() || '';
+
+            if (!state.products) {
+                list.innerHTML = `
+                <tr>
+                    <td colspan="3" class="px-10 py-20 text-center">
+                        <div class="flex flex-col items-center gap-4">
+                            <span class="material-symbols-outlined text-6xl text-yellow-200">redeem</span>
+                            <p class="text-yellow-600 font-bold">No hay recompensas disponibles</p>
+                            <button onclick="openRewardModal()" class="px-6 py-3 bg-yellow-500 text-white rounded-lg font-bold hover:bg-yellow-600">
+                                Agregar Primera Recompensa
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+                return;
+            }
+
+            // Filter only rewards
+            let rewards = state.products.filter(p => p.tipo === 'recompensa');
+
+            // Filter by search
+            if (searchTerm) {
+                rewards = rewards.filter(p => p.name?.toLowerCase().includes(searchTerm));
+            }
+
+            if (rewards.length === 0) {
+                list.innerHTML = `
+                <tr>
+                    <td colspan="3" class="px-10 py-20 text-center">
+                        <p class="text-yellow-600 font-bold">No se encontraron recompensas</p>
+                    </td>
+                </tr>
+            `;
+                return;
+            }
+
+            list.innerHTML = rewards.map(r => `
+            <tr class="hover:bg-yellow-50 transition-colors">
+                <td class="px-10 py-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden bg-yellow-100 flex-shrink-0">
+                            <img src="${r.image || 'https://via.placeholder.com/48'}" class="w-full h-full object-cover" alt="${r.name}">
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">${r.name}</p>
+                            <p class="text-xs text-yellow-600 font-medium">${r.desc || 'Sin descripción'}</p>
+                            <div class="flex gap-2 mt-1">
+                                <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-yellow-100 text-yellow-700">🎁 Recompensa</span>
+                                <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-slate-100 text-slate-500">C: $${(r.cost || 0).toFixed(0)} | P: $${(r.price || 0).toFixed(0)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-10 py-6 text-right">
+                    <p class="text-2xl font-black text-yellow-600">${r.puntosRequeridos || 0} pts</p>
+                    <p class="text-xs text-yellow-700 font-bold">Requeridos</p>
+                </td>
+                <td class="px-10 py-6 text-right">
+                    <p class="text-2xl font-black text-slate-900">${r.stock || 0}</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Unidades</p>
+                </td>
+                <td class="px-10 py-6 text-right">
+                    <div class="flex justify-end gap-2">
+                        <button onclick="editReward('${r.id}')" class="p-2 bg-yellow-50 text-yellow-700 rounded-lg hover:bg-yellow-500 hover:text-white transition-all">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                        </button>
+                        <button onclick="deleteReward('${r.id}')" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+        }
+
+        // CRUD Actions
+        async function deleteProduct(id) {
+            if (!confirm('¿Eliminar definitivamente este producto?')) return;
+            try {
+                const product = state.products.find(p => String(p.id) === String(id) || String(p._id) === String(id));
+                const serverId = product?.mongodb_id || product?._id || (String(id).length === 24 ? id : null);
+
+                if (serverId) {
+                    const userData = JSON.parse(localStorage.getItem('osel_user'));
+                    const controller = new AbortController();
+                    setTimeout(() => controller.abort(), 2000);
+                    await fetch(`/api/products/${serverId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${userData?.token}` },
+                        signal: controller.signal
+                    }).catch(() => { });
+                }
+            } catch (err) { }
+
+            state.products = state.products.filter(p =>
+                String(p.id) !== String(id) && String(p._id) !== String(id) && String(p.mongodb_id) !== String(id)
+            );
+            localStorage.setItem('osel_products', JSON.stringify(state.products));
+            showToast('Producto eliminado');
+            renderInventory();
+            updateStats();
+        }
+
+        function editProduct(id) {
+            // Find by string comparison to handle both numeric and mongo IDs
+            const p = state.products.find(item => String(item.id) === String(id) || String(item._id) === String(id));
+            if (!p) return;
+
+            openProductModal();
+            document.getElementById('modal-title').textContent = 'Editar Producto';
+            document.getElementById('p-id').value = p.id || p._id;
+            document.getElementById('p-name').value = p.name;
+            document.getElementById('p-sku').value = p.sku;
+
+            const select = document.getElementById('p-category');
+            if (select) {
+                const catExists = Array.from(select.options).some(opt => opt.value === p.category);
+                if (catExists) {
+                    select.value = p.category;
+                } else {
+                    const optByText = Array.from(select.options).find(opt => opt.text.toLowerCase() === String(p.category || '').toLowerCase());
+                    if (optByText) select.value = optByText.value;
+                }
+            }
+
+            document.getElementById('p-stock').value = p.stock || 0;
+            document.getElementById('p-desc').value = p.desc || p.description || '';
+            document.getElementById('p-tipo').value = p.tipo || 'venta';
+
+            toggleProductType(p.tipo || 'venta');
+
+            if (p.tipo === 'venta' || !p.tipo) {
+                document.getElementById('p-cost').value = p.cost || 0;
+                document.getElementById('p-price').value = p.price || 0;
+                document.getElementById('p-puntos-otorga').value = p.points || 0;
+            } else {
+                document.getElementById('p-puntos-canje').value = p.puntosRequeridos || p.pointsCost || 0;
+            }
+
+            calculateModalProfit();
+        }
+        async function deleteReward(id) {
+            if (!confirm('¿Eliminar esta recompensa?')) return;
+            try {
+                if (String(id).length === 24) {
+                    const controller = new AbortController();
+                    setTimeout(() => controller.abort(), 2000);
+                    await fetch(`/api/products/${id}`, { method: 'DELETE', signal: controller.signal }).catch(() => { });
+                }
+            } catch (err) { }
+            state.products = state.products.filter(p =>
+                String(p.id) !== String(id) && String(p._id) !== String(id)
+            );
+            localStorage.setItem('osel_products', JSON.stringify(state.products));
+            showToast('Recompensa eliminada');
+            renderRewards();
+            updateStats();
+        }
+
+        function editReward(id) {
+            const r = state.products.find(item => String(item.id) === String(id) || String(item._id) === String(id));
+            if (!r) return;
+
+            openRewardModal();
+            document.querySelector('#reward-modal h3').textContent = '🎁 Editar Recompensa';
+            document.getElementById('r-id').value = r.id || r._id;
+            document.getElementById('r-name').value = r.name;
+            document.getElementById('r-desc').value = r.desc || r.description || '';
+            document.getElementById('r-stock').value = r.stock || 0;
+            document.getElementById('r-points').value = r.puntosRequeridos || r.pointsCost || 0;
+            document.getElementById('r-cost').value = r.cost || 0;
+            document.getElementById('r-price').value = r.price || 0;
+        }
+        async function changeAdminPassword() {
+            const newPwd = document.getElementById('new-password').value;
+            if (!newPwd || newPwd.length < 6) {
+                alert("La contraseña debe tener al menos 6 caracteres.");
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('osel_user'));
+            if (!userData || !userData.token) {
+                alert("Sesión no válida.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${userData.token}`
+                    },
+                    body: JSON.stringify({ newPassword: newPwd })
+                });
+
+                if (response.ok) {
+                    showToast('¡Contraseña actualizada!');
+                    document.getElementById('new-password').value = '';
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Error al cambiar contraseña');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Sin conexión con el servidor');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-10 right-10 bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 duration-300 z-[200] font-bold text-sm flex items-center gap-3';
+            toast.innerHTML = `<span class="material-symbols-outlined text-emerald-400">check_circle</span> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-5');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderActivity();
+            updateStats();
+            renderInventory();
+            switchTab('inicio');
+        });
+    </script>
+</body>
+
+</html>

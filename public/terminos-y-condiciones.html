@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Términos y Condiciones | Pinturas Osel Lázaro</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script src="js/security.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                background: rgba(255, 255, 255, 0.85);
+            }
+            .legal-content h2 {
+                @apply text-xl font-bold mt-8 mb-4 text-slate-900 dark:text-white;
+            }
+            .legal-content p {
+                @apply mb-4 text-slate-600 dark:text-slate-400 leading-relaxed;
+            }
+            .legal-content ul {
+                @apply list-disc ml-6 mb-6 text-slate-600 dark:text-slate-400;
+            }
+            .legal-content li {
+                @apply mb-2;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans transition-colors duration-300">
+
+    <!-- Header -->
+    <nav class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-10 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="pt-32 pb-20 px-6">
+        <article
+            class="max-w-3xl mx-auto bg-white dark:bg-slate-900 p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 legal-content">
+            <div class="border-b border-slate-100 dark:border-slate-800 pb-8 mb-8">
+                <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">Términos y Condiciones
+                </h1>
+                <p class="text-sm text-slate-400">Última actualización: Enero 2026</p>
+            </div>
+
+            <p>Bienvenido al sitio web de <strong>Pinturas Osel Lázaro</strong>. Al acceder y utilizar este sitio, usted
+                acepta estar sujeto a los siguientes términos y condiciones de uso.</p>
+
+            <h2>1. Uso del Sitio</h2>
+            <p>El contenido de este sitio web es para su información general y uso personal. Está sujeto a cambios sin
+                previo aviso. Ni nosotros ni terceros ofrecemos ninguna garantía en cuanto a la exactitud, puntualidad,
+                rendimiento, integridad o idoneidad de la información y los materiales encontrados u ofrecidos en este
+                sitio para cualquier propósito particular.</p>
+
+            <h2>2. Propiedad Intelectual</h2>
+            <p>Este sitio web contiene material que es propiedad nuestra o licenciado a nosotros. Este material incluye,
+                pero no se limita a, el diseño, la apariencia, el estilo y los gráficos. La reproducción está prohibida
+                salvo de conformidad con el aviso de copyright, que forma parte de estos términos y condiciones.</p>
+
+            <h2>3. Productos y Precios</h2>
+            <p>Todos los productos mostrados están sujetos a disponibilidad. Nos esforzamos por mostrar con la mayor
+                precisión posible los colores y características de nuestros productos. Sin embargo, no podemos
+                garantizar que la visualización de cualquier color en su monitor sea exacta. Los precios están sujetos a
+                cambios sin previo aviso.</p>
+
+            <h2>4. Envíos y Entregas</h2>
+            <p>Los tiempos de entrega son estimados y pueden variar debido a factores externos. Osel Lázaro no se hace
+                responsable por retrasos causados por fuerza mayor. El cliente es responsable de proporcionar una
+                dirección de entrega correcta y completa.</p>
+
+            <h2>5. Devoluciones y Garantías</h2>
+            <ul>
+                <li><strong>Igualación de color:</strong> No se aceptan devoluciones en pinturas ya preparadas o
+                    igualadas al color seleccionado por el cliente, salvo error evidente en la formulación verificado
+                    por nuestro personal técnico.</li>
+                <li><strong>Garantía:</strong> Los productos defectuosos de fábrica serán reemplazados sin costo, previa
+                    validación técnica.</li>
+            </ul>
+
+            <h2>6. Ley Aplicable</h2>
+            <p>El uso de este sitio web y cualquier disputa que surja de dicho uso del sitio web está sujeto a las leyes
+                de México.</p>
+
+            <div class="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 text-center">
+                <p class="text-sm text-slate-400">Pinturas Osel Lázaro - Lázaro Cárdenas, Michoacán.</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-400 text-sm">
+        © 2026 Pinturas Osel Lázaro. Todos los derechos reservados. Creado por GuzDevStudio.
+    </footer>
+</body>
+
+</html>

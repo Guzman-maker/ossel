@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Osel Lázaro | Visualizador Profesional</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <script src="js/security.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13c8ec",
+                        "background-light": "#fcfdfd",
+                        "accent-gold": "#c5a47e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { font-family: 'Inter', sans-serif; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        .chip-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+        .nav-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #13c8ec;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-underline:hover::after {
+            transform: scaleX(1);
+        }
+        .nav-active::after {
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light text-[#0d191b] antialiased font-display">
+    <div class="relative flex h-screen w-full flex-col overflow-hidden">
+        <!-- Header (Full Navigation) -->
+        <header
+            class="flex items-center justify-between border-b border-gray-100 px-10 py-0 bg-white z-50 h-20 shrink-0">
+            <div class="flex items-center gap-12 h-full">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="img/logo-osel-final.png" alt="Osel"
+                        class="h-10 object-contain group-hover:opacity-80 transition-opacity">
+                </a>
+                <nav class="hidden lg:flex items-center gap-8 h-full">
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-gray-500 hover:text-primary transition-colors uppercase border-b-2 border-transparent hover:border-primary"
+                        href="index.html">Inicio</a>
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-gray-500 hover:text-primary transition-colors uppercase border-b-2 border-transparent hover:border-primary"
+                        href="tienda.html">Productos</a>
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-gray-500 hover:text-primary transition-colors uppercase border-b-2 border-transparent hover:border-primary"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-primary border-b-2 border-primary transition-colors uppercase"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-gray-500 hover:text-primary transition-colors uppercase border-b-2 border-transparent hover:border-primary"
+                        href="rewards.html">Recompensas</a>
+                    <a class="flex items-center h-full text-sm font-bold tracking-wide text-gray-500 hover:text-primary transition-colors uppercase border-b-2 border-transparent hover:border-primary"
+                        href="tienda.html">Tienda</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 text-gray-400 mr-4 border-r border-gray-100 pr-4">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                    <input type="text" id="colorSearch" placeholder="Buscar color..."
+                        class="border-none focus:ring-0 text-xs font-semibold placeholder-gray-300 p-0 w-24">
+                </div>
+
+                <!-- Shopping Cart Icon -->
+                <a href="carrito.html"
+                    class="relative p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all group"
+                    title="Ver Carrito">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full hidden">0</span>
+                </a>
+
+                <a href="login.html"
+                    class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all flex items-center justify-center">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+                <a href="tiendas.html"
+                    class="hidden md:flex px-6 py-2.5 bg-[#0d191b] hover:bg-black text-white rounded-full text-xs font-bold transition-all shadow-lg items-center uppercase tracking-wider">
+                    Tiendas
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 flex overflow-hidden">
+            <!-- Left Panel: Colors -->
+            <div class="flex-1 flex flex-col bg-white overflow-hidden">
+                <div class="px-10 pt-10 pb-0 border-b border-gray-50">
+                    <div class="flex flex-col gap-8">
+                        <div class="flex items-baseline justify-between">
+                            <div>
+                                <h1 class="font-serif text-4xl text-gray-900 mb-2">Catálogo de Color</h1>
+                                <p class="text-sm text-gray-400 font-medium tracking-wide">Selecciona un tono para
+                                    previsualizarlo en el muro.</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <!-- Filters could go here -->
+                            </div>
+                        </div>
+                        <!-- Categories Navigation -->
+                        <div class="flex items-center gap-10 overflow-x-auto no-scrollbar scroll-smooth"
+                            id="category-nav">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Grid -->
+                <div class="flex-1 overflow-y-auto p-10 custom-scrollbar bg-gray-50/30">
+                    <div class="space-y-16" id="color-grid-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Visualizer -->
+            <aside
+                class="w-[520px] bg-white border-l border-gray-100 p-12 flex flex-col gap-10 overflow-y-auto custom-scrollbar shadow-2xl z-20">
+                <div>
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-xs font-black tracking-[0.3em] text-gray-400 uppercase">Previsualización
+                            Realista</h2>
+                        <div class="flex gap-2">
+                            <!-- Tools could go here -->
+                        </div>
+                    </div>
+
+                    <!-- Preview Card -->
+                    <div
+                        class="relative group rounded-[2.5rem] overflow-hidden shadow-2xl bg-white p-2 border border-gray-100">
+                        <div class="aspect-[3/4] w-full rounded-[2rem] bg-cover bg-center overflow-hidden relative"
+                            style="background-image: url('img/vis_wall_clean.png');">
+
+                            <!-- Color Overlay (Multiply) -->
+                            <div id="preview-overlay"
+                                class="absolute inset-0 bg-white mix-blend-multiply opacity-95 transition-colors duration-300">
+                            </div>
+
+                            <!-- Info Overlay -->
+                            <div class="absolute inset-0 p-10 flex flex-col justify-end pointer-events-none">
+                                <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/20 shadow-lg"
+                                    id="preview-info-card">
+                                    <span
+                                        class="text-[10px] font-black tracking-[0.2em] text-slate-800 uppercase mb-2 block opacity-80 shadow-black">Selección
+                                        Actual</span>
+                                    <h3 class="text-slate-900 text-4xl font-serif mb-1" id="preview-name">Blanco Puro
+                                    </h3>
+                                    <p class="text-slate-700 text-xs font-semibold tracking-widest uppercase"
+                                        id="preview-code">#FFFFFF</p>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="absolute top-10 right-10 flex flex-col gap-3">
+                                <button onclick="startCompare()" onmouseleave="stopCompare()"
+                                    class="size-12 rounded-full bg-white/30 backdrop-blur-md border border-white/40 flex items-center justify-center text-slate-800 hover:bg-white hover:text-gray-900 transition-all shadow-xl"
+                                    title="Mantener para comparar">
+                                    <span class="material-symbols-outlined text-[24px]">compare</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning -->
+                <div class="bg-amber-50 rounded-3xl p-8 border border-amber-100/50">
+                    <div class="flex gap-5">
+                        <div class="text-amber-500">
+                            <span class="material-symbols-outlined font-bold text-3xl">warning</span>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <p class="text-sm font-bold text-gray-900">Fidelidad de Color</p>
+                            <p class="text-xs leading-relaxed text-gray-500 font-medium">
+                                Los colores digitales pueden variar dependiendo de la calibración de su dispositivo.
+                                Recomendamos solicitar una muestra física a su asesor para una precisión absoluta.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="mt-auto space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="addColorToCart()"
+                            class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border border-gray-100 hover:bg-gray-50 transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">shopping_cart</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-600">Comprar</span>
+                        </button>
+                        <button
+                            class="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border border-gray-100 hover:bg-gray-50 transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">share</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-600">Compartir</span>
+                        </button>
+                    </div>
+
+                    <a href="https://wa.me/527531245074?text=Hola,%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20el%20color%20que%20vi%20en%20el%20visualizador."
+                        target="_blank"
+                        class="w-full bg-[#111] hover:bg-black text-white py-6 rounded-2xl font-bold text-sm tracking-[0.2em] uppercase flex items-center justify-center gap-4 shadow-2xl transition-all hover:-translate-y-1">
+                        <svg class="size-5 fill-[#25D366]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z">
+                            </path>
+                        </svg>
+                        Consultar Experto
+                    </a>
+
+                    <div class="flex items-center justify-between px-2">
+                        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.3em]">Lázaro Cárdenas, MX</p>
+                        <div class="text-right">
+                            <p class="text-[9px] text-gray-300 font-bold uppercase tracking-[0.3em]">© 2026 Osel Lázaro
+                            </p>
+                            <p class="text-[7px] text-gray-400 font-bold uppercase tracking-[0.2em]">Creado por
+                                GuzDevStudio</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="js/app.js"></script>
+    <script>
+        // --- Color Data ---
+        const colorPalette = {
+            "Rosas & Rojos": {
+                themeColor: "#EAA6AB",
+                colors: [
+                    { hex: "#EAA6AB", name: "Rosa Suave" }, { hex: "#DA868B", name: "Rosa Medio" },
+                    { hex: "#C16163", name: "Rosa Intenso" }, { hex: "#AA4E4C", name: "Rojo Teja" },
+                    { hex: "#F6E1DF", name: "Pétalo" }, { hex: "#EDC7C7", name: "Rosa Pastel" },
+                    { hex: "#DC143C", name: "Carmesí" }, { hex: "#8B0000", name: "Rojo Oscuro" },
+                    { hex: "#FF0000", name: "Rojo Vivo" }, { hex: "#B22222", name: "Ladrillo" },
+                    { hex: "#FF6347", name: "Tomate" }, { hex: "#CD5C5C", name: "Rojo Indio" },
+                    { hex: "#FA8072", name: "Salmón" }, { hex: "#c94c4c", name: "Cereza" }
+                ]
+            },
+            "Púrpuras": {
+                themeColor: "#9370DB",
+                colors: [
+                    { hex: "#E6E6FA", name: "Lavanda" }, { hex: "#DDA0DD", name: "Ciruela" },
+                    { hex: "#BA55D3", name: "Orquídea" }, { hex: "#9370DB", name: "Morado" },
+                    { hex: "#4B0082", name: "Índigo" }, { hex: "#800080", name: "Púrpura" }
+                ]
+            },
+            "Azules": {
+                themeColor: "#4682B4",
+                colors: [
+                    { hex: "#F0F8FF", name: "Celeste" }, { hex: "#ADD8E6", name: "Cielo" },
+                    { hex: "#87CEEB", name: "Claro" }, { hex: "#4682B4", name: "Acero" },
+                    { hex: "#2C3E50", name: "Navy" }, { hex: "#000080", name: "Marino" }
+                ]
+            },
+            "Verdes": {
+                themeColor: "#2E8B57",
+                colors: [
+                    { hex: "#F0FFF0", name: "Menta" }, { hex: "#98FB98", name: "Pálido" },
+                    { hex: "#8FBC8F", name: "Sage" }, { hex: "#2E8B57", name: "Bosque" },
+                    { hex: "#556B2F", name: "Oliva" }, { hex: "#006400", name: "Oscuro" }
+                ]
+            },
+            "Amarillos": {
+                themeColor: "#FFD700",
+                colors: [
+                    { hex: "#FFFACD", name: "Limón" }, { hex: "#FFD700", name: "Oro" },
+                    { hex: "#FFA500", name: "Naranja" }, { hex: "#FF7F50", name: "Coral" },
+                    { hex: "#DAA520", name: "Dorado" }, { hex: "#B8860B", name: "Bronce" }
+                ]
+            },
+            "Neutrales": {
+                themeColor: "#A9A9A9",
+                colors: [
+                    { hex: "#FFFFFF", name: "Blanco Puro" }, { hex: "#F5F5F5", name: "Humo" },
+                    { hex: "#D3D3D3", name: "Gris Claro" }, { hex: "#808080", name: "Gris" },
+                    { hex: "#505050", name: "Carbón" }, { hex: "#000000", name: "Negro" }
+                ]
+            }
+        };
+
+        let currentColor = { hex: "#FFFFFF", name: "Blanco Puro" };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNav();
+            renderGrid();
+        });
+
+        // --- Rendering ---
+        function renderNav() {
+            const nav = document.getElementById('category-nav');
+            nav.innerHTML = Object.keys(colorPalette).map(cat => `
+                <button onclick="scrollToCategory('${cat}')" 
+                    class="relative pb-4 text-xs font-bold tracking-[0.2em] uppercase text-gray-400 hover:text-gray-900 nav-underline whitespace-nowrap transition-colors">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function scrollToCategory(catId) {
+            const el = document.getElementById(`cat-${catId}`);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('color-grid-container');
+            container.innerHTML = Object.entries(colorPalette).map(([category, data]) => `
+                <section id="cat-${category}">
+                    <div class="flex items-end justify-between mb-8 sticky top-0 bg-white/90 backdrop-blur z-10 py-4 border-b border-gray-100">
+                        <div>
+                            <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-accent-gold mb-1">Colección</h3>
+                            <h4 class="text-2xl font-serif text-gray-900">${category}</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 pb-1 uppercase tracking-widest">${data.colors.length} Tonos</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
+                        ${data.colors.map(color => `
+                            <div class="group cursor-pointer" onclick="selectColor('${color.hex}', '${color.name}')">
+                                <div class="aspect-[4/5] rounded-xl bg-[${color.hex}] chip-shadow border border-gray-100 group-hover:ring-2 group-hover:ring-primary/30 transition-all duration-500 overflow-hidden relative shadow-sm"
+                                     style="background-color: ${color.hex}">
+                                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                                    <div class="absolute bottom-3 right-3 opacity-0 group-[.selected]:opacity-100 transition-opacity">
+                                        <span class="material-symbols-outlined text-white drop-shadow-md">check_circle</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex flex-col gap-1 px-1">
+                                    <span class="text-[9px] font-black text-gray-300 tracking-tighter uppercase">OS-CODE</span>
+                                    <p class="text-[10px] font-bold text-gray-700 uppercase tracking-widest group-hover:text-primary transition-colors">${color.name}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `).join('');
+        }
+
+        // --- Interaction ---
+        function selectColor(hex, name) {
+            currentColor = { hex, name };
+
+            // Update Overlay
+            const overlay = document.getElementById('preview-overlay');
+            overlay.style.backgroundColor = hex;
+
+            // Update Text Info
+            document.getElementById('preview-name').textContent = name;
+            document.getElementById('preview-code').textContent = hex;
+
+            // Update Text Color Logic for readability (optional simplified)
+            // const isDark = isColorDark(hex);
+            // const infoCard = document.getElementById('preview-info-card');
+            // infoCard.className = isDark ? 
+            //     "bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/20 shadow-lg text-white" : 
+            //     "bg-black/5 backdrop-blur-xl p-8 rounded-2xl border border-black/5 shadow-lg text-gray-900";
+
+        }
+
+        // --- Comparison ---
+        function startCompare() {
+            document.getElementById('preview-overlay').style.opacity = '0';
+        }
+
+        function stopCompare() {
+            document.getElementById('preview-overlay').style.opacity = '0.95';
+        }
+
+        // --- Search ---
+        document.getElementById('colorSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            // Simple DOM filtering
+            document.querySelectorAll('.group.cursor-pointer').forEach(el => {
+                const name = el.querySelector('p').textContent.toLowerCase();
+                if (name.includes(term)) {
+                    el.style.display = 'block';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+        });
+
+        // --- Cart ---
+        function addColorToCart() {
+            const customProduct = {
+                id: 'color-' + Date.now(),
+                name: `Pintura - ${currentColor.name}`,
+                price: 599, // default
+                category: 'pinturas',
+                color: currentColor.hex
+            };
+
+            if (typeof state !== 'undefined' && state.cart) {
+                // Reuse app.js logic if available or manually push
+                // Assuming app.js exposes a global state or function, otherwise mock:
+                let cart = JSON.parse(localStorage.getItem('osel_cart')) || [];
+                const existing = cart.find(c => c.id === customProduct.id); // unlikely with Date.now
+                cart.push({ ...customProduct, quantity: 1 });
+                localStorage.setItem('osel_cart', JSON.stringify(cart));
+                alert(`Agregado: ${currentColor.name}`);
+                if (typeof updateCartCount === 'function') updateCartCount();
+            } else {
+                // Fallback
+                let cart = JSON.parse(localStorage.getItem('osel_cart')) || [];
+                cart.push({ ...customProduct, quantity: 1 });
+                localStorage.setItem('osel_cart', JSON.stringify(cart));
+                alert(`✓ ${currentColor.name} agregado al carrito`);
+            }
+        }
+    </script>
+</body>
+
+</html>

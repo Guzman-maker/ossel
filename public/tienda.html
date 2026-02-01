@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL Premium | Tienda Online</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                        "aqua-blue": "rgba(0, 255, 255, 0.2)",
+                        "terracotta": "#C17F5F", /* Keeping terracotta for shop accents */
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2.5rem',
+                    },
+                    backgroundImage: {
+                        'osel-gradient': 'linear-gradient(to right, #FFD700, #FF4D00)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .glass-cta {
+                background: rgba(255, 255, 255, 0.15);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            .logo-shadow {
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            }
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+            .footer-link-hover:hover {
+                color: #13c8ec;
+                transition: color 0.2s ease-in-out;
+            }
+            /* Shop specific styles preserved */
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #E2E8F0;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans transition-colors duration-300">
+    <nav
+        class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav bg-white/70 dark:bg-black/70">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-12 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-primary transition-colors" href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="rewards.html">Recompensas</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Shopping Cart Icon -->
+                <a href="carrito.html"
+                    class="relative p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all group"
+                    title="Ver Carrito">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full hidden">0</span>
+                </a>
+
+                <a href="login.html"
+                    class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all flex items-center gap-2 group"
+                    title="Ingresar / Admin">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+                <a href="tiendas.html"
+                    class="hidden md:block ml-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-lg shadow-gray-200 dark:shadow-none">
+                    Tiendas
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()"
+                    class="md:hidden p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all">
+                    <span class="material-symbols-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden fixed inset-0 bg-white dark:bg-black z-40 pt-24 px-6 pb-6 overflow-y-auto">
+            <div class="flex flex-col space-y-6 text-center">
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="index.html">Inicio</a>
+                <a class="text-xl font-medium text-primary" href="tienda.html">Productos</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="colecciones.html">Colecciones</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100"
+                    href="visualizador.html">Visualizador</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="rewards.html">Recompensas</a>
+                <a class="text-xl font-medium text-gray-900 dark:text-gray-100" href="tiendas.html">Tiendas</a>
+                <button onclick="logout()" class="text-xl font-medium text-red-500 mt-8">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 flex max-w-[1440px] mx-auto w-full px-6 lg:px-12 py-8 gap-8">
+        <!-- Sidebar Filters -->
+        <aside id="shop-sidebar"
+            class="w-80 flex-shrink-0 hidden lg:block transition-all duration-300 z-40 bg-white lg:bg-transparent h-full fixed inset-0 lg:static lg:h-auto overflow-y-auto lg:overflow-visible p-6 lg:p-0">
+            <div class="flex justify-between items-center lg:hidden mb-4">
+                <h3 class="text-xl font-bold">Filtros</h3>
+                <button onclick="toggleFilters()" class="p-2"><span
+                        class="material-symbols-outlined">close</span></button>
+            </div>
+            <div
+                class="sticky top-24 h-[calc(100vh-7rem)] flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <!-- Fixed Header - Always Visible -->
+                <div
+                    class="flex-shrink-0 flex items-center justify-center p-5 border-b border-gray-100 bg-white rounded-t-2xl">
+                    <h3 class="text-lg font-bold flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined text-xl">tune</span>
+                        Filtros
+                    </h3>
+                </div>
+
+                <!-- Scrollable Content Area -->
+                <div class="flex-1 overflow-y-auto overscroll-contain">
+                    <div class="p-5 space-y-6">
+
+                        <!-- CALCULADORA DE PINTURA -->
+                        <div
+                            class="bg-gradient-to-br from-primary/5 to-primary/10 border-2 border-primary/20 rounded-2xl p-5 shadow-sm">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">calculate</span>
+                                <h4 class="text-base font-bold text-gray-900">Calculadora de Pintura</h4>
+                            </div>
+
+                            <!-- Input Metros Cuadrados -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-bold text-gray-700 mb-2">Metros Cuadrados (m²)</label>
+                                <div class="relative">
+                                    <input type="number" id="calc-metros" min="1" step="0.1" placeholder="Ej: 50"
+                                        class="w-full px-4 py-3 pr-10 border-2 border-gray-200 rounded-xl text-lg font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                                    <span
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">m²</span>
+                                </div>
+                            </div>
+
+                            <!-- Selector de Manos -->
+                            <div class="mb-4">
+                                <label class="block text-xs font-bold text-gray-700 mb-2">Número de Manos</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="setManos(1)" data-manos="1"
+                                        class="manos-btn py-2 px-3 border-2 border-gray-200 rounded-lg text-sm font-bold hover:border-primary hover:bg-primary/5 transition-all">1
+                                        Mano</button>
+                                    <button onclick="setManos(2)" data-manos="2"
+                                        class="manos-btn active py-2 px-3 border-2 border-primary bg-primary/10 text-primary rounded-lg text-sm font-bold transition-all">2
+                                        Manos</button>
+                                    <button onclick="setManos(3)" data-manos="3"
+                                        class="manos-btn py-2 px-3 border-2 border-gray-200 rounded-lg text-sm font-bold hover:border-primary hover:bg-primary/5 transition-all">3
+                                        Manos</button>
+                                </div>
+                            </div>
+
+                            <!-- Resultado -->
+                            <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold text-gray-500 uppercase">Litros Necesarios</span>
+                                    <span class="material-symbols-outlined text-primary text-lg">format_paint</span>
+                                </div>
+                                <div class="text-3xl font-black text-primary" id="calc-result">0.0 L</div>
+                                <p class="text-[10px] text-gray-500 mt-1">Rendimiento: ~10 m²/litro</p>
+                            </div>
+
+                            <!-- Info adicional -->
+                            <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex gap-2">
+                                    <span class="material-symbols-outlined text-blue-600 text-sm">info</span>
+                                    <p class="text-[10px] text-blue-700 leading-relaxed">
+                                        <strong>Tip:</strong> Considera un 10-15% adicional para imprevistos. El
+                                        rendimiento puede variar según la superficie.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1. Categorías -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">1. Pinturas</p>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-sm font-bold text-slate-700 mb-2">Tipo de Pintura</p>
+                                    <div id="filters-categories" class="grid grid-cols-1 gap-2">
+                                        <!-- Las categorías se cargan dinámicamente desde app.js -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-700 mb-2">Acabado</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button
+                                            class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium hover:border-primary transition-colors">Mate</button>
+                                        <button
+                                            class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium hover:border-primary transition-colors">Satinado</button>
+                                        <button
+                                            class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium hover:border-primary transition-colors">Semimate</button>
+                                        <button
+                                            class="px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-medium hover:border-primary transition-colors">Brillante</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-700 mb-2">Color (Paleta Osel)</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button
+                                            class="size-6 rounded-full bg-[#f4f4f4] border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Blanco"></button>
+                                        <button
+                                            class="size-6 rounded-full bg-[#2C3E50] border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Navy"></button>
+                                        <button
+                                            class="size-6 rounded-full bg-[#C17F5F] border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Terracotta"></button>
+                                        <button
+                                            class="size-6 rounded-full bg-[#869484] border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Sage"></button>
+                                        <button
+                                            class="size-6 rounded-full bg-[#E5B181] border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Arena"></button>
+                                        <button
+                                            class="size-6 rounded-full bg-gradient-to-tr from-primary to-terracotta border border-gray-200 ring-offset-2 hover:ring-2 hover:ring-primary transition-all"
+                                            title="Selector"></button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-700 mb-2">Presentación</p>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <button
+                                            class="py-2 border border-gray-200 rounded text-xs font-bold hover:bg-primary hover:text-white transition-all">1L</button>
+                                        <button
+                                            class="py-2 border border-gray-200 rounded text-xs font-bold hover:bg-primary hover:text-white transition-all">4L</button>
+                                        <button
+                                            class="py-2 border border-gray-200 rounded text-xs font-bold hover:bg-primary hover:text-white transition-all">19L</button>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="flex-1">
+                                        <p class="text-[10px] font-black uppercase text-slate-400 mb-1">Base</p>
+                                        <select
+                                            class="w-full text-xs border-gray-200 rounded font-medium focus:ring-primary">
+                                            <option>Agua</option>
+                                            <option>Solvente</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-[10px] font-black uppercase text-slate-400 mb-1">Secado</p>
+                                        <select
+                                            class="w-full text-xs border-gray-200 rounded font-medium focus:ring-primary">
+                                            <option>Rápido</option>
+                                            <option>Normal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Herramientas -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">2. Herramientas
+                            </p>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Brochas
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Rodillos
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Charolas
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Espátulas
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Lijas
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                                        <input type="checkbox" class="rounded border-gray-300 text-primary"> Otros
+                                    </label>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-700 mb-2">Medidas Rodillos/Brochas</p>
+                                    <div class="flex flex-wrap gap-1">
+                                        <button
+                                            class="px-2 py-1 border border-gray-100 rounded text-[10px] font-bold hover:border-primary">1"</button>
+                                        <button
+                                            class="px-2 py-1 border border-gray-100 rounded text-[10px] font-bold hover:border-primary">2"</button>
+                                        <button
+                                            class="px-2 py-1 border border-gray-100 rounded text-[10px] font-bold hover:border-primary">4"</button>
+                                        <button
+                                            class="px-2 py-1 border border-gray-100 rounded text-[10px] font-bold hover:border-primary">9"</button>
+                                        <button
+                                            class="px-2 py-1 border border-gray-100 rounded text-[10px] font-bold hover:border-primary">12"</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-700 mb-2">Material / Uso</p>
+                                    <div class="grid grid-cols-1 gap-1">
+                                        <label class="flex items-center gap-2 text-xs text-slate-500">
+                                            <input type="radio" name="material" class="text-primary"> Cerdas Naturales
+                                        </label>
+                                        <label class="flex items-center gap-2 text-xs text-slate-500">
+                                            <input type="radio" name="material" class="text-primary"> Microfibra
+                                        </label>
+                                        <label class="flex items-center gap-2 text-xs text-slate-500">
+                                            <input type="radio" name="material" class="text-primary"> Pared Rugosa
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Accesorios -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">3. Accesorios
+                            </p>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-gray-50 rounded-xl">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase mb-2">Protección & Cintas
+                                    </p>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center gap-2 text-xs text-slate-600">
+                                            <input type="checkbox" class="rounded border-gray-300"> Cintas
+                                            (Masking/Azul)
+                                        </label>
+                                        <label class="flex items-center gap-2 text-xs text-slate-600">
+                                            <input type="checkbox" class="rounded border-gray-300"> Guantes
+                                            (Látex/Nitrilo)
+                                        </label>
+                                        <label class="flex items-center gap-2 text-xs text-slate-600">
+                                            <input type="checkbox" class="rounded border-gray-300"> Plásticos / Cubetas
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Preparación (Short list) -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">4. Preparación
+                            </p>
+                            <div class="grid grid-cols-1 gap-2">
+                                <label class="flex items-center gap-2 text-xs text-slate-600">
+                                    <input type="checkbox" class="rounded border-gray-300"> Resanadores / Pastas
+                                </label>
+                                <label class="flex items-center gap-2 text-xs text-slate-600">
+                                    <input type="checkbox" class="rounded border-gray-300"> Removedores / Desengrasantes
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 5. Técnicos & Resistencia -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">5. Propiedades
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <button
+                                    class="px-2 py-1 bg-sage/10 text-sage text-[10px] font-black rounded border border-sage/20">Lavable</button>
+                                <button
+                                    class="px-2 py-1 bg-sage/10 text-sage text-[10px] font-black rounded border border-sage/20">Antihongos</button>
+                                <button
+                                    class="px-2 py-1 bg-sage/10 text-sage text-[10px] font-black rounded border border-sage/20">Antihumedad</button>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-[10px] font-black text-slate-400 uppercase mb-2">Aplicación</p>
+                                <div class="flex gap-4">
+                                    <span class="material-symbols-outlined text-slate-400 text-lg"
+                                        title="Brocha">brush</span>
+                                    <span class="material-symbols-outlined text-slate-400 text-lg"
+                                        title="Rodillo">imagesearch_roller</span>
+                                    <span class="material-symbols-outlined text-slate-400 text-lg"
+                                        title="Pistola">special_ad_unit</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Comerciales -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">6. Ofertas &
+                                Precio</p>
+                            <div class="space-y-4">
+                                <input type="range"
+                                    class="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                                    min="100" max="5000">
+                                <div class="flex items-center justify-between text-[10px] font-bold text-slate-400">
+                                    <span>Min: $100</span>
+                                    <span>Max: $5,000+</span>
+                                </div>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <label class="flex items-center gap-2 text-xs font-bold text-terracotta">
+                                        <input type="checkbox"
+                                            class="rounded border-terracotta text-terracotta focus:ring-terracotta"> En
+                                        Oferta %
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" class="rounded border-gray-300"> Más vendidos
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" class="rounded border-gray-300"> En Stock
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. Opiniones -->
+                        <div class="border-b border-gray-100 pb-6">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">7. Calificación
+                            </p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="stars" class="text-primary">
+                                    <div class="flex text-amber-400">
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer group">
+                                    <input type="radio" name="stars" class="text-primary">
+                                    <div class="flex text-amber-400">
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm FILL_1">star</span>
+                                        <span class="material-symbols-outlined text-sm">star</span>
+                                        <span
+                                            class="text-[10px] ml-1 text-slate-400 font-bold group-hover:text-primary">&
+                                            más</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 8. Puntos y Canjes -->
+                        <div class="pb-10">
+                            <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">8. Recompensas
+                            </p>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox"
+                                            class="rounded border-primary text-primary focus:ring-primary size-5">
+                                        <div>
+                                            <p class="text-xs font-black text-primary">Canjeable con Puntos</p>
+                                            <p class="text-[10px] text-primary/60">Usa tu balance actual</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <label class="flex items-center gap-2 text-xs text-slate-600 font-bold px-2">
+                                    <input type="checkbox" class="rounded border-gray-300"> Puntos Extra 🔥
+                                </label>
+                                <label class="flex items-center gap-2 text-xs text-slate-600 font-bold px-2">
+                                    <input type="checkbox" class="rounded border-gray-300"> Exclusivo Miembros 💎
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fixed Footer - Always Visible -->
+                <div class="flex-shrink-0 p-4 border-t border-gray-100 bg-white rounded-b-2xl">
+                    <button id="shop-reset-filters"
+                        class="w-full py-3 px-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 active:scale-95">
+                        <span class="material-symbols-outlined text-lg">restart_alt</span>
+                        Limpiar Todos los Filtros
+                    </button>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Product Area -->
+        <div class="flex-1">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 px-2">
+                <div>
+                    <nav class="flex text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 gap-2">
+                        <a class="hover:text-primary transition-colors" href="index.html">Inicio</a>
+                        <span>/</span>
+                        <span class="text-gray-900 dark:text-white">Tienda</span>
+                    </nav>
+                    <h1 class="text-3xl font-extrabold text-[#111418] dark:text-white leading-none">Pinturas Premium
+                    </h1>
+                </div>
+                <div class="mt-4 md:mt-0 flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+
+
+                    <button onclick="toggleFilters()"
+                        class="lg:hidden w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg font-bold text-gray-700 shadow-sm">
+                        <span class="material-symbols-outlined">tune</span>
+                        Filtros
+                    </button>
+
+                    <!-- New Advanced Search -->
+                    <div class="relative w-full md:w-80 group">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+                        <input type="text" id="shop-search" placeholder="Buscar por nombre, SKU o código..."
+                            class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm placeholder-gray-400 font-medium">
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
+                            <span
+                                class="text-[10px] bg-white border border-gray-200 px-1.5 py-0.5 rounded text-gray-400 font-bold hidden group-focus-within:block animate-fade-in">SKU</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 w-full md:w-auto justify-between">
+                        <p class="text-sm font-medium text-gray-500 whitespace-nowrap">Mostrando <span
+                                class="text-gray-900 dark:text-white font-bold">0</span> productos</p>
+                        <select id="sort-select"
+                            class="bg-white dark:bg-gray-800 border-none rounded-lg text-sm font-bold focus:ring-0 cursor-pointer shadow-sm">
+                            <option value="relevancia">Relevancia</option>
+                            <option value="price_asc">Precio: Menor a Mayor</option>
+                            <option value="price_desc">Precio: Mayor a Menor</option>
+                            <option value="newest">Nuevos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="shop-products-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Dynamic Content From JS -->
+                <div class="col-span-full py-20 text-center animate-pulse">
+                    <p class="text-slate-400 font-bold">Cargando productos...</p>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <div class="mt-16 flex items-center justify-center gap-4">
+                <button
+                    class="size-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button
+                    class="size-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+                <button
+                    class="size-10 flex items-center justify-center rounded-lg border border-transparent text-gray-500 font-bold hover:bg-gray-100 transition-all">2</button>
+                <button
+                    class="size-10 flex items-center justify-center rounded-lg border border-transparent text-gray-500 font-bold hover:bg-gray-100 transition-all">3</button>
+                <span class="text-gray-400">...</span>
+                <button
+                    class="size-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-2">
+                        <img src="img/logo-osel-final.png" alt="Osel Lázaro" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-sm leading-relaxed text-[#618389] dark:text-slate-400">
+                        Especialistas en pinturas premium. Transformamos tus espacios con la mejor calidad en Lázaro
+                        Cárdenas, Michoacán. Contamos con dos sucursales para brindarte una atención personalizada.
+                    </p>
+                </div>
+                <!-- Column 2: Contact -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Sucursales
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Centro</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Lázaro Cárdenas, Centro, CP 60950
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#dbe4e6] dark:border-slate-800 pt-4">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Melchor
+                                    Ocampo</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Av. Melchor Ocampo No. 123</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <span class="material-symbols-outlined text-[#3b82f6]">call</span>
+                            <a class="text-sm text-[#111718] dark:text-slate-300 hover:text-[#3b82f6] transition-colors"
+                                href="tel:7531234567">753-123-4567</a>
+                        </div>
+                        <a class="flex items-center gap-3 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded-lg w-fit hover:bg-[#3b82f6]/20 transition-all border border-[#3b82f6]/20"
+                            href="#">
+                            <span class="material-symbols-outlined text-[#3b82f6]">chat</span>
+                            <span class="text-sm font-semibold text-[#111718] dark:text-white">WhatsApp Directo</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3: Links -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Navegación
+                    </h3>
+                    <nav class="flex flex-col gap-4">
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="tienda.html">Tienda Online</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="rewards.html">Puntos Osel</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="aviso-privacidad.html">Aviso de
+                            Privacidad</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="terminos-y-condiciones.html">Términos y
+                            Condiciones</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="preguntas-frecuentes.html">Preguntas
+                            Frecuentes</a>
+                    </nav>
+                </div>
+                <!-- Column 4: Social -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Síguenos
+                    </h3>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">social_leaderboard</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">video_library</span>
+                        </a>
+                    </div>
+                    <div
+                        class="mt-4 p-4 border border-[#dbe4e6] dark:border-slate-800 rounded-xl bg-white/50 dark:bg-white/5 flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-sm">verified_user</span>
+                            <span class="text-xs font-bold text-[#111718] dark:text-white">Compra Segura</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">credit_card</span>
+                            </div>
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-[#dbe4e6] dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#618389] dark:text-slate-500">
+                    © 2026 Osel Lázaro. Todos los derechos reservados. Creado por GuzDevStudio.
+                </p>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">SSL
+                            Encrypted</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">package_2</span>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">Envíos
+                            Seguros</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

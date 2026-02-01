@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>OSEL | Programa de Recompensas</title>
+    <link rel="icon" type="image/png" href="img/logo-osel-final.png">
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        // OSEL AUTH CHECK
+        (function () {
+            const user = localStorage.getItem('osel_user');
+            const admin = localStorage.getItem('osel_admin');
+            if (!user && !admin) {
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#3b82f6",
+                        "background-light": "#fcfcfd",
+                        "background-dark": "#0a0a0b",
+                        "osel-yellow": "#FFD700",
+                        "terracotta": "#C17F5F",
+                        "text-main": "#1D1D1F",
+                        "text-secondary": "#6E6E73",
+                        "border-light": "#E5E5E7",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2.5rem',
+                    },
+                    backgroundImage: {
+                        'osel-gradient': 'linear-gradient(to right, #FFD700, #FF4D00)',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .frosted-nav {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .apple-shadow {
+                box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            }
+            .apple-shadow-hover {
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            }
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .footer-link-hover:hover {
+                color: #13c8ec;
+                transition: color 0.2s ease-in-out;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-main dark:text-white min-h-screen font-sans antialiased transition-colors duration-300">
+    <nav
+        class="fixed top-0 w-full z-50 border-b border-gray-200/50 dark:border-gray-800/50 frosted-nav bg-white/70 dark:bg-black/70">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-12">
+                <a class="flex items-center" href="index.html">
+                    <img alt="Pinturas Osel Lázaro" class="h-12 w-auto object-contain" src="img/logo-osel-final.png" />
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="index.html">Inicio</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="tienda.html">Productos</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="colecciones.html">Colecciones</a>
+                    <a class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                        href="visualizador.html">Visualizador</a>
+                    <a class="text-sm font-medium text-primary transition-colors" href="rewards.html">Recompensas</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Shopping Cart Icon -->
+                <a href="carrito.html"
+                    class="relative p-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all group"
+                    title="Ver Carrito">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-count"
+                        class="absolute top-1 right-1 bg-primary text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full hidden">0</span>
+                </a>
+
+                <a href="login.html"
+                    class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all flex items-center gap-2 group"
+                    title="Ingresar / Admin">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </a>
+                <a href="tiendas.html"
+                    class="hidden md:block ml-2 px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full text-sm font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-all shadow-lg shadow-gray-200 dark:shadow-none">
+                    Tiendas
+                </a>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 md:px-10 py-10 pt-32 pb-20">
+        <!-- User Points Balance -->
+        <section class="mb-12">
+            <div
+                class="bg-white apple-shadow rounded-2xl p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 overflow-hidden relative border border-white/50">
+                <div class="absolute -top-24 -right-24 size-80 bg-primary/5 blur-[100px] rounded-full"></div>
+                <div class="relative z-10">
+                    <p class="text-text-secondary text-xs font-bold uppercase tracking-widest mb-1">Tu Balance Actual
+                    </p>
+                    <div class="flex items-baseline gap-2">
+                        <h1 id="current-points" class="text-text-main text-6xl font-black tracking-tighter">0</h1>
+                        <span
+                            class="text-osel-yellow text-2xl font-black uppercase tracking-tighter drop-shadow-sm">puntos</span>
+                    </div>
+                    <div id="member-status"
+                        class="mt-4 flex items-center gap-2 bg-gray-50 border border-gray-100 w-fit px-4 py-1.5 rounded-full">
+                        <span class="material-symbols-outlined text-gray-400 text-lg fill-1">stars</span>
+                        <p class="text-[11px] text-text-main font-bold uppercase tracking-wide">Miembro Nuevo</p>
+                    </div>
+                </div>
+                <div class="relative z-10 flex flex-col gap-4 min-w-[320px]">
+                    <div class="flex justify-between items-end">
+                        <p class="text-text-main text-sm font-bold">Próximo Nivel: Bronce</p>
+                        <p id="points-to-next" class="text-text-secondary text-xs font-medium">Faltan 500 pts</p>
+                    </div>
+                    <div class="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-50">
+                        <div id="progress-bar"
+                            class="h-full bg-primary w-[0%] rounded-full shadow-sm transition-all duration-500"></div>
+                    </div>
+                    <p class="text-text-secondary text-[11px] font-medium leading-relaxed italic">Realiza compras para
+                        acumular puntos y desbloquear beneficios exclusivos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Tabs -->
+        <section class="mb-10">
+            <div class="flex border-b border-border-light px-2 gap-8 mb-6 overflow-x-auto no-scrollbar">
+                <button onclick="filterRewards('todos')" id="tab-todos"
+                    class="filter-tab flex items-center gap-2 border-b-2 border-primary text-text-main pb-4 px-1 transition-all">
+                    <span class="material-symbols-outlined text-primary text-xl">dashboard</span>
+                    <span class="text-sm font-bold">Todos</span>
+                </button>
+                <button onclick="filterRewards('pinturas')" id="tab-pinturas"
+                    class="filter-tab flex items-center gap-2 border-b-2 border-transparent text-text-secondary hover:text-text-main pb-4 px-1 transition-all">
+                    <span class="material-symbols-outlined text-xl">palette</span>
+                    <span class="text-sm font-medium">Pinturas</span>
+                </button>
+                <button onclick="filterRewards('herramientas')" id="tab-herramientas"
+                    class="filter-tab flex items-center gap-2 border-b-2 border-transparent text-text-secondary hover:text-text-main pb-4 px-1 transition-all">
+                    <span class="material-symbols-outlined text-xl">construction</span>
+                    <span class="text-sm font-medium">Herramientas</span>
+                </button>
+                <button onclick="filterRewards('descuentos')" id="tab-descuentos"
+                    class="filter-tab flex items-center gap-2 border-b-2 border-transparent text-text-secondary hover:text-text-main pb-4 px-1 transition-all">
+                    <span class="material-symbols-outlined text-xl">sell</span>
+                    <span class="text-sm font-medium">Descuentos</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Rewards Grid -->
+        <section id="rewards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Cards will be generated dynamically -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden bg-white apple-shadow rounded-2xl p-16 text-center">
+            <span class="material-symbols-outlined text-9xl text-gray-200 mb-6">stars</span>
+            <h3 class="text-2xl font-black text-text-main mb-3">No hay recompensas en esta categoría</h3>
+            <p class="text-text-secondary mb-8 max-w-md mx-auto">Prueba con otra categoría o acumula más puntos para
+                desbloquear recompensas.</p>
+            <button onclick="filterRewards('todos')"
+                class="px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-opacity-90 transition-all inline-flex items-center gap-2">
+                <span class="material-symbols-outlined">view_module</span>
+                Ver Todas
+            </button>
+        </div>
+    </main>
+
+    <footer
+        class="w-full border-t border-[#e5e7eb] bg-background-light dark:bg-background-dark pt-16 pb-8 px-6 lg:px-20 font-display transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-2">
+                        <img src="img/logo-osel-final.png" alt="Osel Lázaro" class="h-10 w-auto object-contain">
+                    </div>
+                    <p class="text-sm leading-relaxed text-[#618389] dark:text-slate-400">
+                        Especialistas en pinturas premium. Transformamos tus espacios con la mejor calidad en Lázaro
+                        Cárdenas, Michoacán. Contamos con dos sucursales para brindarte una atención personalizada.
+                    </p>
+                </div>
+                <!-- Column 2: Contact -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Sucursales
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Centro</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Lázaro Cárdenas, Centro, CP 60950
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 border-t border-[#dbe4e6] dark:border-slate-800 pt-4">
+                            <span class="material-symbols-outlined text-[#3b82f6] mt-0.5">location_on</span>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-[#618389] dark:text-slate-500">Melchor
+                                    Ocampo</span>
+                                <p class="text-sm text-[#111718] dark:text-slate-300">Av. Melchor Ocampo No. 123</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 pt-2">
+                            <span class="material-symbols-outlined text-[#3b82f6]">call</span>
+                            <a class="text-sm text-[#111718] dark:text-slate-300 hover:text-[#3b82f6] transition-colors"
+                                href="tel:7531234567">753-123-4567</a>
+                        </div>
+                        <a class="flex items-center gap-3 bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 p-3 rounded-lg w-fit hover:bg-[#3b82f6]/20 transition-all border border-[#3b82f6]/20"
+                            href="#">
+                            <span class="material-symbols-outlined text-[#3b82f6]">chat</span>
+                            <span class="text-sm font-semibold text-[#111718] dark:text-white">WhatsApp Directo</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Column 3: Links -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Navegación
+                    </h3>
+                    <nav class="flex flex-col gap-4">
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="tienda.html">Tienda Online</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="rewards.html">Puntos Osel</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="aviso-privacidad.html">Aviso de
+                            Privacidad</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="terminos-y-condiciones.html">Términos y
+                            Condiciones</a>
+                        <a class="text-sm text-[#618389] dark:text-slate-400 footer-link-hover"
+                            href="preguntas-frecuentes.html">Preguntas
+                            Frecuentes</a>
+                    </nav>
+                </div>
+                <!-- Column 4: Social -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-[#111718] dark:text-white">Síguenos
+                    </h3>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">social_leaderboard</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">camera_alt</span>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border border-[#dbe4e6] dark:border-slate-700 flex items-center justify-center text-[#111718] dark:text-white hover:text-[#3b82f6] hover:border-[#3b82f6] transition-all shadow-sm"
+                            href="#">
+                            <span class="material-symbols-outlined">video_library</span>
+                        </a>
+                    </div>
+                    <div
+                        class="mt-4 p-4 border border-[#dbe4e6] dark:border-slate-800 rounded-xl bg-white/50 dark:bg-white/5 flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-green-500 text-sm">verified_user</span>
+                            <span class="text-xs font-bold text-[#111718] dark:text-white">Compra Segura</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">credit_card</span>
+                            </div>
+                            <div
+                                class="h-6 w-10 bg-slate-200 dark:bg-slate-700 rounded-sm overflow-hidden flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[12px] text-slate-400">payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div
+                class="border-t border-[#dbe4e6] dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[#618389] dark:text-slate-500">
+                    © 2026 Osel Lázaro. Todos los derechos reservados. Creado por GuzDevStudio.
+                </p>
+                <div class="flex gap-6">
+                    <div class="flex items-center gap-1.5 grayscale opacity-60">
+                        <span class="material-symbols-outlined text-sm">shield</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#111718] dark:text-white">SSL
+                            Encrypted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Rewards Database - Carga desde productos de tipo recompensa
+        let rewardsData = [];
+
+        // Cargar productos de recompensa desde state.products
+        function loadRewardsFromProducts() {
+            if (state && state.products) {
+                rewardsData = state.products
+                    .filter(p => p.tipo === 'recompensa')
+                    .map(p => ({
+                        id: p.id,
+                        name: p.name,
+                        description: p.desc || p.tagline || 'Producto de recompensa',
+                        category: p.category || 'general',
+                        points: p.puntosRequeridos || p.puntosRequeridos,
+                        image: p.image
+                    }));
+            }
+            return rewardsData;
+        }
+
+        // State Management
+        let userPoints = 0;
+        let currentFilter = 'todos';
+        let redeemedRewards = JSON.parse(localStorage.getItem('osel_redeemed_rewards')) || [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRewardsFromProducts(); // Cargar recompensas desde productos
+            loadUserPoints();
+            renderRewards();
+        });
+
+        // Load User Points (from purchases in app.js state)
+        function loadUserPoints() {
+            // Calculate points from user's purchase history
+            // For demo purposes, we'll use a stored value or calculate from cart history
+            const storedPoints = localStorage.getItem('osel_user_points');
+            userPoints = storedPoints ? parseInt(storedPoints) : 0;
+
+            updatePointsDisplay();
+        }
+
+        // Update Points Display
+        function updatePointsDisplay() {
+            document.getElementById('current-points').textContent = userPoints.toLocaleString();
+
+            // Update progress bar
+            const nextLevel = 500;
+            const progress = Math.min((userPoints / nextLevel) * 100, 100);
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            const remaining = Math.max(nextLevel - userPoints, 0);
+            document.getElementById('points-to-next').textContent = remaining > 0
+                ? `Faltan ${remaining} pts`
+                : '¡Nivel alcanzado!';
+        }
+
+        // Filter Rewards by Category
+        function filterRewards(category) {
+            currentFilter = category;
+
+            // Update tab styles
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('border-primary', 'text-text-main');
+                tab.classList.add('border-transparent', 'text-text-secondary');
+                tab.querySelector('span:first-child').classList.remove('text-primary');
+                tab.querySelector('span:last-child').classList.remove('font-bold');
+                tab.querySelector('span:last-child').classList.add('font-medium');
+            });
+
+            const activeTab = document.getElementById(`tab-${category}`);
+            activeTab.classList.add('border-primary', 'text-text-main');
+            activeTab.classList.remove('border-transparent', 'text-text-secondary');
+            activeTab.querySelector('span:first-child').classList.add('text-primary');
+            activeTab.querySelector('span:last-child').classList.add('font-bold');
+            activeTab.querySelector('span:last-child').classList.remove('font-medium');
+
+            renderRewards();
+        }
+
+        // Render Rewards
+        function renderRewards() {
+            const grid = document.getElementById('rewards-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            let filteredRewards = rewardsData;
+            if (currentFilter !== 'todos') {
+                filteredRewards = rewardsData.filter(r => r.category === currentFilter);
+            }
+
+            if (filteredRewards.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filteredRewards.map(reward => {
+                const canRedeem = userPoints >= reward.points;
+                const isRedeemed = redeemedRewards.includes(reward.id);
+                const pointsNeeded = reward.points - userPoints;
+                const progress = Math.min((userPoints / reward.points) * 100, 100);
+
+                return `
+                    <div class="group relative flex flex-col bg-white rounded-2xl border border-border-light overflow-hidden ${canRedeem ? 'opacity-100' : 'opacity-60'} transition-all duration-500 hover:apple-shadow-hover">
+                        <div class="relative h-60 w-full ${canRedeem ? '' : 'grayscale-[0.8]'} overflow-hidden">
+                            ${!canRedeem ? `
+                                <div class="absolute inset-0 flex items-center justify-center z-20">
+                                    <div class="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                                        <p class="text-text-main text-xs font-bold flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-sm">lock</span>
+                                            Faltan ${pointsNeeded} pts
+                                        </p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${isRedeemed ? `
+                                <div class="absolute inset-0 flex items-center justify-center z-20 bg-black/50">
+                                    <div class="bg-green-500 text-white px-6 py-3 rounded-full shadow-lg">
+                                        <p class="text-sm font-bold flex items-center gap-2">
+                                            <span class="material-symbols-outlined">check_circle</span>
+                                            ¡Canjeado!
+                                        </p>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            <div class="absolute top-4 right-4 z-10 ${canRedeem && !isRedeemed ? 'bg-osel-yellow text-text-main' : 'bg-gray-200 text-text-secondary'} text-[11px] font-black px-3 py-1 rounded-full shadow-sm uppercase tracking-wider">
+                                ${reward.points.toLocaleString()} PTS
+                            </div>
+                            <div class="w-full h-full bg-cover bg-center" style="background-image: url('${reward.image}');"></div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="${canRedeem ? 'text-text-main' : 'text-text-secondary'} text-lg font-bold mb-1 leading-tight">${reward.name}</h3>
+                            <p class="text-text-secondary/70 text-sm mb-6">${reward.description}</p>
+                            <div class="mt-auto space-y-5">
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-text-secondary/60">
+                                        <span>Progreso</span>
+                                        <span>${userPoints} / ${reward.points.toLocaleString()}</span>
+                                    </div>
+                                    <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full ${canRedeem ? 'bg-primary' : 'bg-gray-300'} transition-all duration-500" style="width: ${progress}%"></div>
+                                    </div>
+                                </div>
+                                <button
+                                    onclick="redeemReward(${reward.id}, ${reward.points})"
+                                    class="w-full ${canRedeem && !isRedeemed ? 'bg-primary text-white hover:bg-opacity-90' : 'bg-gray-100 text-text-secondary cursor-not-allowed'} py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
+                                    ${!canRedeem || isRedeemed ? 'disabled' : ''}>
+                                    <span class="material-symbols-outlined text-lg">${isRedeemed ? 'check_circle' : (canRedeem ? 'redeem' : 'lock')}</span>
+                                    ${isRedeemed ? 'Canjeado' : (canRedeem ? 'Canjear Ahora' : 'Bloqueado')}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Redeem Reward
+        function redeemReward(rewardId, pointsCost) {
+            const reward = rewardsData.find(r => r.id === rewardId);
+            if (!reward) return;
+
+            if (userPoints < pointsCost) {
+                alert('No tienes suficientes puntos para canjear esta recompensa.');
+                return;
+            }
+
+            if (redeemedRewards.includes(rewardId)) {
+                alert('Ya has canjeado esta recompensa.');
+                return;
+            }
+
+            // Confirm redemption
+            if (!confirm(`¿Estás seguro de canjear "${reward.name}" por ${pointsCost} puntos?`)) {
+                return;
+            }
+
+            // Deduct points
+            userPoints -= pointsCost;
+            localStorage.setItem('osel_user_points', userPoints.toString());
+
+            // Mark as redeemed
+            redeemedRewards.push(rewardId);
+            localStorage.setItem('osel_redeemed_rewards', JSON.stringify(redeemedRewards));
+
+            // Update display
+            updatePointsDisplay();
+            renderRewards();
+
+            // Show success message
+            alert(`¡Felicidades! Has canjeado "${reward.name}". Revisa tu correo para más detalles.`);
+        }
+
+        // Add test points (for demo purposes)
+        function addTestPoints(points) {
+            userPoints += points;
+            localStorage.setItem('osel_user_points', userPoints.toString());
+            updatePointsDisplay();
+            renderRewards();
+        }
+
+        // Expose for testing in console
+        window.addTestPoints = addTestPoints;
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
